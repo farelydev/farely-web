@@ -41,6 +41,22 @@ const amadeus = new Amadeus({
   hostname: AMADEUS_HOSTNAME === "production" ? "production" : "test",
 });
 
+const DEFAULT_LOCATIONS = [
+  { city: "London", country: "United Kingdom", name: "All airports", iata: "LON", type: "city", tags: ["LHR", "LGW", "STN", "LTN", "LCY"] },
+  { city: "Doha", country: "Qatar", name: "Hamad International", iata: "DOH", type: "airport", tags: ["DOH"] },
+  { city: "Dubai", country: "United Arab Emirates", name: "Dubai International", iata: "DXB", type: "airport", tags: ["DXB"] },
+  { city: "Istanbul", country: "Türkiye", name: "Istanbul Airport", iata: "IST", type: "airport", tags: ["IST"] },
+  { city: "New York", country: "United States", name: "All airports", iata: "NYC", type: "city", tags: ["JFK", "EWR", "LGA"] },
+  { city: "Jeddah", country: "Saudi Arabia", name: "King Abdulaziz International", iata: "JED", type: "airport", tags: ["JED", "Umrah"] },
+  { city: "Mogadishu", country: "Somalia", name: "Aden Adde International", iata: "MGQ", type: "airport", tags: ["MGQ"] },
+  { city: "Nairobi", country: "Kenya", name: "Jomo Kenyatta International", iata: "NBO", type: "airport", tags: ["NBO"] },
+  { city: "Bangkok", country: "Thailand", name: "All airports", iata: "BKK", type: "city", tags: ["BKK", "DMK"] },
+  { city: "Tokyo", country: "Japan", name: "All airports", iata: "TYO", type: "city", tags: ["HND", "NRT"] },
+  { city: "Toronto", country: "Canada", name: "All airports", iata: "YTO", type: "city", tags: ["YYZ", "YTZ"] },
+  { city: "Lagos", country: "Nigeria", name: "Murtala Muhammed International", iata: "LOS", type: "airport", tags: ["LOS"] },
+  { city: "Cairo", country: "Egypt", name: "Cairo International", iata: "CAI", type: "airport", tags: ["CAI"] },
+];
+
 app.use((req, res, next) => {
   if (req.path.startsWith("/api/")) {
     console.log(`[API] ${req.method} ${req.path} query=`, req.query);
@@ -441,6 +457,72 @@ function validateIata(code) {
   return /^[A-Z]{3}$/.test(String(code || "").trim().toUpperCase());
 }
 
+function simplifyLocation(location) {
+  const iata = String(location?.iataCode || "").trim().toUpperCase();
+  if (!validateIata(iata)) return null;
+
+  const subType = String(location?.subType || "").toLowerCase();
+  const city =
+    location?.address?.cityName ||
+    location?.name ||
+    location?.detailedName ||
+    iata;
+  const country =
+    location?.address?.countryName ||
+    location?.address?.countryCode ||
+    "";
+  const airportName =
+    location?.name ||
+    location?.detailedName ||
+    city;
+
+  return {
+    city,
+    country,
+    name: airportName,
+    iata,
+    type: subType === "city" ? "city" : "airport",
+    tags: [iata, location?.address?.cityCode, location?.address?.countryCode].filter(Boolean),
+  };
+}
+
+function fallbackLocationSearch(keyword, limit = 12) {
+  const q = String(keyword || "").trim().toLowerCase();
+  if (!q) return DEFAULT_LOCATIONS.slice(0, limit);
+
+  return DEFAULT_LOCATIONS.map((location) => {
+    const city = String(location.city || "").toLowerCase();
+    const name = String(location.name || "").toLowerCase();
+    const iata = String(location.iata || "").toLowerCase();
+    const tags = (location.tags || []).join(" ").toLowerCase();
+    const hay = `${city} ${location.country} ${name} ${iata} ${tags}`.toLowerCase();
+    const exact = city === q || iata === q ? 4 : 0;
+    const starts = city.startsWith(q) || name.startsWith(q) || iata.startsWith(q) ? 2 : 0;
+    const includes = hay.includes(q) ? 1 : 0;
+
+    return { location, score: exact + starts + includes };
+  })
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((entry) => entry.location);
+}
+
+function uniqueLocations(locations) {
+  const seen = new Set();
+  const unique = [];
+
+  for (const location of locations) {
+    if (!location?.iata) continue;
+    const key = location.iata.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    unique.push(location);
+  }
+
+  return unique;
+}
+
 function seededNumber(seedText, min, max) {
   const text = String(seedText || "");
   let seed = 0;
@@ -642,6 +724,65 @@ app.get("/api/analytics/deal-clicks", async (req, res) => {
       ok: false,
       error: "ANALYTICS_READ_FAILED",
       message: "Could not read deal-click analytics.",
+    });
+  }
+});
+
+app.get("/api/locations", async (req, res) => {
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
+
+  const keyword = String(req.query.keyword || req.query.q || "").trim();
+  const limit = Math.min(Math.max(Number(req.query.limit || 12) || 12, 1), 20);
+
+  if (!keyword || keyword.length < 2) {
+    return res.status(200).json({
+      data: DEFAULT_LOCATIONS.slice(0, limit),
+      source: "default",
+      warning: null,
+    });
+  }
+
+  if (!hasAmadeusCredentials) {
+    return res.status(200).json({
+      data: fallbackLocationSearch(keyword, limit),
+      source: "default-fallback",
+      warning: "Amadeus credentials are missing, so only default locations are shown.",
+    });
+  }
+
+  try {
+    const fallbackMatches = fallbackLocationSearch(keyword, limit);
+    const response = await amadeus.referenceData.locations.get({
+      keyword,
+      subType: "CITY,AIRPORT",
+      "page[limit]": limit,
+      view: "LIGHT",
+    });
+
+    const amadeusLocations = uniqueLocations(
+      (Array.isArray(response?.data) ? response.data : [])
+        .map(simplifyLocation)
+        .filter(Boolean)
+    ).slice(0, limit);
+    const locations = uniqueLocations([...fallbackMatches, ...amadeusLocations]).slice(0, limit);
+
+    return res.status(200).json({
+      data: locations,
+      source: amadeusLocations.length ? "amadeus" : "default-fallback",
+      warning: amadeusLocations.length ? null : "No Amadeus location matches were found, so default matches are shown.",
+    });
+  } catch (err) {
+    const friendly = makeUserFriendlyError(err, {});
+
+    console.error("[API] /api/locations error details:", {
+      keyword,
+      extracted: extractAmadeusError(err),
+    });
+
+    return res.status(200).json({
+      data: fallbackLocationSearch(keyword, limit),
+      source: "default-fallback",
+      warning: friendly.message || "Location search failed, so default matches are shown.",
     });
   }
 });

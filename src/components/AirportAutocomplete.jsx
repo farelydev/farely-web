@@ -14,9 +14,11 @@ export default function AirportAutocomplete({
 }) {
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [remoteResults, setRemoteResults] = useState([]);
+  const [status, setStatus] = useState("idle");
   const wrapRef = useRef(null);
 
-  const results = useMemo(() => {
+  const fallbackResults = useMemo(() => {
     const q = (valueText || "").trim().toLowerCase();
     if (!q) return [];
 
@@ -33,6 +35,64 @@ export default function AirportAutocomplete({
   }, [valueText]);
 
   useEffect(() => {
+    const q = (valueText || "").trim();
+
+    if (!open || q.length < 2) {
+      setRemoteResults([]);
+      setStatus("idle");
+      return undefined;
+    }
+
+    const controller = new AbortController();
+    const timer = window.setTimeout(async () => {
+      setStatus("loading");
+
+      try {
+        const response = await fetch(`/api/locations?keyword=${encodeURIComponent(q)}&limit=12`, {
+          signal: controller.signal,
+        });
+        const json = await response.json();
+
+        if (!response.ok || !Array.isArray(json?.data)) {
+          throw new Error(json?.message || "Location search failed");
+        }
+
+        setRemoteResults(json.data);
+        setStatus(json.source === "amadeus" ? "ready" : "fallback");
+      } catch (err) {
+        if (err?.name === "AbortError") return;
+        setRemoteResults([]);
+        setStatus("fallback");
+      }
+    }, 275);
+
+    return () => {
+      controller.abort();
+      window.clearTimeout(timer);
+    };
+  }, [open, valueText]);
+
+  const manualIata = useMemo(() => {
+    const code = (valueText || "").trim().toUpperCase();
+    if (!/^[A-Z]{3}$/.test(code)) return null;
+    if (remoteResults.some((a) => a.iata === code) || fallbackResults.some((a) => a.iata === code)) return null;
+
+    return {
+      city: code,
+      country: "",
+      name: "Manual IATA code",
+      iata: code,
+      type: "airport",
+      tags: ["typed code"],
+    };
+  }, [fallbackResults, remoteResults, valueText]);
+
+  const results = useMemo(() => {
+    const base = remoteResults.length > 0 ? remoteResults : fallbackResults;
+    return manualIata ? [manualIata, ...base] : base;
+  }, [fallbackResults, manualIata, remoteResults]);
+
+  useEffect(() => {
     function onDoc(e) {
       if (!wrapRef.current) return;
       if (!wrapRef.current.contains(e.target)) setOpen(false);
@@ -46,7 +106,7 @@ export default function AirportAutocomplete({
     if (!open) setActiveIndex(0);
   }, [open, valueText]);
 
-  const showDropdown = open && results.length > 0;
+  const showDropdown = open && (results.length > 0 || status === "loading");
 
   return (
     <div className="fa-field" ref={wrapRef}>
@@ -69,6 +129,12 @@ export default function AirportAutocomplete({
           onFocus={() => setOpen(true)}
           onKeyDown={(e) => {
             if (!showDropdown) return;
+            if (e.key === "Escape") {
+              setOpen(false);
+              return;
+            }
+
+            if (results.length === 0) return;
 
             if (e.key === "ArrowDown") {
               e.preventDefault();
@@ -89,13 +155,13 @@ export default function AirportAutocomplete({
               }
             }
 
-            if (e.key === "Escape") setOpen(false);
           }}
         />
       </div>
 
       {showDropdown && (
         <div className="fa-dropdown" role="listbox">
+          {status === "loading" && <div className="fa-hint">Searching worldwide cities and airports…</div>}
           {results.map((a, idx) => (
             <button
               key={`${a.city}-${a.iata}-${a.name}-${idx}`}
@@ -110,9 +176,10 @@ export default function AirportAutocomplete({
             >
               <div className="fa-itemMain">
                 <div className="fa-itemTitle">
-                  {a.city}, {a.country} — <span className="fa-itemStrong">{a.name}</span>
+                  {a.city}{a.country ? `, ${a.country}` : ""} — <span className="fa-itemStrong">{a.name}</span>
                 </div>
                 <div className="fa-itemSub">
+                  <span className="fa-pill">{a.type || "airport"}</span>
                   {(a.tags || []).slice(0, 4).map((t) => (
                     <span key={t} className="fa-pill">
                       {t}
@@ -123,7 +190,10 @@ export default function AirportAutocomplete({
               <div className="fa-itemCode">{a.iata}</div>
             </button>
           ))}
-          <div className="fa-hint">Tip: you can also type any IATA code, for example LHR, JED, MED, or JFK.</div>
+          {status === "fallback" && (
+            <div className="fa-hint">Live location lookup is unavailable, so fallback matches are shown.</div>
+          )}
+          <div className="fa-hint">Tip: you can also type any 3-letter IATA code, for example MGQ, NBO, JED, or JFK.</div>
         </div>
       )}
 
