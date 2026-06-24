@@ -6,6 +6,7 @@ import Amadeus from "amadeus";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { worldAirports, worldCountries } from "./src/data/worldAirports.js";
 
 dotenv.config();
 
@@ -56,6 +57,37 @@ const DEFAULT_LOCATIONS = [
   { city: "Lagos", country: "Nigeria", name: "Murtala Muhammed International", iata: "LOS", type: "airport", tags: ["LOS"] },
   { city: "Cairo", country: "Egypt", name: "Cairo International", iata: "CAI", type: "airport", tags: ["CAI"] },
 ];
+
+const COUNTRY_NAMES = new Map(
+  worldCountries.map((country) => [String(country.code || "").toUpperCase(), country.name])
+);
+
+const WORLD_AIRPORT_LOCATIONS = worldAirports
+  .filter((airport) => {
+    const iata = String(airport.iata_code || "").trim().toUpperCase();
+    return (
+      validateIata(iata) &&
+      String(airport.scheduled_service || "").toLowerCase() === "yes" &&
+      ["large_airport", "medium_airport", "small_airport"].includes(String(airport.type || ""))
+    );
+  })
+  .map((airport) => {
+    const countryCode = String(airport.iso_country || "").trim().toUpperCase();
+    const iata = String(airport.iata_code || "").trim().toUpperCase();
+    const city = String(airport.municipality || airport.name || iata).trim();
+    const typeRank = airport.type === "large_airport" ? 3 : airport.type === "medium_airport" ? 2 : 1;
+
+    return {
+      city,
+      country: COUNTRY_NAMES.get(countryCode) || countryCode,
+      name: String(airport.name || city).trim(),
+      iata,
+      type: "airport",
+      tags: [iata, countryCode, airport.ident].filter(Boolean),
+      searchText: `${city} ${COUNTRY_NAMES.get(countryCode) || countryCode} ${airport.name || ""} ${iata} ${airport.ident || ""}`.toLowerCase(),
+      typeRank,
+    };
+  });
 
 app.use((req, res, next) => {
   if (req.path.startsWith("/api/")) {
@@ -490,22 +522,59 @@ function fallbackLocationSearch(keyword, limit = 12) {
   const q = String(keyword || "").trim().toLowerCase();
   if (!q) return DEFAULT_LOCATIONS.slice(0, limit);
 
-  return DEFAULT_LOCATIONS.map((location) => {
+  const locationSearchText = (location) => {
     const city = String(location.city || "").toLowerCase();
     const name = String(location.name || "").toLowerCase();
     const iata = String(location.iata || "").toLowerCase();
     const tags = (location.tags || []).join(" ").toLowerCase();
-    const hay = `${city} ${location.country} ${name} ${iata} ${tags}`.toLowerCase();
-    const exact = city === q || iata === q ? 4 : 0;
-    const starts = city.startsWith(q) || name.startsWith(q) || iata.startsWith(q) ? 2 : 0;
-    const includes = hay.includes(q) ? 1 : 0;
+    const hay = location.searchText || `${city} ${location.country} ${name} ${iata} ${tags}`.toLowerCase();
 
-    return { location, score: exact + starts + includes };
-  })
+    return { city, name, iata, tags, hay };
+  };
+
+  const scoreLocation = (location, baseScore = 0) => {
+    const { city, name, iata, tags, hay } = locationSearchText(location);
+    const exact = city === q || iata === q ? 80 : 0;
+    const starts = city.startsWith(q) || name.startsWith(q) || iata.startsWith(q) ? 35 : 0;
+    const wordStarts = hay.split(/\s+/).some((part) => part.startsWith(q)) ? 18 : 0;
+    const airportRank = Number(location.typeRank || 0);
+    const matchScore = exact + starts + wordStarts;
+
+    return { location, score: matchScore > 0 ? baseScore + matchScore + airportRank : 0 };
+  };
+
+  return [
+    ...DEFAULT_LOCATIONS.map((location) => scoreLocation(location, 100)),
+    ...WORLD_AIRPORT_LOCATIONS.map((location) => scoreLocation(location, 0)),
+  ]
     .filter((entry) => entry.score > 0)
     .sort((a, b) => b.score - a.score)
-    .slice(0, limit)
-    .map((entry) => entry.location);
+    .map((entry) => {
+      const { searchText, typeRank, ...publicLocation } = entry.location;
+      return publicLocation;
+    })
+    .filter((location, index, locations) => locations.findIndex((item) => item.iata === location.iata) === index)
+    .slice(0, limit);
+}
+
+function locationMatchesKeyword(location, keyword) {
+  const q = String(keyword || "").trim().toLowerCase();
+  if (!q) return true;
+
+  const city = String(location.city || "").toLowerCase();
+  const name = String(location.name || "").toLowerCase();
+  const iata = String(location.iata || "").toLowerCase();
+  const tags = (location.tags || []).join(" ").toLowerCase();
+  const hay = `${city} ${location.country || ""} ${name} ${iata} ${tags}`.toLowerCase();
+
+  return (
+    city === q ||
+    iata === q ||
+    city.startsWith(q) ||
+    name.startsWith(q) ||
+    iata.startsWith(q) ||
+    hay.split(/\s+/).some((part) => part.startsWith(q))
+  );
 }
 
 function uniqueLocations(locations) {
@@ -763,6 +832,7 @@ app.get("/api/locations", async (req, res) => {
       (Array.isArray(response?.data) ? response.data : [])
         .map(simplifyLocation)
         .filter(Boolean)
+        .filter((location) => locationMatchesKeyword(location, keyword))
     ).slice(0, limit);
     const locations = uniqueLocations([...fallbackMatches, ...amadeusLocations]).slice(0, limit);
 
