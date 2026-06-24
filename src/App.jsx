@@ -6,6 +6,7 @@ import LegalPage, { getLegalPage } from "./components/LegalPage";
 import PlannerModal from "./components/PlannerModal";
 import ResultsSection from "./components/ResultsSection";
 import SearchCard from "./components/SearchCard";
+import { CONTACT_HREF, CONTACT_LABEL } from "./config/site";
 import {
   addDaysISO,
   airportLabel,
@@ -785,7 +786,7 @@ export default function App() {
             <h3>Help for searches and trip choices.</h3>
             <p>
               Support will cover route questions, flexible-date guidance, and help understanding provider
-              availability once the live booking flow is connected.
+              availability once the live booking flow is connected. <a className="fa-inlineLink" href={CONTACT_HREF}>{CONTACT_LABEL}</a>.
             </p>
           </div>
 
@@ -988,17 +989,65 @@ const styles = `
   .fa-flexBox{ display:flex; flex-direction:column; gap:12px; }
   .fa-flexRow{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
   @media (max-width:520px){ .fa-flexRow{ grid-template-columns: 1fr; } }
-  .fa-sliderWrap{ border-radius:16px; background:#fff; border: 1px solid rgba(10,20,70,.10); padding:12px; box-shadow: 0 10px 24px rgba(10,20,70,.06); }
-  .fa-sliderTop{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
-  .fa-sliderVal{ font-weight:1000; color: rgba(8,16,35,.72); font-size:12px; }
-  .fa-slider{ width:100%; }
+  .fa-stepper{
+    display:grid;
+    grid-template-columns:44px minmax(0,1fr) 44px;
+    gap:8px;
+    align-items:center;
+  }
+  .fa-stepBtn{
+    height:46px;
+    border:1px solid rgba(10,20,70,.10);
+    border-radius:14px;
+    background:#fff;
+    color:rgba(8,16,35,.78);
+    cursor:pointer;
+    font-size:20px;
+    font-weight:1000;
+    box-shadow: 0 10px 24px rgba(10,20,70,.06);
+  }
+  .fa-stepBtn:disabled{ opacity:.45; cursor:not-allowed; }
+  .fa-stepInputWrap{
+    min-height:46px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    border-radius:14px;
+    border:1px solid rgba(10,20,70,.10);
+    background:rgba(255,255,255,.88);
+    color:rgba(8,16,35,.62);
+    font-size:13px;
+    font-weight:900;
+  }
+  .fa-stepInput{
+    width:54px;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:rgba(8,16,35,.88);
+    font-size:16px;
+    font-weight:1000;
+    text-align:center;
+  }
   .fa-searchBtn{
     width:100%; border:0; cursor:pointer; margin-top:6px; padding:14px;
+    display:flex; align-items:center; justify-content:center; gap:10px;
     border-radius:14px; font-weight:1000; color:#fff;
     background: linear-gradient(135deg, rgba(35,95,255,1), rgba(74,60,255,1));
     box-shadow: 0 18px 40px rgba(35,95,255,.25);
   }
   .fa-searchBtn:disabled{ opacity:.75; cursor:not-allowed; }
+  .fa-searchBtn.isLoading{ box-shadow: 0 18px 40px rgba(35,95,255,.18); }
+  .fa-btnSpinner{
+    width:16px;
+    height:16px;
+    border-radius:999px;
+    border:2px solid rgba(255,255,255,.45);
+    border-top-color:#fff;
+    animation: faSpin .8s linear infinite;
+  }
+  @keyframes faSpin{ to{ transform:rotate(360deg); } }
   .fa-miniNote{ margin-top:10px; font-size:12px; color: rgba(8,16,35,.55); }
   .fa-miniStrong{ font-weight:1000; color: rgba(8,16,35,.78); }
   .fa-error{
@@ -1190,6 +1239,8 @@ const styles = `
     font-weight:750;
     color:rgba(8,16,35,.62);
   }
+  .fa-inlineLink{ color:rgba(35,95,255,1); font-weight:1000; text-decoration:none; }
+  .fa-inlineLink:hover{ text-decoration:underline; }
   @media (max-width:720px){ .fa-infoInner{ grid-template-columns:1fr; } }
 
   .fa-footer{ padding: 0 18px 44px; color: rgba(8,16,35,.62); }

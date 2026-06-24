@@ -3,6 +3,12 @@ import { airportLabel, cx, todayPlus } from "../utils/flightHelpers";
 
 const CABIN_OPTIONS = ["Economy", "Premium economy", "Business", "First"];
 
+function clampNumber(value, min, max) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return min;
+  return Math.min(Math.max(n, min), max);
+}
+
 export default function SearchCard({
   tripType, setTripType, exactMode, flexMode, setDateMode, clearSearchState,
   fromText, setFromText, fromAirport, setFromAirport, toText, setToText, toAirport, setToAirport,
@@ -11,6 +17,16 @@ export default function SearchCard({
   flexMonth, setFlexMonth, tripLength, setTripLength, flexWindow, setFlexWindow,
   onSearch, isSearching, routeFromCode, routeToCode, apiWarning, searchError,
 }) {
+  const updateTripLength = (nextValue) => {
+    setTripLength(clampNumber(nextValue, 1, 30));
+    clearSearchState();
+  };
+
+  const updateFlexWindow = (nextValue) => {
+    setFlexWindow(clampNumber(nextValue, 0, 21));
+    clearSearchState();
+  };
+
   return (
     <div className="fa-card">
       <div className="fa-cardTop">
@@ -256,40 +272,64 @@ export default function SearchCard({
                 </div>
 
                 <div className="fa-field">
-                  <div className="fa-label">Trip length</div>
-                  <div className="fa-inputWrap">
-                    <div className="fa-icon" aria-hidden>
-                      ⏱️
+                  <div className="fa-label">Nights</div>
+                  <div className="fa-stepper">
+                    <button type="button" className="fa-stepBtn" onClick={() => updateTripLength(tripLength - 1)} disabled={tripLength <= 1 || isSearching} aria-label="Reduce nights">
+                      -
+                    </button>
+                    <div className="fa-stepInputWrap">
+                      <input
+                        className="fa-stepInput"
+                        type="number"
+                        min={1}
+                        max={30}
+                        value={tripLength}
+                        onChange={(e) => updateTripLength(e.target.value)}
+                        disabled={isSearching}
+                      />
+                      <span>nights</span>
                     </div>
-                    <select className="fa-select" value={tripLength} onChange={(e) => { setTripLength(Number(e.target.value)); clearSearchState(); }}>
-                      {[2, 3, 4, 5, 7, 10, 14].map((n) => (
-                        <option key={n} value={n}>
-                          {n} days
-                        </option>
-                      ))}
-                    </select>
+                    <button type="button" className="fa-stepBtn" onClick={() => updateTripLength(tripLength + 1)} disabled={tripLength >= 30 || isSearching} aria-label="Add nights">
+                      +
+                    </button>
                   </div>
                 </div>
               </div>
 
-              <div className="fa-sliderWrap">
-                <div className="fa-sliderTop">
-                  <div className="fa-label" style={{ marginBottom: 0 }}>
-                    Flex window
+              <div className="fa-field">
+                <div className="fa-label">How flexible?</div>
+                <div className="fa-stepper">
+                  <button type="button" className="fa-stepBtn" onClick={() => updateFlexWindow(flexWindow - 1)} disabled={flexWindow <= 0 || isSearching} aria-label="Reduce flexible days">
+                    -
+                  </button>
+                  <div className="fa-stepInputWrap">
+                    <span>±</span>
+                    <input
+                      className="fa-stepInput"
+                      type="number"
+                      min={0}
+                      max={21}
+                      value={flexWindow}
+                      onChange={(e) => updateFlexWindow(e.target.value)}
+                      disabled={isSearching}
+                    />
+                    <span>days</span>
                   </div>
-                  <div className="fa-sliderVal">± {flexWindow} days</div>
+                  <button type="button" className="fa-stepBtn" onClick={() => updateFlexWindow(flexWindow + 1)} disabled={flexWindow >= 21 || isSearching} aria-label="Add flexible days">
+                    +
+                  </button>
                 </div>
-                <input className="fa-slider" type="range" min={0} max={21} step={1} value={flexWindow} onChange={(e) => { setFlexWindow(Number(e.target.value)); clearSearchState(); }} />
               </div>
 
               <div className="fa-miniNote">
-                Flexible month scans dates around the middle of the month. Increase the window to cover more days.
+                Flexible month scans dates around the middle of the month. Increase flexible days to check more dates before and after.
               </div>
             </div>
           )}
 
-          <button className="fa-searchBtn" type="button" onClick={onSearch} disabled={isSearching}>
-            {isSearching ? "Searching…" : tripType === "multicity" ? "Review multi-city plan" : "Search flights"}
+          <button className={cx("fa-searchBtn", isSearching && "isLoading")} type="button" onClick={onSearch} disabled={isSearching} aria-busy={isSearching}>
+            {isSearching && <span className="fa-btnSpinner" aria-hidden />}
+            <span>{isSearching ? "Searching flights…" : tripType === "multicity" ? "Review multi-city plan" : "Search flights"}</span>
           </button>
 
           <div className="fa-miniNote">
