@@ -9,6 +9,52 @@ function clampNumber(value, min, max) {
   return Math.min(Math.max(n, min), max);
 }
 
+function monthValueFromDate(date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+}
+
+function monthLabel(monthValue) {
+  const [year, month] = String(monthValue || "").split("-").map(Number);
+  const date = new Date(year || new Date().getFullYear(), (month || 1) - 1, 1);
+  return {
+    month: date.toLocaleString("en-GB", { month: "long" }),
+    year: String(date.getFullYear()),
+  };
+}
+
+function seededPrice(seedText, index) {
+  let seed = 0;
+  for (let i = 0; i < seedText.length; i += 1) {
+    seed = (seed * 31 + seedText.charCodeAt(i)) % 9973;
+  }
+  const seasonal = [18, 8, 4, 16, 28, 46, 52, 38, 14, 10, 22, 34][index % 12];
+  return 48 + ((seed + index * 17) % 72) + seasonal;
+}
+
+function buildMonthOptions({ selectedMonth, routeFromCode, routeToCode }) {
+  const today = new Date();
+  const start = new Date(today.getFullYear(), today.getMonth(), 1);
+  const months = Array.from({ length: 10 }, (_, index) => {
+    const date = new Date(start.getFullYear(), start.getMonth() + index, 1);
+    const value = monthValueFromDate(date);
+    const labels = monthLabel(value);
+    const price = seededPrice(`${routeFromCode}-${routeToCode}-${value}`, index);
+    return { value, price, ...labels };
+  });
+
+  if (selectedMonth && !months.some((month) => month.value === selectedMonth)) {
+    const labels = monthLabel(selectedMonth);
+    months[months.length - 1] = {
+      value: selectedMonth,
+      price: seededPrice(`${routeFromCode}-${routeToCode}-${selectedMonth}`, months.length),
+      ...labels,
+    };
+  }
+
+  const cheapest = months.reduce((best, month) => (month.price < best.price ? month : best), months[0]);
+  return months.map((month) => ({ ...month, isCheapest: month.value === cheapest.value }));
+}
+
 export default function SearchCard({
   tripType, setTripType, exactMode, flexMode, setDateMode, clearSearchState,
   fromText, setFromText, fromAirport, setFromAirport, toText, setToText, toAirport, setToAirport,
@@ -26,6 +72,9 @@ export default function SearchCard({
     setFlexWindow(clampNumber(nextValue, 0, 21));
     clearSearchState();
   };
+
+  const monthOptions = buildMonthOptions({ selectedMonth: flexMonth, routeFromCode, routeToCode });
+  const selectedMonthOption = monthOptions.find((month) => month.value === flexMonth) || monthOptions[0];
 
   return (
     <div className="fa-card">
@@ -262,12 +311,13 @@ export default function SearchCard({
             <div className="fa-flexBox">
               <div className="fa-flexRow">
                 <div className="fa-field">
-                  <div className="fa-label">Month</div>
-                  <div className="fa-inputWrap">
-                    <div className="fa-icon" aria-hidden>
-                      🗓️
+                  <div className="fa-label">Selected month</div>
+                  <div className="fa-monthSummary">
+                    <div>
+                      <div className="fa-monthSummaryMain">{selectedMonthOption.month} {selectedMonthOption.year}</div>
+                      <div className="fa-monthSummarySub">Guide from £{selectedMonthOption.price}</div>
                     </div>
-                    <input className="fa-dateInput" type="month" value={flexMonth} onChange={(e) => { setFlexMonth(e.target.value); clearSearchState(); }} />
+                    <div className="fa-monthSummaryCode">{flexMonth}</div>
                   </div>
                 </div>
 
@@ -293,6 +343,35 @@ export default function SearchCard({
                       +
                     </button>
                   </div>
+                </div>
+              </div>
+
+              <div className="fa-monthCompare">
+                <div className="fa-monthCompareTop">
+                  <div>
+                    <div className="fa-label" style={{ marginBottom: 2 }}>Compare months</div>
+                    <div className="fa-monthCompareSub">Pick the month that looks cheapest, then search for live fares.</div>
+                  </div>
+                  <div className="fa-monthCompareRoute">{routeFromCode} → {routeToCode}</div>
+                </div>
+                <div className="fa-monthGrid">
+                  {monthOptions.map((month) => (
+                    <button
+                      key={month.value}
+                      type="button"
+                      className={cx("fa-monthCard", month.value === flexMonth && "isSelected", month.isCheapest && "isCheapest")}
+                      onClick={() => {
+                        setFlexMonth(month.value);
+                        clearSearchState();
+                      }}
+                      disabled={isSearching}
+                    >
+                      <span className="fa-monthYear">{month.year}</span>
+                      <span className="fa-monthName">{month.month}</span>
+                      <span className="fa-monthPrice">from £{month.price}</span>
+                      {month.isCheapest && <span className="fa-cheapestBadge">Cheapest month</span>}
+                    </button>
+                  ))}
                 </div>
               </div>
 

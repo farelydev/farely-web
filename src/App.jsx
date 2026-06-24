@@ -989,6 +989,77 @@ const styles = `
   .fa-flexBox{ display:flex; flex-direction:column; gap:12px; }
   .fa-flexRow{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
   @media (max-width:520px){ .fa-flexRow{ grid-template-columns: 1fr; } }
+  .fa-monthSummary{
+    min-height:46px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    border-radius:14px;
+    border:1px solid rgba(10,20,70,.10);
+    background:rgba(255,255,255,.88);
+    padding:9px 12px;
+    box-shadow: 0 10px 24px rgba(10,20,70,.06);
+  }
+  .fa-monthSummaryMain{ font-weight:1000; color:rgba(8,16,35,.86); }
+  .fa-monthSummarySub{ margin-top:2px; font-size:12px; font-weight:900; color:rgba(20,125,145,.88); }
+  .fa-monthSummaryCode{ font-size:12px; font-weight:1000; color:rgba(8,16,35,.48); }
+  .fa-monthCompare{
+    border-radius:18px;
+    border:1px solid rgba(10,20,70,.10);
+    background:rgba(255,255,255,.76);
+    padding:12px;
+    box-shadow: 0 12px 28px rgba(10,20,70,.06);
+  }
+  .fa-monthCompareTop{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:10px;
+  }
+  .fa-monthCompareSub{ font-size:12px; font-weight:800; color:rgba(8,16,35,.52); }
+  .fa-monthCompareRoute{ font-size:12px; font-weight:1000; color:rgba(8,16,35,.58); white-space:nowrap; padding-top:2px; }
+  .fa-monthGrid{
+    display:grid;
+    grid-template-columns:repeat(5, minmax(0, 1fr));
+    gap:8px;
+  }
+  .fa-monthCard{
+    min-height:96px;
+    border:1px solid rgba(10,20,70,.08);
+    border-radius:14px;
+    background:rgba(240,245,255,.9);
+    color:rgba(8,16,35,.78);
+    cursor:pointer;
+    padding:10px 8px;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+    position:relative;
+  }
+  .fa-monthCard:hover{ transform:translateY(-1px); box-shadow:0 12px 22px rgba(10,20,70,.08); }
+  .fa-monthCard:disabled{ opacity:.7; cursor:not-allowed; transform:none; }
+  .fa-monthCard.isSelected{ border-color:rgba(35,95,255,.62); background:#fff; box-shadow:0 0 0 3px rgba(35,95,255,.10); }
+  .fa-monthCard.isCheapest{ background:linear-gradient(180deg, rgba(219,255,244,.95), rgba(238,253,248,.95)); }
+  .fa-monthCard.isSelected.isCheapest{ border-color:rgba(20,150,120,.55); box-shadow:0 0 0 3px rgba(20,150,120,.12); }
+  .fa-monthYear{ font-size:11px; font-weight:900; color:rgba(8,16,35,.48); }
+  .fa-monthName{ font-size:13px; font-weight:1000; color:rgba(8,16,35,.86); }
+  .fa-monthPrice{ font-size:12px; font-weight:1000; color:rgba(20,125,145,.90); }
+  .fa-cheapestBadge{
+    margin-top:5px;
+    border-radius:999px;
+    background:rgba(0,170,125,.12);
+    color:rgba(0,112,90,.95);
+    padding:3px 7px;
+    font-size:10px;
+    font-weight:1000;
+  }
+  @media (max-width:900px){ .fa-monthGrid{ grid-template-columns:repeat(3, minmax(0, 1fr)); } }
+  @media (max-width:520px){ .fa-monthGrid{ grid-template-columns:repeat(2, minmax(0, 1fr)); } .fa-monthCompareTop{ flex-direction:column; } }
   .fa-stepper{
     display:grid;
     grid-template-columns:44px minmax(0,1fr) 44px;
