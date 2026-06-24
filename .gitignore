@@ -6,6 +6,12 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+data/*.jsonl
+.env
+.env.*
+!.env.example
+eval "$*"
+eval "$*".pub
 
 node_modules
 dist

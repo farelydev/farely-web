@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: farely
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22.12.0
+      - key: AMADEUS_CLIENT_ID
+        sync: false
+      - key: AMADEUS_CLIENT_SECRET
+        sync: false
+      - key: AMADEUS_HOSTNAME
+        value: test
+      - key: USE_DEMO_FALLBACK
+        value: true
+      - key: FLIGHT_DEAL_PARTNER
+        value: google-flights-placeholder
+      - key: FLIGHT_AFFILIATE_URL
+        value: ""
+      - key: ADMIN_ANALYTICS_TOKEN
+        sync: false

@@ -1,0 +1,33 @@
+export const AIRPORTS = [
+  { city: "London", country: "United Kingdom", name: "All airports", iata: "LON", tags: ["LHR", "LGW", "STN", "LTN", "LCY", "SEN"] },
+  { city: "London", country: "United Kingdom", name: "Heathrow", iata: "LHR", tags: ["LHR"] },
+  { city: "London", country: "United Kingdom", name: "Gatwick", iata: "LGW", tags: ["LGW"] },
+  { city: "London", country: "United Kingdom", name: "Stansted", iata: "STN", tags: ["STN"] },
+  { city: "London", country: "United Kingdom", name: "Luton", iata: "LTN", tags: ["LTN"] },
+  { city: "London", country: "United Kingdom", name: "City", iata: "LCY", tags: ["LCY"] },
+
+  { city: "Paris", country: "France", name: "Charles de Gaulle", iata: "CDG", tags: ["CDG"] },
+  { city: "Paris", country: "France", name: "All airports", iata: "PAR", tags: ["CDG", "ORY"] },
+  { city: "Amsterdam", country: "Netherlands", name: "Schiphol", iata: "AMS", tags: ["AMS"] },
+  { city: "Istanbul", country: "Türkiye", name: "Istanbul Airport", iata: "IST", tags: ["IST"] },
+  { city: "Rome", country: "Italy", name: "Fiumicino", iata: "FCO", tags: ["FCO"] },
+  { city: "Nice", country: "France", name: "Côte d'Azur", iata: "NCE", tags: ["NCE", "south France", "French Riviera", "sunny"] },
+  { city: "Marseille", country: "France", name: "Provence", iata: "MRS", tags: ["MRS", "south France", "Provence"] },
+
+  { city: "New York", country: "United States", name: "All airports", iata: "NYC", tags: ["JFK", "EWR", "LGA"] },
+  { city: "New York", country: "United States", name: "JFK", iata: "JFK", tags: ["JFK"] },
+
+  { city: "Jeddah", country: "Saudi Arabia", name: "King Abdulaziz International", iata: "JED", tags: ["JED", "Makkah", "Umrah"] },
+  { city: "Madinah", country: "Saudi Arabia", name: "Prince Mohammad bin Abdulaziz", iata: "MED", tags: ["MED", "Madinah", "Umrah"] },
+  { city: "Riyadh", country: "Saudi Arabia", name: "King Khalid International", iata: "RUH", tags: ["RUH"] },
+
+  { city: "Doha", country: "Qatar", name: "Hamad International", iata: "DOH", tags: ["DOH"] },
+  { city: "Dubai", country: "United Arab Emirates", name: "Dubai International", iata: "DXB", tags: ["DXB"] },
+  { city: "Abu Dhabi", country: "United Arab Emirates", name: "Zayed International", iata: "AUH", tags: ["AUH"] },
+
+  { city: "Malaga", country: "Spain", name: "Costa del Sol", iata: "AGP", tags: ["AGP", "south Spain", "sunny"] },
+  { city: "Alicante", country: "Spain", name: "Alicante-Elche", iata: "ALC", tags: ["ALC", "sunny"] },
+  { city: "Seville", country: "Spain", name: "Seville", iata: "SVQ", tags: ["SVQ", "Andalusia"] },
+  { city: "Marrakech", country: "Morocco", name: "Marrakech Menara", iata: "RAK", tags: ["RAK", "Morocco"] },
+  { city: "Casablanca", country: "Morocco", name: "Mohammed V", iata: "CMN", tags: ["CMN", "Morocco"] },
+];
