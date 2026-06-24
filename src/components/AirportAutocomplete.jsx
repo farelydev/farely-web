@@ -44,9 +44,10 @@ export default function AirportAutocomplete({
     }
 
     const controller = new AbortController();
-    const timer = window.setTimeout(async () => {
-      setStatus("loading");
+    setRemoteResults([]);
+    setStatus("loading");
 
+    const timer = window.setTimeout(async () => {
       try {
         const response = await fetch(`/api/locations?keyword=${encodeURIComponent(q)}&limit=12`, {
           signal: controller.signal,
@@ -57,12 +58,13 @@ export default function AirportAutocomplete({
           throw new Error(json?.message || "Location search failed");
         }
 
-        setRemoteResults(json.data);
-        setStatus(json.source === "amadeus" ? "ready" : "fallback");
+        const nextResults = json.data;
+        setRemoteResults(nextResults);
+        setStatus(nextResults.length > 0 ? (json.source === "amadeus" ? "ready" : "fallback") : "empty");
       } catch (err) {
         if (err?.name === "AbortError") return;
         setRemoteResults([]);
-        setStatus("fallback");
+        setStatus("empty");
       }
     }, 275);
 
@@ -103,10 +105,11 @@ export default function AirportAutocomplete({
   }, []);
 
   useEffect(() => {
-    if (!open) setActiveIndex(0);
-  }, [open, valueText]);
+    setActiveIndex(0);
+  }, [open, results.length, valueText]);
 
-  const showDropdown = open && (results.length > 0 || status === "loading");
+  const query = (valueText || "").trim();
+  const showDropdown = open && query.length >= 2 && (results.length > 0 || status === "loading" || status === "empty");
 
   return (
     <div className="fa-field" ref={wrapRef}>
@@ -162,6 +165,9 @@ export default function AirportAutocomplete({
       {showDropdown && (
         <div className="fa-dropdown" role="listbox">
           {status === "loading" && <div className="fa-hint">Searching worldwide cities and airports…</div>}
+          {status === "empty" && (
+            <div className="fa-hint">No live matches yet. Try the city, airport name, or a 3-letter IATA code.</div>
+          )}
           {results.map((a, idx) => (
             <button
               key={`${a.city}-${a.iata}-${a.name}-${idx}`}
