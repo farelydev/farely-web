@@ -24,6 +24,9 @@ const PORT = process.env.PORT || 4000;
 const AMADEUS_HOSTNAME = String(process.env.AMADEUS_HOSTNAME || "test").trim().toLowerCase();
 const FLIGHT_DEAL_PARTNER = String(process.env.FLIGHT_DEAL_PARTNER || "google-flights-placeholder").trim();
 const FLIGHT_AFFILIATE_URL = String(process.env.FLIGHT_AFFILIATE_URL || "").trim();
+const TRAVELPAYOUTS_MARKER = String(process.env.TRAVELPAYOUTS_MARKER || "").trim();
+const TRAVELPAYOUTS_HOST = String(process.env.TRAVELPAYOUTS_HOST || "www.aviasales.com").trim();
+const TRAVELPAYOUTS_SUB_ID = String(process.env.TRAVELPAYOUTS_SUB_ID || "").trim();
 const ADMIN_ANALYTICS_TOKEN = String(process.env.ADMIN_ANALYTICS_TOKEN || "").trim();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -103,8 +106,9 @@ app.get("/api/health", (req, res) => {
     amadeusCredentialsLoaded: hasAmadeusCredentials,
     amadeusEnvironment: AMADEUS_HOSTNAME === "production" ? "production" : "test",
     demoFallbackEnabled: USE_DEMO_FALLBACK,
-    flightDealPartner: FLIGHT_AFFILIATE_URL ? FLIGHT_DEAL_PARTNER : "google-flights-placeholder",
-    flightAffiliateConfigured: !!FLIGHT_AFFILIATE_URL,
+    flightDealPartner: FLIGHT_AFFILIATE_URL || TRAVELPAYOUTS_MARKER ? FLIGHT_DEAL_PARTNER : "google-flights-placeholder",
+    flightAffiliateConfigured: !!(FLIGHT_AFFILIATE_URL || TRAVELPAYOUTS_MARKER),
+    travelpayoutsConfigured: !!TRAVELPAYOUTS_MARKER,
     analyticsProtected: !!ADMIN_ANALYTICS_TOKEN,
     serverTime: new Date().toISOString(),
   });
@@ -312,6 +316,86 @@ function buildGoogleFlightsUrl({ origin, destination, departureDate, returnDate 
   return `https://www.google.com/travel/flights?q=${encodeURIComponent(query)}`;
 }
 
+function dateTokenParts(value) {
+  if (!isValidISODate(value)) {
+    return {
+      day: "",
+      month: "",
+      year: "",
+      shortYear: "",
+      compact: "",
+    };
+  }
+
+  const [year, month, day] = value.split("-");
+
+  return {
+    day,
+    month,
+    year,
+    shortYear: year.slice(2),
+    compact: `${day}${month}`,
+  };
+}
+
+function appendFarelyTrackingParams(url, {
+  origin,
+  destination,
+  departureDate,
+  returnDate = "",
+  carrier = "",
+  offerId = "",
+  source = "unknown",
+}) {
+  url.searchParams.set("utm_source", "farely");
+  url.searchParams.set("utm_medium", "view_deal");
+  url.searchParams.set("farely_origin", origin);
+  url.searchParams.set("farely_destination", destination);
+  url.searchParams.set("farely_departure_date", departureDate);
+  if (returnDate) url.searchParams.set("farely_return_date", returnDate);
+  if (carrier) url.searchParams.set("farely_carrier", carrier);
+  if (offerId) url.searchParams.set("farely_offer_id", offerId);
+  url.searchParams.set("farely_source", source);
+
+  return url;
+}
+
+function buildTravelpayoutsFlightUrl({
+  origin,
+  destination,
+  departureDate,
+  returnDate = "",
+  carrier = "",
+  offerId = "",
+  source = "unknown",
+}) {
+  if (!TRAVELPAYOUTS_MARKER) return null;
+
+  const host = TRAVELPAYOUTS_HOST.replace(/^https?:\/\//, "").replace(/\/+$/, "");
+  const depart = dateTokenParts(departureDate);
+  const ret = dateTokenParts(returnDate);
+  const searchPath = `${origin}${depart.compact}${destination}${ret.compact}1`;
+  const marker = TRAVELPAYOUTS_SUB_ID ? `${TRAVELPAYOUTS_MARKER}.${TRAVELPAYOUTS_SUB_ID}` : TRAVELPAYOUTS_MARKER;
+
+  try {
+    const url = new URL(`https://${host}/search/${searchPath}`);
+    url.searchParams.set("marker", marker);
+    appendFarelyTrackingParams(url, {
+      origin,
+      destination,
+      departureDate,
+      returnDate,
+      carrier,
+      offerId,
+      source,
+    });
+
+    return url.toString();
+  } catch {
+    return null;
+  }
+}
+
 function buildFlightAffiliateUrl({
   origin,
   destination,
@@ -321,16 +405,41 @@ function buildFlightAffiliateUrl({
   offerId = "",
   source = "unknown",
 }) {
-  if (!FLIGHT_AFFILIATE_URL) return null;
+  if (!FLIGHT_AFFILIATE_URL) {
+    return buildTravelpayoutsFlightUrl({
+      origin,
+      destination,
+      departureDate,
+      returnDate,
+      carrier,
+      offerId,
+      source,
+    });
+  }
+
+  const depart = dateTokenParts(departureDate);
+  const ret = dateTokenParts(returnDate);
 
   const values = {
     origin,
     destination,
     departureDate,
+    departureDay: depart.day,
+    departureMonth: depart.month,
+    departureYear: depart.year,
+    departureShortYear: depart.shortYear,
+    departureCompact: depart.compact,
     returnDate,
+    returnDay: ret.day,
+    returnMonth: ret.month,
+    returnYear: ret.year,
+    returnShortYear: ret.shortYear,
+    returnCompact: ret.compact,
     carrier,
     offerId,
     source,
+    marker: TRAVELPAYOUTS_MARKER,
+    subId: TRAVELPAYOUTS_SUB_ID,
   };
 
   const renderedUrl = FLIGHT_AFFILIATE_URL.replace(/\{([a-zA-Z]+)\}/g, (_, key) =>
@@ -339,17 +448,15 @@ function buildFlightAffiliateUrl({
 
   try {
     const url = new URL(renderedUrl);
-    url.searchParams.set("utm_source", "farely");
-    url.searchParams.set("utm_medium", "view_deal");
-    url.searchParams.set("farely_origin", origin);
-    url.searchParams.set("farely_destination", destination);
-    url.searchParams.set("farely_departure_date", departureDate);
-    if (returnDate) url.searchParams.set("farely_return_date", returnDate);
-    if (carrier) url.searchParams.set("farely_carrier", carrier);
-    if (offerId) url.searchParams.set("farely_offer_id", offerId);
-    url.searchParams.set("farely_source", source);
-
-    return url.toString();
+    return appendFarelyTrackingParams(url, {
+      origin,
+      destination,
+      departureDate,
+      returnDate,
+      carrier,
+      offerId,
+      source,
+    }).toString();
   } catch {
     return null;
   }
@@ -644,8 +751,9 @@ app.get("/api/debug/amadeus", async (req, res) => {
     amadeusEnvironment: AMADEUS_HOSTNAME === "production" ? "production" : "test",
     serverTime: new Date().toISOString(),
     demoFallbackEnabled: USE_DEMO_FALLBACK,
-    flightDealPartner: FLIGHT_AFFILIATE_URL ? FLIGHT_DEAL_PARTNER : "google-flights-placeholder",
-    flightAffiliateConfigured: !!FLIGHT_AFFILIATE_URL,
+    flightDealPartner: FLIGHT_AFFILIATE_URL || TRAVELPAYOUTS_MARKER ? FLIGHT_DEAL_PARTNER : "google-flights-placeholder",
+    flightAffiliateConfigured: !!(FLIGHT_AFFILIATE_URL || TRAVELPAYOUTS_MARKER),
+    travelpayoutsConfigured: !!TRAVELPAYOUTS_MARKER,
     analyticsProtected: !!ADMIN_ANALYTICS_TOKEN,
   };
 
@@ -1237,8 +1345,8 @@ app.get("/api/flexible", async (req, res) => {
       return validationError(res, 400, "INVALID_ADULTS", "adults must be between 1 and 9");
     }
 
-    if (tripType === "return" && (!Number.isFinite(tripLength) || tripLength < 1 || tripLength > 30)) {
-      return validationError(res, 400, "INVALID_TRIP_LENGTH", "tripLength must be between 1 and 30.");
+    if (tripType === "return" && (!Number.isFinite(tripLength) || tripLength < 1 || tripLength > 60)) {
+      return validationError(res, 400, "INVALID_TRIP_LENGTH", "Number of nights must be between 1 and 60.");
     }
 
     if (!Number.isInteger(flexWindow) || flexWindow < 0 || flexWindow > 21) {

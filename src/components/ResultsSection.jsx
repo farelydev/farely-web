@@ -6,6 +6,7 @@ const AIRLINE_BRANDS = {
   AT: { name: "Royal Air Maroc", colors: ["#006233", "#c1272d"] },
   BA: { name: "British Airways", colors: ["#075aaa", "#eb2226"] },
   EK: { name: "Emirates", colors: ["#d71920", "#ffffff"] },
+  EY: { name: "Etihad Airways", colors: ["#6f5a2a", "#f6e7b2"] },
   HR: { name: "Hahn Air", colors: ["#243b55", "#e9eef7"] },
   IB: { name: "Iberia", colors: ["#d71920", "#f7b500"] },
   KL: { name: "KLM", colors: ["#00a1de", "#ffffff"] },
@@ -52,7 +53,37 @@ function timeFromDateTime(value) {
 
 function dateFromDateTime(value) {
   if (!value || typeof value !== "string") return "";
-  return value.slice(0, 10);
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value.slice(0, 10);
+  return new Intl.DateTimeFormat("en-GB", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+  }).format(date);
+}
+
+function shortDateLabel(value) {
+  if (!value || typeof value !== "string") return "";
+  const date = new Date(`${value}T12:00:00`);
+  if (Number.isNaN(date.getTime())) return value;
+
+  return new Intl.DateTimeFormat("en-GB", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+  }).format(date);
+}
+
+function monthHeaderLabel(value) {
+  if (!value || typeof value !== "string") return value || "";
+  const [year, month] = value.split("-").map(Number);
+  const date = new Date(year || 2026, (month || 1) - 1, 1);
+  if (Number.isNaN(date.getTime())) return value;
+
+  return new Intl.DateTimeFormat("en-GB", {
+    month: "long",
+    year: "numeric",
+  }).format(date);
 }
 
 function itineraryStopsLabel(itinerary) {
@@ -74,7 +105,21 @@ function itineraryRouteLabel(itinerary) {
 function itineraryAirlineLabel(itinerary) {
   const segs = itinerary?.segments || [];
   const carriers = [...new Set(segs.map((seg) => seg.carrier).filter(Boolean))];
-  return carriers.length ? carriers.join(" / ") : "Airline TBC";
+  return carriers.length ? carriers.map((code) => airlineBrand(code).name).join(" / ") : "Airline TBC";
+}
+
+function itineraryViaLabel(itinerary) {
+  const segs = itinerary?.segments || [];
+  if (segs.length <= 1) return "Direct flight";
+
+  const via = segs
+    .slice(0, -1)
+    .map((seg) => seg?.to)
+    .filter(Boolean);
+
+  if (via.length === 0) return `${segs.length - 1} stop`;
+  if (via.length === 1) return `Via ${via[0]}`;
+  return `Via ${via.join(", ")}`;
 }
 
 function ItineraryDetail({ label, itinerary }) {
@@ -113,6 +158,7 @@ function ItineraryDetail({ label, itinerary }) {
       <div className="fa-legFooter">
         {itineraryRouteLabel(itinerary)} • {itineraryAirlineLabel(itinerary)}
       </div>
+      <div className="fa-legNote">{itineraryViaLabel(itinerary)}</div>
     </div>
   );
 }
@@ -170,12 +216,19 @@ export default function ResultsSection({
                 title={flexMode && p.date ? p.date : ""}
               >
                 <div className="fa-day">
-                  {flexMode && p.date ? `Day ${p.label}` : p.label}
+                  {p.label}
                   {p.source === "demo-fallback" ? <span className="fa-demoDot"> Demo</span> : null}
                 </div>
+                {p.subLabel ? <div className="fa-daySub">{p.subLabel}</div> : null}
                 <div className="fa-price">£{p.price}</div>
               </button>
             ))}
+          </div>
+        )}
+
+        {flexMode && didSearch && (
+          <div className="fa-resultsHelper">
+            Tap a date card to reload live fares for that day.
           </div>
         )}
 
@@ -195,13 +248,11 @@ export default function ResultsSection({
                 )
               ) : (
                 <>
-                  Flexible in {flexMonth} • {selectedFlexDate ? `showing ${selectedFlexDate}` : "ready to search"}
+                  Flexible in {monthHeaderLabel(flexMonth)} • {selectedFlexDate ? `showing ${shortDateLabel(selectedFlexDate)}` : "ready to search"}
                 </>
               )}
             </div>
-            <button type="button" className="fa-viewDeal" disabled>
-              View deal →
-            </button>
+            <div className="fa-resultHint">Compare first, then open the partner site when ready.</div>
           </div>
 
           <div className="fa-affiliateNotice">
@@ -236,6 +287,7 @@ export default function ResultsSection({
                         <div className="fa-airlineLeft">
                           <div className="fa-airlineName">
                             <AirlineLogo code={carrierCode} /> {airlineBrand(carrierCode).name}
+                            <span className="fa-airlineCode">{carrierCode}</span>
                             <span className="fa-badge">{resultsTab}</span>
                             {o?.isDemo && <span className="fa-demoBadge">Demo fallback</span>}
                           </div>
@@ -265,10 +317,16 @@ export default function ResultsSection({
                         )}
                       </div>
 
+                      <div className="fa-offerSignals">
+                        <span className="fa-signalChip">{o?.isDemo ? "Demo fare preview" : "Third-party booking"}</span>
+                        <span className="fa-signalChip">{inbound ? "Return fare" : "One-way fare"}</span>
+                        <span className="fa-signalChip">Check baggage on partner site</span>
+                      </div>
+
                       <div className="fa-offerActions">
                         {o?.dealUrl ? (
                           <a className="fa-viewDeal isActive" href={o.dealUrl} target="_blank" rel="noreferrer">
-                            View deal →
+                            Check partner deal →
                           </a>
                         ) : (
                           <button type="button" className="fa-viewDeal" disabled>

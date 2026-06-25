@@ -152,6 +152,10 @@ export default function PlannerModal({
                 <span className="fa-choiceText">Open the Umrah planning options.</span>
               </button>
             </div>
+
+            <div className="fa-plannerNote">
+              This planner fills the search form first, so you can review dates, route, and price options before opening any partner site.
+            </div>
           </>
         )}
       </div>

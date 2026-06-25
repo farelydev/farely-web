@@ -287,7 +287,12 @@ export default function App() {
         .slice(0, 14)
         .map((x) => ({
           key: x.date,
-          label: x.date.slice(8, 10),
+          label: new Intl.DateTimeFormat("en-GB", {
+            weekday: "short",
+            day: "numeric",
+            month: "short",
+          }).format(new Date(`${x.date}T12:00:00`)),
+          subLabel: x.date,
           date: x.date,
           price: Math.round(x.cheapestPrice),
           source: x.source,
@@ -514,7 +519,7 @@ export default function App() {
       }
 
       if (parsed.tripLength) {
-        setTripLength(Math.min(Math.max(parsed.tripLength, 1), 30));
+        setTripLength(Math.min(Math.max(parsed.tripLength, 1), 60));
       }
 
       if (!parsed.flexMonth && parsed.dateMode !== "flex") {
@@ -1101,6 +1106,31 @@ const styles = `
     font-weight:1000;
     text-align:center;
   }
+  .fa-nightInputWrap{
+    min-height:46px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    border-radius:14px;
+    border:1px solid rgba(10,20,70,.10);
+    background:rgba(255,255,255,.88);
+    color:rgba(8,16,35,.62);
+    font-size:13px;
+    font-weight:900;
+    padding:0 12px;
+    box-shadow: 0 10px 24px rgba(10,20,70,.06);
+  }
+  .fa-nightInput{
+    width:100%;
+    min-width:0;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:rgba(8,16,35,.88);
+    font-size:16px;
+    font-weight:1000;
+  }
   .fa-searchBtn{
     width:100%; border:0; cursor:pointer; margin-top:6px; padding:14px;
     display:flex; align-items:center; justify-content:center; gap:10px;
@@ -1205,7 +1235,8 @@ const styles = `
   }
   .fa-dayPill.isSelected{ outline: 2px solid rgba(35,95,255,.35); background: rgba(35,95,255,.08); }
   .fa-dayPill.isDemo{ border-color: rgba(180,120,0,.20); background: rgba(255,250,235,.95); }
-  .fa-day{ font-weight:1000; color: rgba(8,16,35,.60); font-size:11px; margin-bottom:6px; }
+  .fa-day{ font-weight:1000; color: rgba(8,16,35,.72); font-size:13px; margin-bottom:4px; }
+  .fa-daySub{ font-size:11px; font-weight:900; color: rgba(8,16,35,.42); margin-bottom:8px; }
   .fa-demoDot{ color: rgba(150,95,0,1); font-weight:1000; margin-left:4px; }
   .fa-price{ font-weight:1000; font-size:18px; color: rgba(8,16,35,.90); }
   .fa-resultCard{
@@ -1215,6 +1246,7 @@ const styles = `
     overflow:hidden;
   }
   .fa-resultHeader{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; border-bottom: 1px solid rgba(10,20,70,.08); color: rgba(8,16,35,.70); font-weight:1000; }
+  .fa-resultHint{ max-width:260px; text-align:right; font-size:11px; line-height:1.35; color:rgba(8,16,35,.52); font-weight:900; }
   .fa-affiliateNotice{
     padding:10px 14px;
     border-bottom:1px solid rgba(10,20,70,.08);
@@ -1238,21 +1270,32 @@ const styles = `
   .fa-airlineLogo{
     display:inline-grid;
     place-items:center;
-    width:34px;
-    height:34px;
+    width:40px;
+    height:40px;
     border-radius:11px;
     background:var(--airline-bg);
     color:var(--airline-fg);
-    font-size:12px;
+    font-size:13px;
     font-weight:1000;
     letter-spacing:.02em;
     box-shadow:0 8px 20px rgba(10,20,70,.14);
     border:1px solid rgba(255,255,255,.34);
   }
+  .fa-airlineCode{
+    font-size:11px;
+    padding:4px 8px;
+    border-radius:999px;
+    background:rgba(8,16,35,.06);
+    border:1px solid rgba(10,20,70,.08);
+    color:rgba(8,16,35,.62);
+    font-weight:1000;
+    letter-spacing:.04em;
+  }
   .fa-badge{ font-size:11px; padding:4px 10px; border-radius:999px; background: rgba(35,95,255,.12); border: 1px solid rgba(35,95,255,.16); color: rgba(35,95,255,1); font-weight:1000; text-transform: lowercase; }
   .fa-demoBadge{ font-size:11px; padding:4px 10px; border-radius:999px; background: rgba(255,240,190,1); border: 1px solid rgba(180,120,0,.20); color: rgba(130,84,0,1); font-weight:1000; }
   .fa-airlineMeta{ margin-top:6px; font-size:12px; color: rgba(8,16,35,.58); font-weight:900; }
   .fa-airlinePrice{ font-weight:1000; font-size:22px; color: rgba(8,16,35,.92); white-space:nowrap; }
+  .fa-resultsHelper{ margin:-4px 0 14px; font-size:12px; color:rgba(8,16,35,.58); font-weight:900; }
   .fa-legGrid{ display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:10px; margin-top:12px; }
   @media (max-width:760px){ .fa-legGrid{ grid-template-columns:1fr; } .fa-offerTop{ flex-direction:column; } }
   .fa-legDetail{ border-radius:14px; border:1px solid rgba(10,20,70,.08); background:rgba(255,255,255,.72); padding:12px; }
@@ -1267,7 +1310,10 @@ const styles = `
   .fa-legLine{ display:flex; align-items:center; min-width:40px; }
   .fa-legLine span{ display:block; width:100%; height:2px; border-radius:999px; background:linear-gradient(90deg, rgba(35,95,255,.25), rgba(35,95,255,.85), rgba(35,95,255,.25)); }
   .fa-legFooter{ margin-top:10px; font-size:11px; font-weight:900; color:rgba(8,16,35,.56); }
+  .fa-legNote{ margin-top:6px; font-size:11px; font-weight:900; color:rgba(8,16,35,.46); }
   .fa-legEmptyText{ font-size:13px; font-weight:1000; color:rgba(8,16,35,.58); }
+  .fa-offerSignals{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .fa-signalChip{ border-radius:999px; padding:6px 10px; background:rgba(255,255,255,.82); border:1px solid rgba(10,20,70,.08); color:rgba(8,16,35,.58); font-size:11px; font-weight:1000; }
   .fa-offerActions{ display:flex; justify-content:flex-end; margin-top:12px; }
   .fa-tip{ padding:12px 14px 14px; font-size:12px; color: rgba(8,16,35,.58); }
   .fa-empty{ padding:16px 12px; border-radius:14px; border: 1px dashed rgba(10,20,70,.16); background: rgba(255,255,255,.65); color: rgba(8,16,35,.70); font-weight:1000; font-size:12px; }
@@ -1576,8 +1622,10 @@ const styles = `
     .fa-day{ color: rgba(235,240,255,.60); }
     .fa-demoDot{ color: rgba(255,218,130,1); }
     .fa-price{ color: rgba(235,240,255,.92); }
+    .fa-resultsHelper{ color: rgba(235,240,255,.62); }
     .fa-resultCard{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08); }
     .fa-resultHeader{ border-bottom-color: rgba(255,255,255,.08); color: rgba(235,240,255,.72); }
+    .fa-resultHint{ color: rgba(235,240,255,.52); }
     .fa-affiliateNotice{ background:rgba(255,255,255,.04); border-bottom-color:rgba(255,255,255,.08); color:rgba(235,240,255,.62); }
     .fa-affiliateNotice a{ color:rgba(120,160,255,1); }
     .fa-airlineRow{ background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.08); }
@@ -1589,9 +1637,11 @@ const styles = `
     .fa-airlinePrice{ color: rgba(235,240,255,.92); }
     .fa-legDetail{ background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.08); }
     .fa-legMeta, .fa-legFooter, .fa-legEmptyText{ color:rgba(235,240,255,.60); }
+    .fa-legNote{ color:rgba(235,240,255,.48); }
     .fa-legTime{ color:rgba(235,240,255,.95); }
     .fa-legAirport{ color:rgba(235,240,255,.74); }
     .fa-legDate{ color:rgba(235,240,255,.48); }
+    .fa-signalChip{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.08); color:rgba(235,240,255,.64); }
     .fa-tip{ color: rgba(235,240,255,.62); }
     .fa-empty{ background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); color: rgba(235,240,255,.72); }
     .fa-infoCard{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08); box-shadow:none; }

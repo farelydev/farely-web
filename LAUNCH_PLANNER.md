@@ -47,7 +47,7 @@ The core flight-search MVP is working, the Amadeus backend has been diagnosed, a
   - `/terms`
 - [ ] Add the live URL to Travelpayouts
 - [ ] Wait for Travelpayouts approval
-- [ ] Add Travelpayouts affiliate link template to Render
+- [ ] Add `TRAVELPAYOUTS_MARKER` to Render
 - [ ] Test Search → View Deal → partner site
 - [ ] Confirm deal click appears in private analytics
 

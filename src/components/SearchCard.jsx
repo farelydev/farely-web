@@ -2,6 +2,8 @@ import AirportAutocomplete from "./AirportAutocomplete";
 import { airportLabel, cx, todayPlus } from "../utils/flightHelpers";
 
 const CABIN_OPTIONS = ["Economy", "Premium economy", "Business", "First"];
+const MIN_NIGHTS = 1;
+const MAX_NIGHTS = 60;
 
 function clampNumber(value, min, max) {
   const n = Number(value);
@@ -64,7 +66,7 @@ export default function SearchCard({
   onSearch, isSearching, routeFromCode, routeToCode, apiWarning, searchError,
 }) {
   const updateTripLength = (nextValue) => {
-    setTripLength(clampNumber(nextValue, 1, 30));
+    setTripLength(clampNumber(nextValue, MIN_NIGHTS, MAX_NIGHTS));
     clearSearchState();
   };
 
@@ -322,26 +324,21 @@ export default function SearchCard({
                 </div>
 
                 <div className="fa-field">
-                  <div className="fa-label">Nights</div>
-                  <div className="fa-stepper">
-                    <button type="button" className="fa-stepBtn" onClick={() => updateTripLength(tripLength - 1)} disabled={tripLength <= 1 || isSearching} aria-label="Reduce nights">
-                      -
-                    </button>
-                    <div className="fa-stepInputWrap">
-                      <input
-                        className="fa-stepInput"
-                        type="number"
-                        min={1}
-                        max={30}
-                        value={tripLength}
-                        onChange={(e) => updateTripLength(e.target.value)}
-                        disabled={isSearching}
-                      />
-                      <span>nights</span>
-                    </div>
-                    <button type="button" className="fa-stepBtn" onClick={() => updateTripLength(tripLength + 1)} disabled={tripLength >= 30 || isSearching} aria-label="Add nights">
-                      +
-                    </button>
+                  <div className="fa-label">Number of nights</div>
+                  <div className="fa-nightInputWrap">
+                    <input
+                      className="fa-nightInput"
+                      type="number"
+                      inputMode="numeric"
+                      min={MIN_NIGHTS}
+                      max={MAX_NIGHTS}
+                      step={1}
+                      value={tripLength}
+                      onChange={(e) => updateTripLength(e.target.value)}
+                      disabled={isSearching}
+                      aria-label="Number of nights"
+                    />
+                    <span>nights</span>
                   </div>
                 </div>
               </div>

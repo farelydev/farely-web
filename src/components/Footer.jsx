@@ -1,3 +1,5 @@
+import { CONTACT_HREF, CONTACT_LABEL } from "../config/site";
+
 export default function Footer() {
   return (
     <footer className="fa-footer">
@@ -8,6 +10,8 @@ export default function Footer() {
         </div>
 
         <nav className="fa-footerLinks" aria-label="Legal links">
+          <a href={CONTACT_HREF}>{CONTACT_LABEL}</a>
+          <a href="/support">Support</a>
           <a href="/affiliate-disclosure">Affiliate Disclosure</a>
           <a href="/privacy">Privacy</a>
           <a href="/terms">Terms</a>

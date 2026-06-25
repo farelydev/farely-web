@@ -18,8 +18,16 @@ services:
       - key: USE_DEMO_FALLBACK
         value: true
       - key: FLIGHT_DEAL_PARTNER
-        value: google-flights-placeholder
+        value: travelpayouts
+      - key: TRAVELPAYOUTS_MARKER
+        sync: false
+      - key: TRAVELPAYOUTS_HOST
+        value: www.aviasales.com
+      - key: TRAVELPAYOUTS_SUB_ID
+        value: farely-render
       - key: FLIGHT_AFFILIATE_URL
         value: ""
       - key: ADMIN_ANALYTICS_TOKEN
+        sync: false
+      - key: VITE_CONTACT_EMAIL
         sync: false

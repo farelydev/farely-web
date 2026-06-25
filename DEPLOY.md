@@ -21,6 +21,7 @@ FLIGHT_DEAL_PARTNER=google-flights-placeholder
 FLIGHT_AFFILIATE_URL=
 ADMIN_ANALYTICS_TOKEN=use_a_long_private_value
 NODE_VERSION=22.12.0
+VITE_CONTACT_EMAIL=
 ```
 
 5. Deploy.
@@ -60,6 +61,22 @@ Use the main Render URL as the website URL in Travelpayouts:
 https://YOUR-RENDER-URL.onrender.com
 ```
 
+## Public email
+
+Configured domain:
+
+```txt
+tryfarely.com
+```
+
+Configured public email:
+
+```txt
+VITE_CONTACT_EMAIL=info@tryfarely.com
+```
+
+Cloudflare Email Routing forwards `info@tryfarely.com` to the private verified inbox. The private inbox is not shown publicly on Farely.
+
 The site includes public legal/disclosure URLs that Travelpayouts can review:
 
 ```txt
@@ -68,29 +85,49 @@ The site includes public legal/disclosure URLs that Travelpayouts can review:
 /terms
 ```
 
-After Travelpayouts gives you an affiliate/deep-link template, update Render:
+After Travelpayouts approves the site, update Render with your Travelpayouts marker:
 
 ```txt
 FLIGHT_DEAL_PARTNER=travelpayouts
-FLIGHT_AFFILIATE_URL=your_travelpayouts_link_template
+TRAVELPAYOUTS_MARKER=your_travelpayouts_marker
+TRAVELPAYOUTS_HOST=www.aviasales.com
+TRAVELPAYOUTS_SUB_ID=farely
 ```
 
-Farely supports these template tokens:
+With only `TRAVELPAYOUTS_MARKER` set, Farely automatically redirects flight deal clicks through:
+
+```txt
+https://www.aviasales.com/search/{origin}{departureDay}{departureMonth}{destination}{returnDay}{returnMonth}1?marker=...
+```
+
+If Travelpayouts gives you a specific deep-link template, set `FLIGHT_AFFILIATE_URL` as an override. Farely supports these template tokens:
 
 ```txt
 {origin}
 {destination}
 {departureDate}
+{departureDay}
+{departureMonth}
+{departureYear}
+{departureShortYear}
+{departureCompact}
 {returnDate}
+{returnDay}
+{returnMonth}
+{returnYear}
+{returnShortYear}
+{returnCompact}
 {carrier}
 {offerId}
 {source}
+{marker}
+{subId}
 ```
 
 Example format:
 
 ```txt
-https://example.com/search?from={origin}&to={destination}&depart={departureDate}&return={returnDate}
+https://example.com/search?from={origin}&to={destination}&depart={departureDate}&return={returnDate}&marker={marker}
 ```
 
 ## Private analytics
