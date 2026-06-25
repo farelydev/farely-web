@@ -28,6 +28,9 @@ const TRAVELPAYOUTS_MARKER = String(process.env.TRAVELPAYOUTS_MARKER || "").trim
 const TRAVELPAYOUTS_HOST = String(process.env.TRAVELPAYOUTS_HOST || "www.aviasales.com").trim();
 const TRAVELPAYOUTS_SUB_ID = String(process.env.TRAVELPAYOUTS_SUB_ID || "").trim();
 const ADMIN_ANALYTICS_TOKEN = String(process.env.ADMIN_ANALYTICS_TOKEN || "").trim();
+const NOTIFICATIONS_TO_EMAIL = String(process.env.NOTIFICATIONS_TO_EMAIL || "fadumo5007@gmail.com").trim();
+const NOTIFICATIONS_FROM_EMAIL = String(process.env.NOTIFICATIONS_FROM_EMAIL || process.env.VITE_CONTACT_EMAIL || "info@tryfarely.com").trim();
+const RESEND_API_KEY = String(process.env.RESEND_API_KEY || "").trim();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ANALYTICS_DIR = path.join(__dirname, "data");
@@ -40,8 +43,8 @@ const hasAmadeusCredentials =
 const USE_DEMO_FALLBACK = String(process.env.USE_DEMO_FALLBACK || "true").toLowerCase() !== "false";
 
 const amadeus = new Amadeus({
-  clientId: process.env.AMADEUS_CLIENT_ID,
-  clientSecret: process.env.AMADEUS_CLIENT_SECRET,
+  clientId: process.env.AMADEUS_CLIENT_ID || "missing_amadeus_client_id",
+  clientSecret: process.env.AMADEUS_CLIENT_SECRET || "missing_amadeus_client_secret",
   hostname: AMADEUS_HOSTNAME === "production" ? "production" : "test",
 });
 
@@ -640,7 +643,7 @@ function fallbackLocationSearch(keyword, limit = 12) {
   };
 
   const scoreLocation = (location, baseScore = 0) => {
-    const { city, name, iata, tags, hay } = locationSearchText(location);
+    const { city, name, iata, hay } = locationSearchText(location);
     const exact = city === q || iata === q ? 80 : 0;
     const starts = city.startsWith(q) || name.startsWith(q) || iata.startsWith(q) ? 35 : 0;
     const wordStarts = hay.split(/\s+/).some((part) => part.startsWith(q)) ? 18 : 0;
@@ -657,7 +660,9 @@ function fallbackLocationSearch(keyword, limit = 12) {
     .filter((entry) => entry.score > 0)
     .sort((a, b) => b.score - a.score)
     .map((entry) => {
-      const { searchText, typeRank, ...publicLocation } = entry.location;
+      const publicLocation = { ...entry.location };
+      delete publicLocation.searchText;
+      delete publicLocation.typeRank;
       return publicLocation;
     })
     .filter((location, index, locations) => locations.findIndex((item) => item.iata === location.iata) === index)
@@ -1530,6 +1535,133 @@ app.get("/api/flexible", async (req, res) => {
     });
 
     return res.status(friendly.statusCode).json(friendly);
+  }
+});
+
+
+const PENDING_NOTIFICATIONS = [
+  {
+    id: "codex-approvals",
+    priority: "high",
+    title: "Codex approvals",
+    detail: "Check Codex web on your phone for any automations waiting for your approval.",
+    action: "Open Codex web and approve or reject pending items.",
+  },
+  {
+    id: "farely-email-routing",
+    priority: "medium",
+    title: "Sort Farely emails",
+    detail: "Create a Gmail filter for Farely notification emails so they land in a dedicated label or inbox.",
+    action: `Filter messages from ${NOTIFICATIONS_FROM_EMAIL}.`,
+  },
+  {
+    id: "provider-setup",
+    priority: "medium",
+    title: "Email provider setup",
+    detail: "Add a verified email provider key before Farely can send real notification emails automatically.",
+    action: "Set RESEND_API_KEY and verify the sender domain.",
+  },
+];
+
+function notificationEmailSettings() {
+  return {
+    to: NOTIFICATIONS_TO_EMAIL,
+    from: NOTIFICATIONS_FROM_EMAIL,
+    provider: RESEND_API_KEY ? "resend" : "not-configured",
+    ready: Boolean(RESEND_API_KEY && NOTIFICATIONS_FROM_EMAIL && NOTIFICATIONS_TO_EMAIL),
+  };
+}
+
+function renderNotificationEmail(items) {
+  const listText = items
+    .map((item, index) => `${index + 1}. [${item.priority.toUpperCase()}] ${item.title}\n${item.detail}\nAction: ${item.action}`)
+    .join("\n\n");
+
+  const listHtml = items
+    .map(
+      (item) => `<li><strong>[${item.priority.toUpperCase()}] ${item.title}</strong><br>${item.detail}<br><em>Action: ${item.action}</em></li>`
+    )
+    .join("");
+
+  return {
+    subject: `Farely Inbox: ${items.length} item${items.length === 1 ? "" : "s"} need your action`,
+    text: `Here are the Farely items that need your action.\n\n${listText}\n\nSender to filter in Gmail: ${NOTIFICATIONS_FROM_EMAIL}`,
+    html: `<p>Here are the Farely items that need your action.</p><ol>${listHtml}</ol><p><strong>Sender to filter in Gmail:</strong> ${NOTIFICATIONS_FROM_EMAIL}</p>`,
+  };
+}
+
+async function sendNotificationEmail({ to, items }) {
+  const settings = notificationEmailSettings();
+
+  if (!settings.ready) {
+    const missing = [];
+    if (!RESEND_API_KEY) missing.push("RESEND_API_KEY");
+    if (!NOTIFICATIONS_FROM_EMAIL) missing.push("NOTIFICATIONS_FROM_EMAIL");
+    if (!NOTIFICATIONS_TO_EMAIL) missing.push("NOTIFICATIONS_TO_EMAIL");
+
+    const err = new Error(`Email sending is not configured yet. Missing: ${missing.join(", ")}. The sender will be ${NOTIFICATIONS_FROM_EMAIL}.`);
+    err.statusCode = 501;
+    throw err;
+  }
+
+  const message = renderNotificationEmail(items);
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: NOTIFICATIONS_FROM_EMAIL,
+      to: [to || NOTIFICATIONS_TO_EMAIL],
+      subject: message.subject,
+      text: message.text,
+      html: message.html,
+    }),
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    const err = new Error(data?.message || "Email provider rejected the notification email.");
+    err.statusCode = response.status;
+    throw err;
+  }
+
+  return data;
+}
+
+app.get("/api/notifications/pending", (req, res) => {
+  res.status(200).json({
+    items: PENDING_NOTIFICATIONS,
+    email: notificationEmailSettings(),
+  });
+});
+
+app.post("/api/notifications/email-summary", async (req, res) => {
+  const to = String(req.body?.to || NOTIFICATIONS_TO_EMAIL).trim();
+
+  if (!/^\S+@\S+\.\S+$/.test(to)) {
+    return res.status(400).json({ message: "Enter a valid email address for the notification summary." });
+  }
+
+  try {
+    const result = await sendNotificationEmail({ to, items: PENDING_NOTIFICATIONS });
+    return res.status(200).json({
+      ok: true,
+      id: result?.id || null,
+      to,
+      from: NOTIFICATIONS_FROM_EMAIL,
+      email: notificationEmailSettings(),
+    });
+  } catch (err) {
+    return res.status(err.statusCode || 500).json({
+      ok: false,
+      message: err?.message || "Email summary could not be sent.",
+      to,
+      from: NOTIFICATIONS_FROM_EMAIL,
+      email: notificationEmailSettings(),
+    });
   }
 });
 

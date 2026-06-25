@@ -3,6 +3,7 @@ import AnalyticsSection from "./components/AnalyticsSection";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import LegalPage, { getLegalPage } from "./components/LegalPage";
+import NotificationsInbox from "./components/NotificationsInbox";
 import PlannerModal from "./components/PlannerModal";
 import ResultsSection from "./components/ResultsSection";
 import SearchCard from "./components/SearchCard";
@@ -766,6 +767,8 @@ export default function App() {
         flexMonth={flexMonth}
       />
 
+      <NotificationsInbox />
+
       <section className="fa-infoSections" aria-label="Farely information">
         <div className="fa-infoInner">
           <div id="farely-about" className="fa-infoCard">
@@ -1375,6 +1378,30 @@ const styles = `
   .fa-tip{ padding:12px 14px 14px; font-size:12px; color: rgba(8,16,35,.58); }
   .fa-empty{ padding:16px 12px; border-radius:14px; border: 1px dashed rgba(10,20,70,.16); background: rgba(255,255,255,.65); color: rgba(8,16,35,.70); font-weight:1000; font-size:12px; }
 
+
+  .fa-inboxSection{ padding: 26px 18px 0; }
+  .fa-inboxPanel{ max-width:980px; margin:0 auto; border-radius:24px; background:rgba(255,255,255,.94); border:1px solid rgba(10,20,70,.08); box-shadow:0 22px 70px rgba(10,20,70,.10); padding:20px; }
+  .fa-inboxHeader{ display:flex; justify-content:space-between; gap:18px; align-items:flex-start; }
+  .fa-inboxHeader h3{ margin:6px 0 8px; font-size:24px; letter-spacing:-.02em; color:rgba(8,16,35,.92); }
+  .fa-inboxHeader p{ margin:0; color:rgba(8,16,35,.68); font-weight:650; line-height:1.55; max-width:720px; }
+  .fa-inboxCount{ min-width:58px; height:58px; border-radius:18px; display:grid; place-items:center; background:linear-gradient(135deg, rgba(25,85,255,1), rgba(90,70,255,1)); color:#fff; font-weight:1000; font-size:24px; box-shadow:0 16px 36px rgba(25,85,255,.22); }
+  .fa-emailBox{ margin-top:16px; padding:14px; border-radius:18px; background:rgba(240,245,255,.9); border:1px solid rgba(10,20,70,.08); }
+  .fa-emailBox label{ display:block; font-weight:1000; font-size:12px; color:rgba(8,16,35,.62); margin-bottom:8px; }
+  .fa-emailControls{ display:flex; gap:10px; }
+  .fa-emailControls input{ flex:1; border:1px solid rgba(10,20,70,.10); border-radius:14px; padding:12px 14px; font-weight:800; color:rgba(8,16,35,.86); background:#fff; }
+  .fa-emailControls button{ border:0; border-radius:14px; padding:0 18px; cursor:pointer; font-weight:1000; color:#fff; background:linear-gradient(135deg, rgba(25,85,255,1), rgba(90,70,255,1)); }
+  .fa-emailControls button:disabled{ opacity:.55; cursor:not-allowed; }
+  .fa-inboxStatus{ margin:9px 0 0; font-size:12px; font-weight:850; color:rgba(8,16,35,.62); }
+  .fa-inboxStatus.isWarning{ color:#8a5a00; }
+  .fa-inboxList{ display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin-top:14px; }
+  .fa-inboxItem{ display:flex; gap:12px; padding:14px; border-radius:18px; background:#fff; border:1px solid rgba(10,20,70,.08); }
+  .fa-inboxItem h4{ margin:0 0 6px; font-size:14px; color:rgba(8,16,35,.9); }
+  .fa-inboxItem p{ margin:0 0 9px; font-size:13px; line-height:1.45; color:rgba(8,16,35,.66); }
+  .fa-inboxItem span{ font-size:12px; font-weight:950; color:rgba(25,85,255,1); }
+  .fa-inboxPriority{ height:max-content; border-radius:999px; padding:5px 8px; font-size:10px; font-weight:1000; text-transform:uppercase; background:rgba(25,85,255,.10); color:rgba(25,85,255,1); }
+  .fa-inboxPriority.high{ background:rgba(240,75,75,.12); color:#c52828; }
+  .fa-inboxPriority.medium{ background:rgba(245,160,30,.16); color:#9a5c00; }
+  @media (max-width:820px){ .fa-inboxList{ grid-template-columns:1fr; } .fa-emailControls{ flex-direction:column; } .fa-emailControls button{ padding:12px 18px; } }
   .fa-infoSections{ padding: 0 18px 62px; }
   .fa-infoInner{
     max-width: 980px;
