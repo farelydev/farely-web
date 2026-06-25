@@ -62,13 +62,30 @@ export default function Header({
           </button>
 
           {menuOpen && (
-            <div className="fa-menuDropdown">
-              {visibleMenuItems.map((item) => (
-                <a key={item.target} href={`#${item.target}`} onClick={onMenuItemClick}>
-                  {item.label}
-                </a>
-              ))}
-            </div>
+            <>
+              <button
+                className="fa-menuOverlay"
+                type="button"
+                aria-label="Close menu"
+                onClick={() => setMenuOpen(false)}
+              />
+              <div className="fa-menuDropdown">
+                <div className="fa-menuPanelTop">
+                  <div>
+                    <div className="fa-menuPanelTitle">Farely menu</div>
+                    <div className="fa-menuPanelSub">Quick links</div>
+                  </div>
+                  <button className="fa-menuClose" type="button" onClick={() => setMenuOpen(false)} aria-label="Close menu">
+                    x
+                  </button>
+                </div>
+                {visibleMenuItems.map((item) => (
+                  <a key={item.target} href={`#${item.target}`} onClick={onMenuItemClick}>
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+            </>
           )}
         </div>
       </div>

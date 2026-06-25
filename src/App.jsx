@@ -887,6 +887,7 @@ const styles = `
     backdrop-filter: blur(10px);
   }
   .fa-menuIcon{ font-size: 20px; line-height: 1; }
+  .fa-menuOverlay{ display:none; }
   .fa-menuDropdown{
     position:absolute;
     right:0;
@@ -899,6 +900,7 @@ const styles = `
     border:1px solid rgba(10,20,70,.10);
     box-shadow:0 18px 46px rgba(0,0,0,.18);
   }
+  .fa-menuPanelTop{ display:none; }
   .fa-menuDropdown button,
   .fa-menuDropdown a{
     width:100%;
@@ -916,6 +918,61 @@ const styles = `
   }
   .fa-menuDropdown button:hover,
   .fa-menuDropdown a:hover{ background:rgba(240,245,255,1); }
+  .fa-menuClose{
+    border:0;
+    width:38px;
+    height:38px;
+    border-radius:12px;
+    background:rgba(240,245,255,1);
+    color:rgba(8,16,35,.78);
+    cursor:pointer;
+    font-size:22px;
+    font-weight:1000;
+  }
+  .fa-menuPanelTitle{ font-weight:1000; color:rgba(8,16,35,.90); }
+  .fa-menuPanelSub{ margin-top:2px; font-size:12px; font-weight:850; color:rgba(8,16,35,.52); }
+  @media (max-width:760px){
+    .fa-menuWrap{ position:static; }
+    .fa-menuOverlay{
+      display:block;
+      position:fixed;
+      inset:0;
+      z-index:79;
+      border:0;
+      background:rgba(5,10,30,.42);
+      backdrop-filter: blur(4px);
+      cursor:pointer;
+    }
+    .fa-menuDropdown{
+      position:fixed;
+      left:14px;
+      right:auto;
+      top:14px;
+      bottom:14px;
+      width:min(310px, calc(100vw - 32px));
+      z-index:90;
+      padding:14px;
+      border-radius:20px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      overflow:auto;
+    }
+    .fa-menuPanelTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:4px 2px 12px;
+      margin-bottom:4px;
+      border-bottom:1px solid rgba(10,20,70,.08);
+    }
+    .fa-menuDropdown a{
+      padding:13px 12px;
+      font-size:14px;
+      border-radius:13px;
+    }
+  }
   .fa-heroCopy{ text-align:center; padding: 34px 12px 16px; color:#fff; }
   .fa-title{ margin:0; font-size: clamp(34px, 4vw, 54px); letter-spacing:-0.02em; text-shadow: 0 12px 30px rgba(0,0,0,.25); }
   .fa-subtitle{ margin:10px auto 18px; max-width:520px; opacity:.92; font-size:14px; }
