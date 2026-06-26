@@ -18,6 +18,7 @@ After completing any successful milestone or feature change in Farely:
    - what changed,
    - whether it was pushed to GitHub,
    - the branch name,
-   - and anything that failed or could not be verified.
+   - anything that failed or could not be verified,
+   - and a short copy-paste message the user can send to ChatGPT explaining what was changed, what checks passed, the GitHub status, and any remaining issue.
 
 Do not commit or push broken or untested code. If checks fail, stop and explain the issue instead of pushing. If GitHub is not connected or the push fails, explain the exact next step needed.
