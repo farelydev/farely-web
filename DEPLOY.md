@@ -75,16 +75,18 @@ Configured public email:
 VITE_CONTACT_EMAIL=info@tryfarely.com
 VITE_SUPPORT_EMAIL=support@tryfarely.com
 VITE_NOREPLY_EMAIL=noreply@tryfarely.com
+VITE_PRIVACY_EMAIL=privacy@tryfarely.com
+VITE_SECURITY_EMAIL=security@tryfarely.com
 ```
 
-Cloudflare Email Routing forwards `info@tryfarely.com` and `support@tryfarely.com` to the private verified inbox. The private inbox is an internal forwarding destination and must not be shown publicly by Farely.
+Cloudflare Email Routing can forward these business addresses to the private verified inbox for now. The private inbox is an internal forwarding destination and must not be shown publicly by Farely.
 
 For automatic support-form email forwarding, configure a sending provider such as Resend and add:
 
 ```txt
 RESEND_API_KEY=your_resend_api_key
 PUBLIC_SUPPORT_EMAIL=support@tryfarely.com
-SUPPORT_TO_EMAIL=info@tryfarely.com
+SUPPORT_TO_EMAIL=support@tryfarely.com
 SUPPORT_FROM_EMAIL=Farely Support <support@tryfarely.com>
 ```
 

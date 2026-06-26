@@ -1,6 +1,15 @@
 import Footer from "./Footer";
 import SupportAssistant from "./SupportAssistant";
-import { CONTACT_EMAIL, CONTACT_HREF, CONTACT_LABEL } from "../config/site";
+import {
+  CONTACT_EMAIL,
+  CONTACT_HREF,
+  PRIVACY_EMAIL,
+  PRIVACY_HREF,
+  SECURITY_EMAIL,
+  SECURITY_HREF,
+  SUPPORT_EMAIL,
+  SUPPORT_HREF,
+} from "../config/site";
 
 const UPDATED = "25 June 2026";
 
@@ -65,44 +74,45 @@ const PAGES = {
       {
         heading: "Contact",
         body:
-          CONTACT_EMAIL
-            ? `For privacy questions, contact Farely at ${CONTACT_EMAIL}.`
+          PRIVACY_EMAIL
+            ? `For privacy or GDPR questions, contact Farely at ${PRIVACY_EMAIL}.`
             : "For privacy questions, use the support page.",
+      },
+    ],
+  },
+  "/security": {
+    title: "Security Reports",
+    intro:
+      "Use this page for responsible disclosure and security-related reports about Farely.",
+    sections: [
+      {
+        heading: "Responsible disclosure",
+        body:
+          SECURITY_EMAIL
+            ? `If you find a security issue, contact Farely at ${SECURITY_EMAIL}. Please include enough detail for us to reproduce and understand the issue.`
+            : "If you find a security issue, use the support page and include enough detail for us to reproduce and understand the issue.",
+      },
+      {
+        heading: "What to include",
+        body:
+          "Include the affected page or endpoint, steps to reproduce, potential impact, and whether any data may have been exposed. Do not publicly disclose issues before Farely has had a chance to review them.",
       },
     ],
   },
   "/support": {
     title: "Support",
     intro:
-      "Use the Farely AI Assistant for quick travel-search questions, or contact the right inbox for human support.",
+      "Use Farely AI for quick travel-search guidance, or contact the right Farely inbox for human help.",
     sections: [
       {
-        heading: "Contact",
-        body: CONTACT_EMAIL
-          ? `For general enquiries and partnerships, email ${CONTACT_EMAIL}. For customer support, use the support email or assistant below.`
-          : "For support, use the contact option on this page.",
+        heading: "What Farely can help with",
+        body:
+          "Farely can help with website questions, search guidance, route ideas, partner-link questions, and what to check before booking.",
       },
       {
-        heading: "Bookings and payments",
+        heading: "Booking support",
         body:
-          "Farely does not currently take bookings or payments directly. If you book through a travel partner, contact that provider for ticketing, payment, cancellation, refund, baggage, or schedule-change support.",
-      },
-      {
-        heading: "What Farely support can help with",
-        body:
-          "Farely support is for website issues, search behaviour, route guidance, and general partner-link questions. Farely support cannot change airline tickets, collect payments, or approve refunds on behalf of travel providers.",
-      },
-      {
-        heading: "Search help",
-        body:
-          "Farely can help compare routes, dates, and trip ideas. Prices and availability can change quickly, so always confirm final fare rules on the partner or airline website before booking.",
-      },
-      {
-        heading: "Partners",
-        body:
-          CONTACT_EMAIL
-            ? `Travel partners interested in working with Farely can contact ${CONTACT_EMAIL}.`
-            : "Travel partners interested in working with Farely can use the contact option on this page.",
+          "Bookings, payments, refunds, cancellations, and ticket changes are managed by the airline or travel partner you book with.",
       },
     ],
   },
@@ -155,6 +165,8 @@ export function getLegalPage(pathname) {
 }
 
 export default function LegalPage({ page }) {
+  const isSupport = page.title === "Support";
+
   return (
     <div className="fa-app">
       <style>{legalStyles}</style>
@@ -162,15 +174,43 @@ export default function LegalPage({ page }) {
       <main className="fa-legalPage">
         <a className="fa-backLink" href="/">← Back to Farely</a>
         <div className="fa-legalCard">
-          <div className="fa-infoKicker">Farely legal</div>
+          <div className="fa-infoKicker">{isSupport ? "Farely support" : "Farely legal"}</div>
           <h1>{page.title}</h1>
           <p className="fa-legalIntro">{page.intro}</p>
-          <p className="fa-legalUpdated">Last updated: {UPDATED}</p>
-          <div className="fa-legalNote">
-            Important: Farely currently acts as a comparison and referral website. Unless Farely explicitly says
-            otherwise for a specific product, Farely does not take booking payments, issue tickets, or manage travel
-            fulfilment.
-          </div>
+          {!isSupport && <p className="fa-legalUpdated">Last updated: {UPDATED}</p>}
+          {isSupport ? (
+            <div className="fa-supportTrustNotice">
+              Farely gives travel-search guidance and compares options. Bookings, payments, ticketing, refunds, and
+              changes are handled by the airline or travel partner. <a href="/terms">Learn more</a>.
+            </div>
+          ) : (
+            <div className="fa-legalNote">
+              Important: Farely currently acts as a comparison and referral website. Unless Farely explicitly says
+              otherwise for a specific product, Farely does not take booking payments, issue tickets, or manage travel
+              fulfilment.
+            </div>
+          )}
+
+          {isSupport && (
+            <div className="fa-contactGrid" aria-label="Farely contact options">
+              <a className="fa-contactTile" href={SUPPORT_HREF}>
+                <span>Customer support</span>
+                <strong>{SUPPORT_EMAIL || "support@tryfarely.com"}</strong>
+              </a>
+              <a className="fa-contactTile" href={CONTACT_HREF}>
+                <span>Partnerships & general enquiries</span>
+                <strong>{CONTACT_EMAIL || "info@tryfarely.com"}</strong>
+              </a>
+              <a className="fa-contactTile" href={PRIVACY_HREF}>
+                <span>Privacy & GDPR requests</span>
+                <strong>{PRIVACY_EMAIL || "privacy@tryfarely.com"}</strong>
+              </a>
+              <a className="fa-contactTile" href={SECURITY_HREF}>
+                <span>Security reports</span>
+                <strong>{SECURITY_EMAIL || "security@tryfarely.com"}</strong>
+              </a>
+            </div>
+          )}
 
           {page.sections.map((section) => (
             <section key={section.heading} className="fa-legalSection">
@@ -179,13 +219,16 @@ export default function LegalPage({ page }) {
             </section>
           ))}
 
-          {CONTACT_EMAIL && page.title === "Support" && (
-            <a className="fa-supportButton" href={CONTACT_HREF}>
-              Email {CONTACT_LABEL}
-            </a>
+          {isSupport && (
+            <>
+              <div className="fa-supportLinks">
+                <a href="/affiliate-disclosure">Affiliate disclosure</a>
+                <a href="/privacy">Privacy policy</a>
+                <a href="/terms">Terms of use</a>
+              </div>
+              <SupportAssistant />
+            </>
           )}
-
-          {page.title === "Support" && <SupportAssistant />}
         </div>
       </main>
 
@@ -209,6 +252,14 @@ const legalStyles = `
   .fa-legalSection h2{ margin:0 0 8px; font-size:20px; letter-spacing:-.03em; }
   .fa-legalSection p{ margin:0; color:rgba(8,16,35,.66); font-size:14px; line-height:1.65; font-weight:700; }
   .fa-legalNote{ margin-top:14px; border-radius:16px; padding:14px; background:rgba(255,248,225,.95); border:1px solid rgba(180,120,0,.18); color:rgba(105,65,0,1); font-size:13px; line-height:1.5; font-weight:800; }
+  .fa-supportTrustNotice{ margin-top:14px; border-radius:16px; padding:14px; background:rgba(240,246,255,.95); border:1px solid rgba(35,95,255,.12); color:rgba(8,16,35,.68); font-size:13px; line-height:1.5; font-weight:850; }
+  .fa-supportTrustNotice a{ color:#235fff; font-weight:1000; text-decoration:none; }
+  .fa-contactGrid{ display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; margin-top:16px; }
+  .fa-contactTile{ display:block; border-radius:16px; padding:14px; background:#fff; border:1px solid rgba(10,20,70,.08); text-decoration:none; box-shadow:0 10px 28px rgba(10,20,70,.06); }
+  .fa-contactTile span{ display:block; color:rgba(8,16,35,.52); font-size:11px; line-height:1.35; font-weight:1000; text-transform:uppercase; letter-spacing:.06em; }
+  .fa-contactTile strong{ display:block; margin-top:6px; color:#235fff; font-size:14px; line-height:1.3; font-weight:1000; overflow-wrap:anywhere; }
+  .fa-supportLinks{ display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
+  .fa-supportLinks a{ color:#235fff; font-size:13px; font-weight:1000; text-decoration:none; }
   .fa-supportButton{ display:inline-flex; margin-top:14px; border-radius:14px; padding:12px 16px; background:#235fff; color:#fff; text-decoration:none; font-weight:1000; }
   .fa-supportAssistant{ margin-top:18px; border-radius:20px; border:1px solid rgba(35,95,255,.12); background:linear-gradient(135deg, rgba(255,255,255,.98), rgba(240,246,255,.96)); padding:18px; box-shadow:0 16px 42px rgba(35,95,255,.10); }
   .fa-supportAssistant h2{ margin:0; font-size:clamp(26px, 4vw, 34px); letter-spacing:-.04em; color:rgba(8,16,35,.94); }
@@ -238,5 +289,6 @@ const legalStyles = `
   .fa-footerLinks{ display:flex; flex-wrap:wrap; gap:12px; }
   .fa-footerLinks a{ color:#235fff; font-weight:900; text-decoration:none; font-size:13px; }
   .fa-footerDisclosure{ width:min(980px, 100%); margin:12px auto 0; font-size:12px; line-height:1.5; font-weight:750; }
+  @media (max-width:620px){ .fa-contactGrid{ grid-template-columns:1fr; } }
   @media (max-width:680px){ .fa-footerInner{ flex-direction:column; } }
 `;

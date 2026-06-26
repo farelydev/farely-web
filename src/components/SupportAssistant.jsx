@@ -1,13 +1,23 @@
 import { useMemo, useState } from "react";
-import { CONTACT_EMAIL, CONTACT_HREF, CONTACT_LABEL, NOREPLY_EMAIL, SUPPORT_EMAIL, SUPPORT_HREF, SUPPORT_LABEL } from "../config/site";
+import {
+  CONTACT_EMAIL,
+  CONTACT_HREF,
+  CONTACT_LABEL,
+  NOREPLY_EMAIL,
+  PRIVACY_EMAIL,
+  SECURITY_EMAIL,
+  SUPPORT_EMAIL,
+  SUPPORT_HREF,
+  SUPPORT_LABEL,
+} from "../config/site";
 
 const QUICK_TOPICS = [
-  "Cheaper flight options",
-  "Baggage and stopovers",
-  "Flexible travel dates",
-  "Umrah trips",
+  "Help with bookings",
   "Refund guidance",
-  "Booking issue guidance",
+  "Flight price questions",
+  "Baggage and stopovers",
+  "Umrah travel help",
+  "Business & partner enquiries",
 ];
 
 function answerFor(message) {
@@ -45,7 +55,7 @@ function answerFor(message) {
 export default function SupportAssistant() {
   const [message, setMessage] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
-  const [reply, setReply] = useState("Tell me what you need help with, or choose one of the quick topics below.");
+  const [reply, setReply] = useState("Ask Farely AI about routes, prices, baggage, stopovers, Umrah travel, or what to check before booking with a partner.");
   const [sendStatus, setSendStatus] = useState("idle");
   const [sendMessage, setSendMessage] = useState("");
 
@@ -138,7 +148,10 @@ export default function SupportAssistant() {
         <div>
           <div className="fa-supportHandoffTitle">Still need help?</div>
           <p>
-            If Farely AI cannot answer your question, contact our team at <a className="fa-inlineLink" href={SUPPORT_HREF}>{SUPPORT_EMAIL || "support@tryfarely.com"}</a>. Use <a className="fa-inlineLink" href={CONTACT_HREF}>{CONTACT_EMAIL || "info@tryfarely.com"}</a> for partnerships and general enquiries. {NOREPLY_EMAIL || "noreply@tryfarely.com"} is for automated emails only.
+            If Farely AI cannot answer your question, contact our team at <a className="fa-inlineLink" href={SUPPORT_HREF}>{SUPPORT_EMAIL || "support@tryfarely.com"}</a>. Use <a className="fa-inlineLink" href={CONTACT_HREF}>{CONTACT_EMAIL || "info@tryfarely.com"}</a> for partnerships and general enquiries.
+          </p>
+          <p className="fa-supportMuted">
+            Privacy: {PRIVACY_EMAIL || "privacy@tryfarely.com"} · Security: {SECURITY_EMAIL || "security@tryfarely.com"} · Automated emails only: {NOREPLY_EMAIL || "noreply@tryfarely.com"}.
           </p>
         </div>
 

@@ -85,11 +85,13 @@ Optional support form forwarding:
 ```txt
 RESEND_API_KEY
 PUBLIC_SUPPORT_EMAIL=support@tryfarely.com
-SUPPORT_TO_EMAIL=info@tryfarely.com
+SUPPORT_TO_EMAIL=support@tryfarely.com
 SUPPORT_FROM_EMAIL=Farely Support <support@tryfarely.com>
+VITE_PRIVACY_EMAIL=privacy@tryfarely.com
+VITE_SECURITY_EMAIL=security@tryfarely.com
 ```
 
-`SUPPORT_TO_EMAIL` is an internal forwarding destination. User-facing UI and API responses should only show `support@tryfarely.com` or `info@tryfarely.com`.
+`SUPPORT_TO_EMAIL` is an internal forwarding destination. User-facing UI and API responses should only show Farely business addresses such as `support@tryfarely.com`, `info@tryfarely.com`, `privacy@tryfarely.com`, or `security@tryfarely.com`.
 
 ## Cloudflare security notes
 

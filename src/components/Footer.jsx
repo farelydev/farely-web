@@ -14,6 +14,7 @@ export default function Footer() {
           <a href="/support">Support</a>
           <a href="/affiliate-disclosure">Affiliate Disclosure</a>
           <a href="/privacy">Privacy</a>
+          <a href="/security">Security</a>
           <a href="/terms">Terms</a>
         </nav>
       </div>

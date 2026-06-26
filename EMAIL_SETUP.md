@@ -1,9 +1,13 @@
 # Farely business email setup
 
-Configured public email:
+Configured public business emails:
 
 ```txt
-info@tryfarely.com
+info@tryfarely.com      general enquiries and partnerships
+support@tryfarely.com   customer support
+noreply@tryfarely.com   automated system emails
+privacy@tryfarely.com   privacy and GDPR requests
+security@tryfarely.com  security reports
 ```
 
 Cloudflare Email Routing is enabled for:
@@ -15,7 +19,7 @@ tryfarely.com
 Current forwarding rule:
 
 ```txt
-info@tryfarely.com -> private verified inbox
+Farely business addresses -> private verified inbox
 ```
 
 The private inbox is not shown publicly on Farely.
@@ -28,6 +32,8 @@ Set this in Render:
 VITE_CONTACT_EMAIL=info@tryfarely.com
 VITE_SUPPORT_EMAIL=support@tryfarely.com
 VITE_NOREPLY_EMAIL=noreply@tryfarely.com
+VITE_PRIVACY_EMAIL=privacy@tryfarely.com
+VITE_SECURITY_EMAIL=security@tryfarely.com
 ```
 
 Then redeploy Farely.
@@ -53,9 +59,9 @@ For automatic email forwarding from the website, add these Render environment va
 ```txt
 RESEND_API_KEY=your_resend_api_key
 PUBLIC_SUPPORT_EMAIL=support@tryfarely.com
-SUPPORT_TO_EMAIL=info@tryfarely.com
+SUPPORT_TO_EMAIL=support@tryfarely.com
 SUPPORT_FROM_EMAIL=Farely Support <support@tryfarely.com>
 ```
 
 Until `RESEND_API_KEY` is configured, the site will show a backup email handoff link.
-`SUPPORT_TO_EMAIL` may forward internally, but the website and API should only show `support@tryfarely.com` or `info@tryfarely.com` to users.
+`SUPPORT_TO_EMAIL` may forward internally, but the website and API should only show Farely business addresses to users.
