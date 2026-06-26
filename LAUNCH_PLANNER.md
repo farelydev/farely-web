@@ -34,6 +34,10 @@ The core flight-search MVP is working, the Amadeus backend has been diagnosed, a
 
 ## Next Ticks
 
+- [ ] Review the AI trip planner architecture in `AI_TRIP_PLANNER_ARCHITECTURE.md`
+- [ ] Decouple the AI planner from flight-search form state
+- [ ] Replace first-message autofill with conversational follow-up questions
+- [ ] Add destination recommendations before search-form handoff
 - [ ] Push the project to GitHub
 - [ ] Connect the GitHub repo to Render
 - [ ] Add production environment variables in Render
@@ -71,9 +75,10 @@ This version is not the finished product, but it is strong enough for partner re
 - [ ] Do not hide demo fallback results
 - [ ] Do not add payment collection yet
 - [ ] Do not share the private analytics token
+- [ ] Do not let AI planner prompts silently choose destinations, dates, or booking routes without user confirmation
 
 ## Best Next Move
 
-Deploy Farely to Render and get the live URL.
+Review the AI trip planner architecture, then implement the Phase 1 planner/search decoupling before adding smarter AI features.
 
-Once the live URL exists, use it for the Travelpayouts application.
+This protects the core Farely product vision: traditional flight search for users who know what they want, and Farely AI for users who need help deciding where to go.
