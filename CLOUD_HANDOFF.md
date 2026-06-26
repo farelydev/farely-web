@@ -4,7 +4,7 @@ Farely is now backed up on GitHub:
 
 - Repository: `https://github.com/farelydev/farely-web`
 - Main branch: `main`
-- Latest handoff commit: `8e0e257b201523135efd61b396f02fef3a407a5a`
+- Latest code: use the latest commit on `main`
 
 Use this file when moving from the old laptop to Codex web or a new laptop.
 
