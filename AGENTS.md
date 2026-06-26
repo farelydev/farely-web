@@ -32,6 +32,17 @@ ChatGPT responsibilities:
 
 The user is the founder. Before implementing large new features, assume the user may review the idea with ChatGPT first so engineering decisions stay aligned with product, UX, and business priorities. This should not slow down small safe fixes or agreed implementation work.
 
+## Affiliate Architecture
+
+Farely should keep affiliate links server-controlled and trackable through the custom backend redirect flow:
+
+1. The user clicks `View deal`.
+2. Farely logs click metadata.
+3. The backend generates the affiliate redirect URL from marker, SubID, or configured template values.
+4. The user is redirected to the partner site.
+
+Travelpayouts Drive is optional and should not be installed unless Travelpayouts explicitly requires it for approval or link usage. Do not add Drive scripts, widgets, plugin-style dependencies, or automatic link-rewriting layers by default.
+
 ## Completion Workflow
 
 After completing any successful milestone or feature change in Farely:

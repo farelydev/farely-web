@@ -61,6 +61,8 @@ Use the main Render URL as the website URL in Travelpayouts:
 https://YOUR-RENDER-URL.onrender.com
 ```
 
+Travelpayouts Drive is not required for Farely's current architecture. Farely uses a custom backend redirect path for `View deal` clicks so affiliate links stay server-controlled, trackable, and configurable. Do not add Drive scripts, widgets, or plugin-style dependencies unless Travelpayouts explicitly requires Drive for approval or link usage.
+
 ## Public email
 
 Configured domain:
@@ -109,7 +111,7 @@ TRAVELPAYOUTS_HOST=www.aviasales.com
 TRAVELPAYOUTS_SUB_ID=farely
 ```
 
-With only `TRAVELPAYOUTS_MARKER` set, Farely automatically redirects flight deal clicks through:
+With only `TRAVELPAYOUTS_MARKER` set, Farely automatically logs `View deal` click metadata, generates a backend affiliate redirect URL, and sends flight deal clicks through:
 
 ```txt
 https://www.aviasales.com/search/{origin}{departureDay}{departureMonth}{destination}{returnDay}{returnMonth}1?marker=...
