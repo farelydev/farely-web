@@ -26,6 +26,8 @@ Set this in Render:
 
 ```txt
 VITE_CONTACT_EMAIL=info@tryfarely.com
+VITE_SUPPORT_EMAIL=support@tryfarely.com
+VITE_NOREPLY_EMAIL=noreply@tryfarely.com
 ```
 
 Then redeploy Farely.
@@ -50,8 +52,10 @@ For automatic email forwarding from the website, add these Render environment va
 
 ```txt
 RESEND_API_KEY=your_resend_api_key
+PUBLIC_SUPPORT_EMAIL=support@tryfarely.com
 SUPPORT_TO_EMAIL=info@tryfarely.com
 SUPPORT_FROM_EMAIL=Farely Support <support@tryfarely.com>
 ```
 
 Until `RESEND_API_KEY` is configured, the site will show a backup email handoff link.
+`SUPPORT_TO_EMAIL` may forward internally, but the website and API should only show `support@tryfarely.com` or `info@tryfarely.com` to users.

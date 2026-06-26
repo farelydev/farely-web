@@ -30,6 +30,7 @@ const TRAVELPAYOUTS_SUB_ID = String(process.env.TRAVELPAYOUTS_SUB_ID || "").trim
 const ADMIN_ANALYTICS_TOKEN = String(process.env.ADMIN_ANALYTICS_TOKEN || "").trim();
 const SUPPORT_TO_EMAIL = String(process.env.SUPPORT_TO_EMAIL || process.env.VITE_CONTACT_EMAIL || "info@tryfarely.com").trim();
 const SUPPORT_FROM_EMAIL = String(process.env.SUPPORT_FROM_EMAIL || "Farely Support <support@tryfarely.com>").trim();
+const PUBLIC_SUPPORT_EMAIL = String(process.env.PUBLIC_SUPPORT_EMAIL || process.env.VITE_SUPPORT_EMAIL || "support@tryfarely.com").trim();
 const RESEND_API_KEY = String(process.env.RESEND_API_KEY || "").trim();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -1076,7 +1077,7 @@ app.post("/api/support", async (req, res) => {
     customerEmail,
     message,
     assistantReply,
-    supportEmail: SUPPORT_TO_EMAIL,
+    supportEmail: PUBLIC_SUPPORT_EMAIL,
     createdAt: new Date().toISOString(),
     userAgent: req.get("user-agent") || null,
     referrer: req.get("referer") || null,
@@ -1102,9 +1103,12 @@ app.post("/api/support", async (req, res) => {
   return res.status(200).json({
     ok: true,
     id: supportRequest.id,
-    supportEmail: SUPPORT_TO_EMAIL,
+    supportEmail: PUBLIC_SUPPORT_EMAIL,
     emailSent: delivery.sent,
-    delivery,
+    delivery: {
+      sent: delivery.sent,
+      reason: delivery.reason || null,
+    },
     message: delivery.sent
       ? "Your query has been sent to Farely support. Please allow up to 7 working days for a reply."
       : "Please use the email handoff to send this query to Farely support. Replies can take up to 7 working days.",

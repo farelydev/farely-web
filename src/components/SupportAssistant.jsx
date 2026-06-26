@@ -6,7 +6,8 @@ const QUICK_TOPICS = [
   "Baggage and stopovers",
   "Flexible travel dates",
   "Umrah trips",
-  "Visa route questions",
+  "Refund guidance",
+  "Booking issue guidance",
 ];
 
 function answerFor(message) {
@@ -17,11 +18,11 @@ function answerFor(message) {
   }
 
   if (text.includes("refund") || text.includes("cancel") || text.includes("change")) {
-    return "Farely does not take bookings or payments directly. If you booked after clicking a partner link, the airline or travel provider handles refunds, changes, baggage, and ticket support.";
+    return "Farely can explain the usual next steps, but refunds, changes, cancellations, and ticket support are handled by the airline or travel partner you booked with.";
   }
 
   if (text.includes("book") || text.includes("ticket") || text.includes("payment")) {
-    return "Farely helps you compare trip ideas and flight results. The final booking, payment, and ticketing happen on the partner website after you choose View deal.";
+    return "Farely helps you compare trip ideas and flight results. The final booking, payment, ticketing, and booking changes happen on the airline or travel partner website.";
   }
 
   if (text.includes("price") || text.includes("fare") || text.includes("availability")) {
@@ -34,7 +35,7 @@ function answerFor(message) {
 
   if (text.includes("partner") || text.includes("affiliate") || text.includes("business")) {
     return CONTACT_EMAIL
-      ? `Farely is open to travel partners for flights, hotels, Umrah, and package journeys. For partner enquiries, email ${CONTACT_EMAIL}.`
+      ? `Farely is open to travel partners for flights, hotels, Umrah, and package journeys. For partnerships and general enquiries, email ${CONTACT_EMAIL}.`
       : "Farely is open to travel partners for flights, hotels, Umrah, and package journeys. Use the support option below for partner enquiries.";
   }
 
@@ -49,7 +50,7 @@ export default function SupportAssistant() {
   const [sendMessage, setSendMessage] = useState("");
 
   const handoffHref = useMemo(() => {
-    if (!CONTACT_EMAIL) return "";
+    if (!SUPPORT_EMAIL && !CONTACT_EMAIL) return "";
 
     const subject = encodeURIComponent("Farely support request");
     const body = encodeURIComponent(
@@ -90,7 +91,7 @@ export default function SupportAssistant() {
       setSendMessage(
         json.emailSent
           ? json.message || "Your query has been received. Please allow up to 7 working days for a reply."
-          : `Please use the Email ${SUPPORT_LABEL} button to complete sending this request. Replies can take up to 7 working days.`
+          : `Please use the Email ${SUPPORT_LABEL} button to contact Farely support directly. Replies can take up to 7 working days.`
       );
     } catch (err) {
       setSendStatus("error");
@@ -137,7 +138,7 @@ export default function SupportAssistant() {
         <div>
           <div className="fa-supportHandoffTitle">Still need help?</div>
           <p>
-            Use {CONTACT_EMAIL || "info@tryfarely.com"} for general enquiries and partnerships, {SUPPORT_EMAIL || "support@tryfarely.com"} for customer support, and {NOREPLY_EMAIL || "noreply@tryfarely.com"} for automated emails only.
+            If Farely AI cannot answer your question, contact our team at <a className="fa-inlineLink" href={SUPPORT_HREF}>{SUPPORT_EMAIL || "support@tryfarely.com"}</a>. Use <a className="fa-inlineLink" href={CONTACT_HREF}>{CONTACT_EMAIL || "info@tryfarely.com"}</a> for partnerships and general enquiries. {NOREPLY_EMAIL || "noreply@tryfarely.com"} is for automated emails only.
           </p>
         </div>
 

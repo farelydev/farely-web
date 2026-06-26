@@ -31,8 +31,14 @@ services:
         sync: false
       - key: VITE_CONTACT_EMAIL
         sync: false
+      - key: VITE_SUPPORT_EMAIL
+        value: support@tryfarely.com
+      - key: VITE_NOREPLY_EMAIL
+        value: noreply@tryfarely.com
       - key: RESEND_API_KEY
         sync: false
+      - key: PUBLIC_SUPPORT_EMAIL
+        value: support@tryfarely.com
       - key: SUPPORT_TO_EMAIL
         value: info@tryfarely.com
       - key: SUPPORT_FROM_EMAIL
