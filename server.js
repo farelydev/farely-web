@@ -38,6 +38,19 @@ const ANALYTICS_DIR = path.join(__dirname, "data");
 const DEAL_CLICKS_FILE = path.join(ANALYTICS_DIR, "deal-clicks.jsonl");
 const SUPPORT_REQUESTS_FILE = path.join(ANALYTICS_DIR, "support-requests.jsonl");
 const DIST_DIR = path.join(__dirname, "dist");
+const CABIN_CLASS_MAP = {
+  ECONOMY: "ECONOMY",
+  "PREMIUM ECONOMY": "PREMIUM_ECONOMY",
+  PREMIUM_ECONOMY: "PREMIUM_ECONOMY",
+  BUSINESS: "BUSINESS",
+  FIRST: "FIRST",
+};
+const CABIN_LABELS = {
+  ECONOMY: "Economy",
+  PREMIUM_ECONOMY: "Premium Economy",
+  BUSINESS: "Business",
+  FIRST: "First",
+};
 
 const hasAmadeusCredentials =
   !!process.env.AMADEUS_CLIENT_ID && !!process.env.AMADEUS_CLIENT_SECRET;
@@ -282,6 +295,37 @@ function validationError(res, status, type, message, got = undefined) {
     message,
     ...(got ? { got } : {}),
   });
+}
+
+function normalizeCabinClass(value) {
+  const raw = String(value || "Economy").trim();
+  const key = raw.replace(/[-_]+/g, " ").replace(/\s+/g, " ").toUpperCase();
+  const travelClass = CABIN_CLASS_MAP[key] || null;
+
+  if (!travelClass) {
+    return {
+      ok: false,
+      raw,
+      travelClass: null,
+      label: raw || "Unknown cabin",
+    };
+  }
+
+  return {
+    ok: true,
+    raw,
+    travelClass,
+    label: CABIN_LABELS[travelClass],
+  };
+}
+
+function cabinClassFromOffer(offer) {
+  const cabin =
+    offer?.travelerPricings?.[0]?.fareDetailsBySegment?.find((segment) => segment?.cabin)?.cabin ||
+    offer?.travelerPricings?.[0]?.fareDetailsBySegment?.[0]?.cabin ||
+    null;
+
+  return cabin ? String(cabin).toUpperCase() : null;
 }
 
 function firstItinerarySegment(itinerary) {
@@ -588,6 +632,7 @@ function simplifyOffers(offers) {
   return list.map((offer) => {
     const price = offer?.price?.grandTotal ?? null;
     const currencyCode = offer?.price?.currency ?? null;
+    const cabinClass = cabinClassFromOffer(offer);
 
     const itineraries = (offer?.itineraries || []).map((it) => {
       const segments = (it?.segments || []).map((seg) => ({
@@ -621,6 +666,8 @@ function simplifyOffers(offers) {
       currency: currencyCode,
       validatingAirlines,
       itineraries,
+      cabin: cabinClass ? CABIN_LABELS[cabinClass] || cabinClass : null,
+      travelClass: cabinClass,
       isDemo: false,
       dealUrl: buildDealUrl({
         origin: outboundFirst?.from,
@@ -1122,6 +1169,7 @@ function makeDemoOffers({
   returnDate = null,
   adults = 1,
   currency = "GBP",
+  cabin = "Economy",
   reason = "Live provider failed, so demo data is shown for development.",
 }) {
   const routeSeed = `${origin}-${destination}-${departureDate}-${returnDate || "oneway"}-${adults}`;
@@ -1211,6 +1259,8 @@ function makeDemoOffers({
       currency,
       validatingAirlines: [carrier],
       itineraries,
+      cabin,
+      travelClass: normalizeCabinClass(cabin).travelClass,
       isDemo: true,
       demoReason: reason,
       dealUrl: buildDealUrl({
@@ -1236,6 +1286,7 @@ async function flightSearch({
   adults,
   currency,
   nonStop,
+  travelClass,
   max,
 }) {
   const payload = {
@@ -1249,6 +1300,7 @@ async function flightSearch({
   };
 
   if (returnDate) payload.returnDate = String(returnDate);
+  if (travelClass) payload.travelClass = travelClass;
 
   console.log("[Amadeus] flightOffersSearch payload:", payload);
 
@@ -1266,8 +1318,11 @@ async function flightSearchWithFallback({
   adults,
   currency,
   nonStop,
+  cabin,
   max,
 }) {
+  const requestedCabin = cabin || normalizeCabinClass("Economy");
+
   try {
     const { response, offers } = await flightSearch({
       origin,
@@ -1277,14 +1332,24 @@ async function flightSearchWithFallback({
       adults,
       currency,
       nonStop,
+      travelClass: requestedCabin.travelClass,
       max,
     });
+
+    const simplifiedOffers = simplifyOffers(offers);
+    const cabinMismatch =
+      requestedCabin.travelClass &&
+      simplifiedOffers.length > 0 &&
+      simplifiedOffers.some((offer) => offer.travelClass && offer.travelClass !== requestedCabin.travelClass);
 
     return {
       source: "amadeus",
       response,
-      offers: simplifyOffers(offers),
+      offers: cabinMismatch
+        ? simplifiedOffers.filter((offer) => !offer.travelClass || offer.travelClass === requestedCabin.travelClass)
+        : simplifiedOffers,
       providerError: null,
+      requestedCabin,
     };
   } catch (err) {
     const extracted = extractAmadeusError(err);
@@ -1294,6 +1359,7 @@ async function flightSearchWithFallback({
       destination,
       departureDate,
       returnDate,
+      cabin: requestedCabin.travelClass,
       extracted,
       demoFallbackEnabled: USE_DEMO_FALLBACK,
     });
@@ -1315,6 +1381,7 @@ async function flightSearchWithFallback({
       returnDate,
       adults,
       currency,
+      cabin: requestedCabin.label,
       reason: friendly.message,
     }).slice(0, Number(max) || 25);
 
@@ -1323,6 +1390,7 @@ async function flightSearchWithFallback({
       response: null,
       offers: demoOffers,
       providerError: friendly,
+      requestedCabin,
     };
   }
 }
@@ -1339,6 +1407,7 @@ app.get("/api/flights", async (req, res) => {
     const adults = Number(String(req.query.adults || req.query.passengers || "1").trim());
     const currency = String(req.query.currency || "GBP").trim().toUpperCase();
     const nonStop = String(req.query.nonStop || "false").trim() === "true";
+    const cabin = normalizeCabinClass(req.query.cabin || req.query.travelClass || "Economy");
     const max = Number(String(req.query.max || "25").trim());
 
     if (!hasAmadeusCredentials) {
@@ -1389,6 +1458,16 @@ app.get("/api/flights", async (req, res) => {
       return validationError(res, 400, "INVALID_ADULTS", "adults must be between 1 and 9");
     }
 
+    if (!cabin.ok) {
+      return validationError(
+        res,
+        400,
+        "INVALID_CABIN",
+        "cabin must be Economy, Premium Economy, Business, or First.",
+        { cabin: cabin.raw }
+      );
+    }
+
     const result = await flightSearchWithFallback({
       origin,
       destination,
@@ -1397,8 +1476,11 @@ app.get("/api/flights", async (req, res) => {
       adults,
       currency,
       nonStop,
+      cabin,
       max,
     });
+
+    const noCabinOffers = result.source === "amadeus" && result.offers.length === 0;
 
     return res.status(200).json({
       meta: result.response?.meta ?? null,
@@ -1407,19 +1489,25 @@ app.get("/api/flights", async (req, res) => {
       source: result.source,
       warning:
         result.source === "demo-fallback"
-          ? result.providerError?.message || "Live Amadeus search failed, so demo results are shown for development."
+          ? `${result.providerError?.message || "Live Amadeus search failed, so demo results are shown for development."} Requested cabin: ${cabin.label}.`
           : null,
       warningType: result.providerError?.type || null,
       message:
-        result.source === "amadeus" && result.offers.length === 0
-          ? `No Amadeus results found for ${origin} → ${destination} on ${date}. Try another date, airport, or route.`
+        noCabinOffers
+          ? `No ${cabin.label} fares were found for ${origin} → ${destination} on ${date}. Try another date, route, or cabin class.`
           : null,
       providerError: result.providerError,
+      requestedCabin: {
+        label: cabin.label,
+        travelClass: cabin.travelClass,
+      },
       debug: {
         origin,
         destination,
         date,
         returnDate,
+        cabin: cabin.label,
+        travelClass: cabin.travelClass,
         amadeusEnvironment: AMADEUS_HOSTNAME === "production" ? "production" : "test",
         demoFallbackEnabled: USE_DEMO_FALLBACK,
       },
@@ -1430,6 +1518,7 @@ app.get("/api/flights", async (req, res) => {
       destination,
       date,
       returnDate,
+      cabin: req.query.cabin || req.query.travelClass || "Economy",
       extracted: extractAmadeusError(err),
     });
 
@@ -1458,6 +1547,7 @@ app.get("/api/flexible", async (req, res) => {
     const adults = Number(String(req.query.adults || "1").trim());
     const currency = String(req.query.currency || "GBP").trim().toUpperCase();
     const nonStop = String(req.query.nonStop || "false").trim() === "true";
+    const cabin = normalizeCabinClass(req.query.cabin || req.query.travelClass || "Economy");
 
     if (!hasAmadeusCredentials) {
       return validationError(
@@ -1493,6 +1583,16 @@ app.get("/api/flexible", async (req, res) => {
 
     if (!Number.isFinite(adults) || adults < 1 || adults > 9) {
       return validationError(res, 400, "INVALID_ADULTS", "adults must be between 1 and 9");
+    }
+
+    if (!cabin.ok) {
+      return validationError(
+        res,
+        400,
+        "INVALID_CABIN",
+        "cabin must be Economy, Premium Economy, Business, or First.",
+        { cabin: cabin.raw }
+      );
     }
 
     if (tripType === "return" && (!Number.isFinite(tripLength) || tripLength < 1 || tripLength > 60)) {
@@ -1567,6 +1667,7 @@ app.get("/api/flexible", async (req, res) => {
             adults,
             currency,
             nonStop,
+            cabin,
             max: 25,
           });
 
@@ -1589,6 +1690,7 @@ app.get("/api/flexible", async (req, res) => {
               source: result.source,
               title: result.providerError?.error || "Provider error",
               detail: result.providerError?.message || "Live provider failed.",
+              cabin: cabin.label,
               statusCode: result.providerError?.statusCode || 500,
             });
           }
@@ -1645,6 +1747,10 @@ app.get("/api/flexible", async (req, res) => {
       month,
       tripType,
       tripLength: tripType === "return" ? tripLength : null,
+      requestedCabin: {
+        label: cabin.label,
+        travelClass: cabin.travelClass,
+      },
       flexWindow,
       days,
       best: best.date
@@ -1658,14 +1764,16 @@ app.get("/api/flexible", async (req, res) => {
           },
       source: usedFallback ? "demo-fallback" : "amadeus",
       warning: usedFallback
-        ? "Some flexible-date results could not be checked live, so Farely is showing a limited fallback preview. Use exact dates for the most reliable live results."
-        : "Flexible date search is limited on the live site while Farely upgrades its flight data provider. Exact dates are the most reliable option right now.",
+        ? `Some flexible-date ${cabin.label} results could not be checked live, so Farely is showing a limited fallback preview. Use exact dates for the most reliable live results.`
+        : `Flexible ${cabin.label} date search is limited on the live site. Exact dates are the most reliable option right now.`,
       debug: {
         successfulDays: successfulDays.length,
         failedOrFallbackDays: dayErrors.length,
         scannedDays: dates.length,
         scanStart: dates[0],
         scanEnd: dates[dates.length - 1],
+        cabin: cabin.label,
+        travelClass: cabin.travelClass,
         middleDay,
         firstFewErrors: dayErrors.slice(0, 5),
         demoFallbackEnabled: USE_DEMO_FALLBACK,
@@ -1676,6 +1784,7 @@ app.get("/api/flexible", async (req, res) => {
       origin,
       destination,
       month,
+      cabin: req.query.cabin || req.query.travelClass || "Economy",
       extracted: extractAmadeusError(err),
     });
 

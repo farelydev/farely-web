@@ -260,13 +260,28 @@ export default function ResultsSection({
 
         {!isMultiCity && (
           <div className="fa-resultsTabs">
-            <button type="button" className={cx("fa-rTab", resultsTab === "cheapest" && "isActive")} onClick={() => setResultsTab("cheapest")}>
+            <button
+              type="button"
+              className={cx("fa-rTab", resultsTab === "cheapest" && "isActive")}
+              aria-pressed={resultsTab === "cheapest"}
+              onClick={() => setResultsTab("cheapest")}
+            >
               Cheapest
             </button>
-            <button type="button" className={cx("fa-rTab", resultsTab === "fastest" && "isActive")} onClick={() => setResultsTab("fastest")}>
+            <button
+              type="button"
+              className={cx("fa-rTab", resultsTab === "fastest" && "isActive")}
+              aria-pressed={resultsTab === "fastest"}
+              onClick={() => setResultsTab("fastest")}
+            >
               Fastest
             </button>
-            <button type="button" className={cx("fa-rTab", resultsTab === "best" && "isActive")} onClick={() => setResultsTab("best")}>
+            <button
+              type="button"
+              className={cx("fa-rTab", resultsTab === "best" && "isActive")}
+              aria-pressed={resultsTab === "best"}
+              onClick={() => setResultsTab("best")}
+            >
               Best
             </button>
           </div>
@@ -363,6 +378,7 @@ export default function ResultsSection({
                 const cur = o?.currency || "GBP";
                 const carrierCode = carrierLabel(o);
                 const carrier = airlineBrand(carrierCode);
+                const displayedCabin = o?.cabin || cabin || "Economy";
                 const outbound = o?.itineraries?.[0] || null;
                 const inbound = o?.itineraries?.[1] || null;
                 const first = firstSegment(o);
@@ -401,7 +417,7 @@ export default function ResultsSection({
                         <div className="fa-pricePanel">
                           <div className="fa-priceLabel">Total price</div>
                           <div className="fa-airlinePrice">{formatPrice(price, cur)}</div>
-                          <div className="fa-priceSub">{cur} • {cabin || "Economy"}</div>
+                          <div className="fa-priceSub">{cur} • {displayedCabin}</div>
                         </div>
                       </div>
 

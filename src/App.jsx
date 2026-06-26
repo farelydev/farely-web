@@ -563,6 +563,7 @@ export default function App() {
     params.set("destination", routeToCode);
     params.set("date", date);
     params.set("adults", String(passengers));
+    params.set("cabin", cabin);
     params.set("currency", "GBP");
     params.set("nonStop", "false");
     params.set("max", "25");
@@ -574,10 +575,13 @@ export default function App() {
 
     const json = await fetchJson(`/api/flights?${params.toString()}`);
 
-    setApiWarning(json?.warning || "");
+    setApiWarning(json?.warning || json?.message || "");
     setApiSource(json?.source || "");
 
-    return Array.isArray(json?.data) ? json.data : [];
+    return {
+      offers: Array.isArray(json?.data) ? json.data : [],
+      message: json?.message || "",
+    };
   }
 
   async function onSearch() {
@@ -608,10 +612,10 @@ export default function App() {
           return;
         }
 
-        const offers = await fetchFlightsForDate(departDate);
+        const { offers, message } = await fetchFlightsForDate(departDate);
         setApiResults(offers);
 
-        if (offers.length === 0) setSearchError("No results found for that route/date. Try another date.");
+        if (offers.length === 0) setSearchError(message || "No results found for that route/date. Try another date.");
         return;
       }
 
@@ -620,6 +624,7 @@ export default function App() {
       params.set("destination", routeToCode);
       params.set("month", flexMonth);
       params.set("adults", String(passengers));
+      params.set("cabin", cabin);
       params.set("currency", "GBP");
       params.set("nonStop", "false");
       params.set("tripType", tripType === "return" ? "return" : "oneway");
@@ -642,7 +647,7 @@ export default function App() {
         setSelectedFlexDate(json.best.date);
         setApiResults(json.best.offers);
       } else {
-        setSearchError("No results found in that month. Try another month or route.");
+        setSearchError(`No ${cabin} fares found in that month. Try another month, route, or cabin class.`);
       }
     } catch (e) {
       setSearchError(e?.message || "Search failed");
@@ -658,10 +663,10 @@ export default function App() {
     setIsSearching(true);
 
     try {
-      const offers = await fetchFlightsForDate(date);
+      const { offers, message } = await fetchFlightsForDate(date);
       setApiResults(offers);
 
-      if (offers.length === 0) setSearchError("No results for that day. Try another day.");
+      if (offers.length === 0) setSearchError(message || `No ${cabin} fares for that day. Try another day.`);
     } catch (e) {
       setSearchError(e?.message || "Failed to load that day");
     } finally {
