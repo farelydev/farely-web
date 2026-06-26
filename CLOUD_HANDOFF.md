@@ -88,6 +88,33 @@ SUPPORT_TO_EMAIL=info@tryfarely.com
 SUPPORT_FROM_EMAIL=Farely Support <support@tryfarely.com>
 ```
 
+## Cloudflare security notes
+
+Cloudflare zone: `tryfarely.com`
+
+The website DNS records are proxied through Cloudflare:
+
+```txt
+tryfarely.com -> farely-web.onrender.com
+www.tryfarely.com -> farely-web.onrender.com
+```
+
+This lets Cloudflare sit in front of the site for HTTPS edge protection and basic traffic protection.
+
+Manual Cloudflare dashboard checks still needed:
+
+```txt
+SSL/TLS encryption mode: Full (strict), if Render custom-domain SSL is healthy
+Always Use HTTPS: On
+Automatic HTTPS Rewrites: On
+Minimum TLS version: TLS 1.2 or higher
+TLS 1.3: On
+Browser Integrity Check: On
+Security Level: Medium
+```
+
+Do not enable strict HSTS for a long period until the domain has been stable on HTTPS for a while.
+
 ## Current important status
 
 - Exact-date flight search works.
