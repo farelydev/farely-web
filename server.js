@@ -28,16 +28,21 @@ const TRAVELPAYOUTS_MARKER = String(process.env.TRAVELPAYOUTS_MARKER || "").trim
 const TRAVELPAYOUTS_HOST = String(process.env.TRAVELPAYOUTS_HOST || "www.aviasales.com").trim();
 const TRAVELPAYOUTS_SUB_ID = String(process.env.TRAVELPAYOUTS_SUB_ID || "").trim();
 const ADMIN_ANALYTICS_TOKEN = String(process.env.ADMIN_ANALYTICS_TOKEN || "").trim();
+const SUPPORT_TO_EMAIL = String(process.env.SUPPORT_TO_EMAIL || process.env.VITE_CONTACT_EMAIL || "info@tryfarely.com").trim();
+const SUPPORT_FROM_EMAIL = String(process.env.SUPPORT_FROM_EMAIL || "Farely Support <support@tryfarely.com>").trim();
+const RESEND_API_KEY = String(process.env.RESEND_API_KEY || "").trim();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ANALYTICS_DIR = path.join(__dirname, "data");
 const DEAL_CLICKS_FILE = path.join(ANALYTICS_DIR, "deal-clicks.jsonl");
+const SUPPORT_REQUESTS_FILE = path.join(ANALYTICS_DIR, "support-requests.jsonl");
 const DIST_DIR = path.join(__dirname, "dist");
 
 const hasAmadeusCredentials =
   !!process.env.AMADEUS_CLIENT_ID && !!process.env.AMADEUS_CLIENT_SECRET;
 
 const USE_DEMO_FALLBACK = String(process.env.USE_DEMO_FALLBACK || "true").toLowerCase() !== "false";
+const SAFE_FLEX_WINDOW_MAX = Number(String(process.env.SAFE_FLEX_WINDOW_MAX || "3").trim()) || 3;
 
 const amadeus = new Amadeus({
   clientId: process.env.AMADEUS_CLIENT_ID,
@@ -494,6 +499,64 @@ function requireAnalyticsAdmin(req, res) {
 async function recordDealClick(click) {
   await fs.mkdir(ANALYTICS_DIR, { recursive: true });
   await fs.appendFile(DEAL_CLICKS_FILE, `${JSON.stringify(click)}\n`, "utf8");
+}
+
+async function recordSupportRequest(request) {
+  await fs.mkdir(ANALYTICS_DIR, { recursive: true });
+  await fs.appendFile(SUPPORT_REQUESTS_FILE, `${JSON.stringify(request)}\n`, "utf8");
+}
+
+async function forwardSupportRequest(request) {
+  if (!RESEND_API_KEY) {
+    return {
+      sent: false,
+      reason: "EMAIL_PROVIDER_NOT_CONFIGURED",
+    };
+  }
+
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: SUPPORT_FROM_EMAIL,
+      to: [SUPPORT_TO_EMAIL],
+      reply_to: request.customerEmail || undefined,
+      subject: `Farely support request: ${request.topic || "General"}`,
+      text: [
+        "New Farely support request",
+        "",
+        `Ticket: ${request.id}`,
+        `Topic: ${request.topic || "General"}`,
+        `Customer email: ${request.customerEmail || "Not provided"}`,
+        `Submitted at: ${request.createdAt}`,
+        "",
+        "Question:",
+        request.message,
+        "",
+        "Assistant reply shown to user:",
+        request.assistantReply || "None",
+      ].join("\n"),
+    }),
+  });
+
+  const json = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    return {
+      sent: false,
+      reason: "EMAIL_PROVIDER_FAILED",
+      providerStatus: response.status,
+      providerMessage: json?.message || json?.error || "Email provider rejected the request.",
+    };
+  }
+
+  return {
+    sent: true,
+    providerId: json?.id || null,
+  };
 }
 
 async function readDealClicks(limit = 1000) {
@@ -965,6 +1028,77 @@ app.get("/api/locations", async (req, res) => {
   }
 });
 
+app.post("/api/support", async (req, res) => {
+  const customerEmail = String(req.body?.customerEmail || "").trim();
+  const message = String(req.body?.message || "").trim();
+  const topic = String(req.body?.topic || "General").trim().slice(0, 80);
+  const assistantReply = String(req.body?.assistantReply || "").trim();
+
+  if (message.length < 8) {
+    return res.status(400).json({
+      ok: false,
+      error: "SUPPORT_MESSAGE_TOO_SHORT",
+      message: "Please add a little more detail before sending this to support.",
+    });
+  }
+
+  if (message.length > 4000) {
+    return res.status(400).json({
+      ok: false,
+      error: "SUPPORT_MESSAGE_TOO_LONG",
+      message: "Please shorten the support message before sending.",
+    });
+  }
+
+  if (customerEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
+    return res.status(400).json({
+      ok: false,
+      error: "INVALID_CUSTOMER_EMAIL",
+      message: "Enter a valid email address so Farely can reply.",
+    });
+  }
+
+  const supportRequest = {
+    id: `farely-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
+    topic,
+    customerEmail,
+    message,
+    assistantReply,
+    supportEmail: SUPPORT_TO_EMAIL,
+    createdAt: new Date().toISOString(),
+    userAgent: req.get("user-agent") || null,
+    referrer: req.get("referer") || null,
+  };
+
+  try {
+    await recordSupportRequest(supportRequest);
+  } catch (err) {
+    console.error("[Support] failed to persist request:", err);
+    return res.status(500).json({
+      ok: false,
+      error: "SUPPORT_REQUEST_SAVE_FAILED",
+      message: "Support could not receive this request. Please email Farely directly.",
+    });
+  }
+
+  const delivery = await forwardSupportRequest(supportRequest).catch((err) => ({
+    sent: false,
+    reason: "EMAIL_PROVIDER_FAILED",
+    providerMessage: err?.message || "Email provider failed.",
+  }));
+
+  return res.status(200).json({
+    ok: true,
+    id: supportRequest.id,
+    supportEmail: SUPPORT_TO_EMAIL,
+    emailSent: delivery.sent,
+    delivery,
+    message: delivery.sent
+      ? "Your query has been sent to Farely support. Please allow up to 7 working days for a reply."
+      : "Please use the email handoff to send this query to Farely support. Replies can take up to 7 working days.",
+  });
+});
+
 function makeDemoOffers({
   origin,
   destination,
@@ -1303,7 +1437,7 @@ app.get("/api/flexible", async (req, res) => {
   try {
     const tripType = String(req.query.tripType || "oneway").trim();
     const tripLength = Number(String(req.query.tripLength || "5").trim());
-    const flexWindow = Number(String(req.query.flexWindow || "21").trim());
+    const flexWindow = Number(String(req.query.flexWindow || String(SAFE_FLEX_WINDOW_MAX)).trim());
 
     const adults = Number(String(req.query.adults || "1").trim());
     const currency = String(req.query.currency || "GBP").trim().toUpperCase();
@@ -1349,8 +1483,13 @@ app.get("/api/flexible", async (req, res) => {
       return validationError(res, 400, "INVALID_TRIP_LENGTH", "Number of nights must be between 1 and 60.");
     }
 
-    if (!Number.isInteger(flexWindow) || flexWindow < 0 || flexWindow > 21) {
-      return validationError(res, 400, "INVALID_FLEX_WINDOW", "flexWindow must be a whole number between 0 and 21.");
+    if (!Number.isInteger(flexWindow) || flexWindow < 0 || flexWindow > SAFE_FLEX_WINDOW_MAX) {
+      return validationError(
+        res,
+        400,
+        "INVALID_FLEX_WINDOW",
+        `flexWindow must be a whole number between 0 and ${SAFE_FLEX_WINDOW_MAX}.`
+      );
     }
 
     const yyyy = Number(m[1]);
@@ -1503,8 +1642,8 @@ app.get("/api/flexible", async (req, res) => {
           },
       source: usedFallback ? "demo-fallback" : "amadeus",
       warning: usedFallback
-        ? "Live Amadeus flexible search failed for at least some days, so demo fallback results are shown for development."
-        : null,
+        ? "Some flexible-date results could not be checked live, so Farely is showing a limited fallback preview. Use exact dates for the most reliable live results."
+        : "Flexible date search is limited on the live site while Farely upgrades its flight data provider. Exact dates are the most reliable option right now.",
       debug: {
         successfulDays: successfulDays.length,
         failedOrFallbackDays: dayErrors.length,

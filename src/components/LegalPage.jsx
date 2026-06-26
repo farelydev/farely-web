@@ -2,13 +2,13 @@ import Footer from "./Footer";
 import SupportAssistant from "./SupportAssistant";
 import { CONTACT_EMAIL, CONTACT_HREF, CONTACT_LABEL } from "../config/site";
 
-const UPDATED = "24 June 2026";
+const UPDATED = "25 June 2026";
 
 const PAGES = {
   "/affiliate-disclosure": {
     title: "Affiliate Disclosure",
     intro:
-      "Farely is a flight comparison and trip discovery tool. Some links may be partner or affiliate links.",
+      "Farely is a trip comparison and discovery tool. Some links may be partner or affiliate links, and bookings are completed away from Farely.",
     sections: [
       {
         heading: "How Farely may earn money",
@@ -18,12 +18,17 @@ const PAGES = {
       {
         heading: "How results are shown",
         body:
-          "We aim to show useful flight and trip options based on your search. Some results may come from live providers, and some development results may be clearly marked as demo fallback while provider access is being tested.",
+          "We aim to show useful flight and trip options based on your search. Some results may come from live providers, and fallback results may be clearly marked when provider availability is limited.",
       },
       {
         heading: "Third-party bookings",
         body:
           "When you choose View deal, you may leave Farely and continue with a third-party website. Their prices, terms, payment process, cancellation rules, baggage rules, and customer support apply.",
+      },
+      {
+        heading: "Farely does not take travel payments",
+        body:
+          "Farely does not currently collect payment for flight or travel bookings on your behalf. The travel provider is responsible for payment processing, ticket issuance, booking confirmation, and post-booking support.",
       },
       {
         heading: "Our promise",
@@ -62,7 +67,7 @@ const PAGES = {
         body:
           CONTACT_EMAIL
             ? `For privacy questions, contact Farely at ${CONTACT_EMAIL}.`
-            : "For privacy questions, use the support page. A dedicated support email should be added before full public launch.",
+            : "For privacy questions, use the support page.",
       },
     ],
   },
@@ -75,12 +80,17 @@ const PAGES = {
         heading: "Contact",
         body: CONTACT_EMAIL
           ? `For support, email ${CONTACT_EMAIL}.`
-          : "A dedicated support email is being set up. Until then, Farely should be treated as an early public MVP.",
+          : "For support, use the contact option on this page.",
       },
       {
         heading: "Bookings and payments",
         body:
           "Farely does not currently take bookings or payments directly. If you book through a travel partner, contact that provider for ticketing, payment, cancellation, refund, baggage, or schedule-change support.",
+      },
+      {
+        heading: "What Farely support can help with",
+        body:
+          "Farely support is for website issues, search behaviour, route guidance, and general partner-link questions. Farely support cannot change airline tickets, collect payments, or approve refunds on behalf of travel providers.",
       },
       {
         heading: "Search help",
@@ -90,7 +100,9 @@ const PAGES = {
       {
         heading: "Partners",
         body:
-          "Travel partners interested in working with Farely can use the contact channel listed on this page once the dedicated email is active.",
+          CONTACT_EMAIL
+            ? `Travel partners interested in working with Farely can contact ${CONTACT_EMAIL}.`
+            : "Travel partners interested in working with Farely can use the contact option on this page.",
       },
     ],
   },
@@ -103,6 +115,11 @@ const PAGES = {
         heading: "Farely is not a booking agent",
         body:
           "Farely helps you search and compare travel ideas. Farely does not sell flights, issue tickets, take payment for bookings, or operate airline services.",
+      },
+      {
+        heading: "Farely is not the travel organiser",
+        body:
+          "Unless Farely clearly states otherwise in writing for a specific product, Farely is not acting as the organiser of your holiday, package, or travel arrangement. The provider you book with is responsible for the booking contract and fulfilment.",
       },
       {
         heading: "Third-party providers",
@@ -124,6 +141,11 @@ const PAGES = {
         body:
           "Farely may provide planning prompts and suggestions, but you are responsible for checking visas, passport validity, health rules, pilgrimage requirements, airline conditions, and destination restrictions before booking.",
       },
+      {
+        heading: "Liability limit for search content",
+        body:
+          "Farely aims to present useful search content and partner links, but does not accept responsibility for losses caused by third-party booking errors, provider cancellations, fare changes, ticketing problems, or information on external websites.",
+      },
     ],
   },
 };
@@ -144,6 +166,11 @@ export default function LegalPage({ page }) {
           <h1>{page.title}</h1>
           <p className="fa-legalIntro">{page.intro}</p>
           <p className="fa-legalUpdated">Last updated: {UPDATED}</p>
+          <div className="fa-legalNote">
+            Important: Farely currently acts as a comparison and referral website. Unless Farely explicitly says
+            otherwise for a specific product, Farely does not take booking payments, issue tickets, or manage travel
+            fulfilment.
+          </div>
 
           {page.sections.map((section) => (
             <section key={section.heading} className="fa-legalSection">
@@ -152,13 +179,6 @@ export default function LegalPage({ page }) {
             </section>
           ))}
 
-          {!CONTACT_EMAIL && page.title === "Support" && (
-            <div className="fa-legalNote">
-              Next step: create a real public email such as hello@yourdomain.com, then set VITE_CONTACT_EMAIL in your
-              hosting environment and redeploy.
-            </div>
-          )}
-
           {CONTACT_EMAIL && page.title === "Support" && (
             <a className="fa-supportButton" href={CONTACT_HREF}>
               Email {CONTACT_LABEL}
@@ -166,11 +186,6 @@ export default function LegalPage({ page }) {
           )}
 
           {page.title === "Support" && <SupportAssistant />}
-
-          <div className="fa-legalNote">
-            This page is a practical MVP policy, not legal advice. Farely should get professional legal review before
-            taking payments directly or signing direct travel-supplier contracts.
-          </div>
         </div>
       </main>
 
@@ -202,11 +217,20 @@ const legalStyles = `
   .fa-supportQuick button{ border:1px solid rgba(10,20,70,.10); border-radius:999px; padding:9px 12px; background:#fff; color:rgba(8,16,35,.78); font-weight:900; cursor:pointer; }
   .fa-supportLabel{ display:block; margin:8px 0 6px; color:rgba(8,16,35,.64); font-size:12px; font-weight:1000; text-transform:uppercase; letter-spacing:.06em; }
   .fa-supportTextarea{ width:100%; min-height:96px; resize:vertical; border:1px solid rgba(10,20,70,.10); border-radius:14px; padding:12px; color:rgba(8,16,35,.86); font:inherit; font-weight:750; background:#fff; }
+  .fa-supportInput{ width:100%; border:1px solid rgba(10,20,70,.10); border-radius:14px; padding:12px; color:rgba(8,16,35,.86); font:inherit; font-weight:750; background:#fff; }
   .fa-supportActions{ display:flex; align-items:center; flex-wrap:wrap; gap:10px; margin-top:10px; }
   .fa-supportPrimary, .fa-supportSecondary{ border:0; border-radius:14px; padding:11px 14px; background:#235fff; color:#fff; text-decoration:none; font-weight:1000; cursor:pointer; }
+  .fa-supportPrimary:disabled{ opacity:.65; cursor:not-allowed; }
   .fa-supportSecondary{ background:rgba(35,95,255,.10); color:#235fff; }
   .fa-supportMuted{ color:rgba(8,16,35,.54); font-size:12px; font-weight:850; }
   .fa-supportReply{ margin-top:12px; border-radius:16px; padding:14px; background:rgba(240,245,255,.95); color:rgba(8,16,35,.76); font-size:14px; line-height:1.55; font-weight:800; }
+  .fa-supportHandoff{ margin-top:14px; border-radius:18px; padding:14px; border:1px solid rgba(10,20,70,.08); background:rgba(248,250,255,.9); }
+  .fa-supportHandoffTitle{ color:rgba(8,16,35,.88); font-size:16px; font-weight:1000; }
+  .fa-supportHandoff p{ margin:6px 0 12px; color:rgba(8,16,35,.62); font-size:13px; line-height:1.5; font-weight:800; }
+  .fa-supportStatus{ margin-top:10px; border-radius:14px; padding:12px; font-size:13px; line-height:1.45; font-weight:850; }
+  .fa-supportStatus.is-sent{ background:rgba(226,255,238,.95); color:rgba(15,95,50,1); border:1px solid rgba(15,95,50,.14); }
+  .fa-supportStatus.is-fallback{ background:rgba(255,248,225,.95); color:rgba(105,65,0,1); border:1px solid rgba(180,120,0,.18); }
+  .fa-supportStatus.is-error{ background:rgba(255,236,236,.95); color:rgba(135,30,30,1); border:1px solid rgba(135,30,30,.16); }
   .fa-footer{ padding:22px 18px 28px; color:rgba(8,16,35,.62); }
   .fa-footerInner{ width:min(980px, 100%); margin:0 auto; display:flex; align-items:flex-start; justify-content:space-between; gap:18px; border-top:1px solid rgba(10,20,70,.08); padding-top:18px; }
   .fa-footerInner strong{ display:block; color:rgba(8,16,35,.92); }

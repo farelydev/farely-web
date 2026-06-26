@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="fa-footerInner">
         <div>
           <strong>Farely</strong>
-          <span>Smart trip search. Compare ideas, then book with travel partners.</span>
+          <span>Compare trip ideas and partner fares. Farely does not take booking payments directly.</span>
         </div>
 
         <nav className="fa-footerLinks" aria-label="Legal links">
@@ -19,8 +19,8 @@ export default function Footer() {
       </div>
 
       <p className="fa-footerDisclosure">
-        Farely may earn commission when you click or book through partner links. Prices and availability are provided by
-        third parties and can change.
+        Farely may earn commission when you click or book through partner links. Final prices, payments, ticketing,
+        baggage rules, cancellations, and refunds are handled by third-party travel providers, not Farely.
       </p>
     </footer>
   );

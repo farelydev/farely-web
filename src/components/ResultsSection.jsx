@@ -174,7 +174,7 @@ export default function ResultsSection({
     <section className="fa-results">
       <div className="fa-resultsInner">
         <h2 className="fa-resultsTitle">
-          {isMultiCity ? "Multi-city plan" : didSearch ? "Search flights" : "Ready to search"}{" "}
+          {isMultiCity ? "Multi-city plan" : didSearch ? "Trip ideas and partner fares" : "Ready to search"}{" "}
           <span className="fa-resultsSubtitle">— {routeTitle}</span>
         </h2>
 
@@ -195,7 +195,7 @@ export default function ResultsSection({
         {!!apiWarning && shownOffers.length > 0 && (
           <div className="fa-resultsWarning">
             <div>
-              <strong>Live provider failed.</strong> Showing demo fallback results for development.
+              <strong>Live fare check is limited.</strong> Some results may be preview-only or may open on a partner site for the latest price.
             </div>
             <div className="fa-resultsWarningSub">Source: {apiSource || "demo-fallback"}</div>
           </div>
@@ -228,7 +228,7 @@ export default function ResultsSection({
 
         {flexMode && didSearch && (
           <div className="fa-resultsHelper">
-            Tap a date card to reload live fares for that day.
+            Tap a date card to reload live fares for that day. Exact dates are usually more dependable on the live site.
           </div>
         )}
 
@@ -252,7 +252,7 @@ export default function ResultsSection({
                 </>
               )}
             </div>
-            <div className="fa-resultHint">Compare first, then open the partner site when ready.</div>
+            <div className="fa-resultHint">Compare the idea here, then confirm the latest fare on the partner site.</div>
           </div>
 
           <div className="fa-affiliateNotice">
@@ -266,8 +266,8 @@ export default function ResultsSection({
                 {isMultiCity
                   ? "Multi-city search is planned in the UI. Live multi-city pricing will be added next."
                   : didSearch
-                    ? "No live results yet. Hit Search flights above."
-                    : "Choose your trip, then hit Search flights."}
+                    ? "No reliable live fares are showing yet. Try exact dates or open a partner deal once available."
+                    : "Choose your trip, then check live fares or partner deals."}
               </div>
             ) : (
               shownOffers.map((o, idx) => {
@@ -318,9 +318,9 @@ export default function ResultsSection({
                       </div>
 
                       <div className="fa-offerSignals">
-                        <span className="fa-signalChip">{o?.isDemo ? "Demo fare preview" : "Third-party booking"}</span>
+                        <span className="fa-signalChip">{o?.isDemo ? "Preview fare only" : "Partner booking"}</span>
                         <span className="fa-signalChip">{inbound ? "Return fare" : "One-way fare"}</span>
-                        <span className="fa-signalChip">Check baggage on partner site</span>
+                        <span className="fa-signalChip">Confirm baggage and final price on partner site</span>
                       </div>
 
                       <div className="fa-offerActions">
@@ -342,8 +342,7 @@ export default function ResultsSection({
           </div>
 
           <div className="fa-tip">
-            Prices and availability can change. Check baggage, fare rules, and cancellation terms on the partner site
-            before booking.
+            Farely helps you compare ideas first. Final price, baggage, fare rules, and cancellation terms should always be checked on the partner site before booking.
           </div>
         </div>
       </div>

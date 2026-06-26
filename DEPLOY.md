@@ -77,6 +77,16 @@ VITE_CONTACT_EMAIL=info@tryfarely.com
 
 Cloudflare Email Routing forwards `info@tryfarely.com` to the private verified inbox. The private inbox is not shown publicly on Farely.
 
+For automatic support-form email forwarding, configure a sending provider such as Resend and add:
+
+```txt
+RESEND_API_KEY=your_resend_api_key
+SUPPORT_TO_EMAIL=info@tryfarely.com
+SUPPORT_FROM_EMAIL=Farely Support <support@tryfarely.com>
+```
+
+Cloudflare Email Routing receives mail; it does not send website form submissions by itself.
+
 The site includes public legal/disclosure URLs that Travelpayouts can review:
 
 ```txt

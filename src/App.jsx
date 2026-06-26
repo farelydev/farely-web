@@ -171,7 +171,7 @@ export default function App() {
   });
 
   const [tripLength, setTripLength] = useState(5);
-  const [flexWindow, setFlexWindow] = useState(7);
+  const [flexWindow, setFlexWindow] = useState(1);
 
   const [passengers, setPassengers] = useState(1);
   const [cabin, setCabin] = useState("Economy");
@@ -629,7 +629,10 @@ export default function App() {
 
       const json = await fetchJson(`/api/flexible?${params.toString()}`);
 
-      setApiWarning(json?.warning || "");
+      setApiWarning(
+        json?.warning ||
+          "Flexible date search is in a limited beta on the live site. Exact dates are currently the most reliable option."
+      );
       setApiSource(json?.source || "");
 
       const days = Array.isArray(json?.days) ? json.days : [];
@@ -786,12 +789,21 @@ export default function App() {
             </p>
           </div>
 
+          <div id="farely-booking-notice" className="fa-infoCard isWarning">
+            <div className="fa-infoKicker">Important</div>
+            <h3>Farely does not take booking payments directly.</h3>
+            <p>
+              Farely helps you compare routes, ideas, and partner fares. If you choose a deal, the final booking,
+              payment, ticketing, refunds, and baggage support are handled by the travel provider you book with.
+            </p>
+          </div>
+
           <div id="farely-support" className="fa-infoCard">
             <div className="fa-infoKicker">Support</div>
-            <h3>Help for searches and trip choices.</h3>
+            <h3>Help for searches and website questions.</h3>
             <p>
-              Support will cover route questions, flexible-date guidance, and help understanding provider
-              availability once the live booking flow is connected. <a className="fa-inlineLink" href={CONTACT_HREF}>{CONTACT_LABEL}</a>.
+              For route questions, flexible-date guidance, or help using Farely, contact{" "}
+              <a className="fa-inlineLink" href={CONTACT_HREF}>{CONTACT_LABEL}</a>.
             </p>
           </div>
 
@@ -1392,6 +1404,11 @@ const styles = `
     box-shadow: 0 14px 40px rgba(10,20,70,.07);
   }
   .fa-infoCard.isMuted{ background: rgba(248,250,255,.74); }
+  .fa-infoCard.isWarning{
+    background: rgba(255,248,225,.94);
+    border-color: rgba(180,120,0,.18);
+    box-shadow: 0 14px 40px rgba(120,90,20,.08);
+  }
   .fa-infoKicker{
     margin-bottom:8px;
     font-size:11px;
@@ -1703,6 +1720,7 @@ const styles = `
     .fa-empty{ background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); color: rgba(235,240,255,.72); }
     .fa-infoCard{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08); box-shadow:none; }
     .fa-infoCard.isMuted{ background: rgba(255,255,255,.04); }
+    .fa-infoCard.isWarning{ background: rgba(110,75,0,.22); border-color: rgba(255,210,120,.18); }
     .fa-infoCard h3{ color: rgba(235,240,255,.94); }
     .fa-infoCard p{ color: rgba(235,240,255,.64); }
     .fa-footer{ color: rgba(235,240,255,.62); }

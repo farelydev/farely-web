@@ -4,6 +4,7 @@ import { airportLabel, cx, todayPlus } from "../utils/flightHelpers";
 const CABIN_OPTIONS = ["Economy", "Premium economy", "Business", "First"];
 const MIN_NIGHTS = 1;
 const MAX_NIGHTS = 60;
+const MAX_FLEX_WINDOW = 3;
 
 function clampNumber(value, min, max) {
   const n = Number(value);
@@ -71,7 +72,7 @@ export default function SearchCard({
   };
 
   const updateFlexWindow = (nextValue) => {
-    setFlexWindow(clampNumber(nextValue, 0, 21));
+    setFlexWindow(clampNumber(nextValue, 0, MAX_FLEX_WINDOW));
     clearSearchState();
   };
 
@@ -93,14 +94,14 @@ export default function SearchCard({
           </button>
         </div>
 
-        <div className="fa-seg">
-          <button type="button" className={cx("fa-segBtn", exactMode && "isActive")} onClick={() => { setDateMode("exact"); clearSearchState(); }}>
-            Exact dates
-          </button>
-          <button type="button" className={cx("fa-segBtn", flexMode && "isActive")} onClick={() => { setDateMode("flex"); clearSearchState(); }}>
-            Flexible dates
-          </button>
-        </div>
+          <div className="fa-seg">
+            <button type="button" className={cx("fa-segBtn", exactMode && "isActive")} onClick={() => { setDateMode("exact"); clearSearchState(); }}>
+              Exact dates
+            </button>
+            <button type="button" className={cx("fa-segBtn", flexMode && "isActive")} onClick={() => { setDateMode("flex"); clearSearchState(); }}>
+              Flexible dates (beta)
+            </button>
+          </div>
       </div>
 
       <div className="fa-cardBody">
@@ -309,8 +310,20 @@ export default function SearchCard({
             </div>
           )}
 
+          {tripType !== "multicity" && exactMode && (
+            <div className="fa-providerWarning">
+              <div className="fa-providerWarningTitle">Best live option right now</div>
+              <div>Use exact dates for the most reliable live fares while Farely upgrades its flight data provider.</div>
+            </div>
+          )}
+
           {tripType !== "multicity" && flexMode && (
             <div className="fa-flexBox">
+              <div className="fa-providerWarning">
+                <div className="fa-providerWarningTitle">Limited live beta</div>
+                <div>Flexible search is capped to a small date range on the live site. For the safest live results, switch back to exact dates.</div>
+              </div>
+
               <div className="fa-flexRow">
                 <div className="fa-field">
                   <div className="fa-label">Selected month</div>
@@ -384,21 +397,21 @@ export default function SearchCard({
                       className="fa-stepInput"
                       type="number"
                       min={0}
-                      max={21}
+                      max={MAX_FLEX_WINDOW}
                       value={flexWindow}
                       onChange={(e) => updateFlexWindow(e.target.value)}
                       disabled={isSearching}
                     />
                     <span>days</span>
                   </div>
-                  <button type="button" className="fa-stepBtn" onClick={() => updateFlexWindow(flexWindow + 1)} disabled={flexWindow >= 21 || isSearching} aria-label="Add flexible days">
+                  <button type="button" className="fa-stepBtn" onClick={() => updateFlexWindow(flexWindow + 1)} disabled={flexWindow >= MAX_FLEX_WINDOW || isSearching} aria-label="Add flexible days">
                     +
                   </button>
                 </div>
               </div>
 
               <div className="fa-miniNote">
-                Flexible month scans dates around the middle of the month. Increase flexible days to check more dates before and after.
+                Flexible month scans dates around the middle of the month. Farely currently limits this to ±{MAX_FLEX_WINDOW} days to avoid unreliable live pricing on the public site.
               </div>
             </div>
           )}
@@ -430,6 +443,7 @@ export default function SearchCard({
                 ) : (
                   <>
                     in <span className="fa-miniStrong">{flexMonth}</span>
+                    {" "}with a live check of only <span className="fa-miniStrong">±{flexWindow} day{flexWindow === 1 ? "" : "s"}</span>
                   </>
                 )}
               </>

@@ -31,3 +31,9 @@ services:
         sync: false
       - key: VITE_CONTACT_EMAIL
         sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: SUPPORT_TO_EMAIL
+        value: info@tryfarely.com
+      - key: SUPPORT_FROM_EMAIL
+        value: Farely Support <support@tryfarely.com>

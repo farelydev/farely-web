@@ -21,7 +21,7 @@ function answerFor(message) {
   }
 
   if (text.includes("book") || text.includes("ticket") || text.includes("payment")) {
-    return "Farely helps you compare trip ideas and flight results. The final booking happens on the partner website after you choose View deal.";
+    return "Farely helps you compare trip ideas and flight results. The final booking, payment, and ticketing happen on the partner website after you choose View deal.";
   }
 
   if (text.includes("price") || text.includes("fare") || text.includes("availability")) {
@@ -29,19 +29,24 @@ function answerFor(message) {
   }
 
   if (text.includes("umrah") || text.includes("makkah") || text.includes("madinah") || text.includes("jeddah")) {
-    return "For Umrah planning, Farely can help compare flight routes such as London to Jeddah or Madinah. Hotel/package support is planned next.";
+    return "For Umrah planning, Farely can help compare flight routes such as London to Jeddah or Madinah. Always check visa, baggage, hotel, and package details with the travel provider before booking.";
   }
 
   if (text.includes("partner") || text.includes("affiliate") || text.includes("business")) {
-    return "Farely is open to travel partners for flights, hotels, Umrah, and package journeys. A business contact email will be added once the Farely domain email is ready.";
+    return CONTACT_EMAIL
+      ? `Farely is open to travel partners for flights, hotels, Umrah, and package journeys. For partner enquiries, email ${CONTACT_EMAIL}.`
+      : "Farely is open to travel partners for flights, hotels, Umrah, and package journeys. Use the support option below for partner enquiries.";
   }
 
-  return "I can help with bookings, prices, route searches, Umrah trip planning, and partner questions. If this needs a human reply, use the handoff option below once Farely's business email is connected.";
+  return "I can help with route searches, prices, Umrah trip planning, and partner questions. Farely does not handle booking payments directly. If this needs a human reply, use the support option below.";
 }
 
 export default function SupportAssistant() {
   const [message, setMessage] = useState("");
+  const [customerEmail, setCustomerEmail] = useState("");
   const [reply, setReply] = useState("Tell me what you need help with, or choose one of the quick topics below.");
+  const [sendStatus, setSendStatus] = useState("idle");
+  const [sendMessage, setSendMessage] = useState("");
 
   const handoffHref = useMemo(() => {
     if (!CONTACT_EMAIL) return "";
@@ -57,6 +62,40 @@ export default function SupportAssistant() {
   function askSupport(nextMessage = message) {
     setMessage(nextMessage);
     setReply(answerFor(nextMessage));
+    setSendMessage("");
+  }
+
+  async function sendToSupport() {
+    setSendStatus("sending");
+    setSendMessage("");
+
+    try {
+      const res = await fetch("/api/support", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customerEmail,
+          message,
+          topic: "Support assistant",
+          assistantReply: reply,
+        }),
+      });
+      const json = await res.json();
+
+      if (!res.ok || !json?.ok) {
+        throw new Error(json?.message || "Support could not receive this query.");
+      }
+
+      setSendStatus(json.emailSent ? "sent" : "fallback");
+      setSendMessage(
+        json.emailSent
+          ? json.message || "Your query has been received. Please allow up to 7 working days for a reply."
+          : `Please use the Email ${CONTACT_LABEL} button to complete sending this request. Replies can take up to 7 working days.`
+      );
+    } catch (err) {
+      setSendStatus("error");
+      setSendMessage(err?.message || "Support could not receive this query. Please email Farely directly.");
+    }
   }
 
   return (
@@ -64,7 +103,8 @@ export default function SupportAssistant() {
       <div className="fa-infoKicker">Support assistant</div>
       <h2>Ask Farely first</h2>
       <p className="fa-supportIntro">
-        Get a quick answer about searches, bookings, prices, Umrah routes, or partner questions.
+        Get a quick answer about searches, prices, Umrah routes, or partner questions. Farely can explain the search,
+        but the travel provider handles booking, payment, ticketing, refunds, and baggage.
       </p>
 
       <div className="fa-supportQuick">
@@ -90,17 +130,54 @@ export default function SupportAssistant() {
         <button className="fa-supportPrimary" type="button" onClick={() => askSupport()}>
           Ask assistant
         </button>
-        {CONTACT_EMAIL ? (
-          <a className="fa-supportSecondary" href={handoffHref}>
-            Email {CONTACT_LABEL}
-          </a>
-        ) : (
-          <span className="fa-supportMuted">Human email handoff will appear once Farely's business email is connected.</span>
-        )}
       </div>
 
       <div className="fa-supportReply">{reply}</div>
+
+      <div className="fa-supportHandoff">
+        <div>
+          <div className="fa-supportHandoffTitle">Still need help?</div>
+          <p>
+            Send your query to Farely support for website or search help. For ticketing, payment, refund, baggage, or
+            airline changes, contact the travel provider you booked with. Please allow up to 7 working days for a reply.
+          </p>
+        </div>
+
+        <label className="fa-supportLabel" htmlFor="farely-customer-email">
+          Your email for replies
+        </label>
+        <input
+          id="farely-customer-email"
+          className="fa-supportInput"
+          value={customerEmail}
+          onChange={(event) => setCustomerEmail(event.target.value)}
+          placeholder="you@example.com"
+          type="email"
+        />
+
+        <div className="fa-supportActions">
+          <button
+            className="fa-supportPrimary"
+            type="button"
+            onClick={sendToSupport}
+            disabled={sendStatus === "sending"}
+          >
+            {sendStatus === "sending" ? "Sending..." : "Send to support"}
+          </button>
+
+          {CONTACT_EMAIL && (
+            <a className="fa-supportSecondary" href={handoffHref}>
+              Email {CONTACT_LABEL}
+            </a>
+          )}
+        </div>
+
+        {sendMessage && (
+          <div className={`fa-supportStatus is-${sendStatus}`}>
+            {sendMessage}
+          </div>
+        )}
+      </div>
     </section>
   );
 }
-
