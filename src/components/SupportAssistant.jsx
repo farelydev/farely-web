@@ -1,19 +1,19 @@
 import { useMemo, useState } from "react";
-import { CONTACT_EMAIL, CONTACT_HREF, CONTACT_LABEL } from "../config/site";
+import { CONTACT_EMAIL, CONTACT_HREF, CONTACT_LABEL, NOREPLY_EMAIL, SUPPORT_EMAIL, SUPPORT_HREF, SUPPORT_LABEL } from "../config/site";
 
 const QUICK_TOPICS = [
-  "Booking help",
-  "Refunds or changes",
-  "Flight prices",
+  "Cheaper flight options",
+  "Baggage and stopovers",
+  "Flexible travel dates",
   "Umrah trips",
-  "Partner enquiries",
+  "Visa route questions",
 ];
 
 function answerFor(message) {
   const text = String(message || "").toLowerCase();
 
   if (!text.trim()) {
-    return "Tell me what you need help with, or choose one of the quick topics below.";
+    return "Ask about flights, baggage, stopovers, visas, Umrah routes, flexible dates, or cheaper options.";
   }
 
   if (text.includes("refund") || text.includes("cancel") || text.includes("change")) {
@@ -38,7 +38,7 @@ function answerFor(message) {
       : "Farely is open to travel partners for flights, hotels, Umrah, and package journeys. Use the support option below for partner enquiries.";
   }
 
-  return "I can help with route searches, prices, Umrah trip planning, and partner questions. Farely does not handle booking payments directly. If this needs a human reply, use the support option below.";
+  return "I can help with route searches, prices, Umrah trip planning, baggage questions, stopovers, flexible dates, and cheaper-option ideas. If this needs a human reply, use the support option below.";
 }
 
 export default function SupportAssistant() {
@@ -56,7 +56,7 @@ export default function SupportAssistant() {
       `Hi Farely,\n\nI need help with:\n\n${message || "[Please describe the issue]"}\n\nThanks.`
     );
 
-    return `${CONTACT_HREF}?subject=${subject}&body=${body}`;
+    return `${SUPPORT_HREF || CONTACT_HREF}?subject=${subject}&body=${body}`;
   }, [message]);
 
   function askSupport(nextMessage = message) {
@@ -90,7 +90,7 @@ export default function SupportAssistant() {
       setSendMessage(
         json.emailSent
           ? json.message || "Your query has been received. Please allow up to 7 working days for a reply."
-          : `Please use the Email ${CONTACT_LABEL} button to complete sending this request. Replies can take up to 7 working days.`
+          : `Please use the Email ${SUPPORT_LABEL} button to complete sending this request. Replies can take up to 7 working days.`
       );
     } catch (err) {
       setSendStatus("error");
@@ -99,12 +99,11 @@ export default function SupportAssistant() {
   }
 
   return (
-    <section className="fa-supportAssistant" aria-label="Farely support assistant">
-      <div className="fa-infoKicker">Support assistant</div>
-      <h2>Ask Farely first</h2>
+    <section className="fa-supportAssistant" aria-label="Farely AI Assistant">
+      <div className="fa-infoKicker">AI travel assistant</div>
+      <h2>Farely AI Assistant</h2>
       <p className="fa-supportIntro">
-        Get a quick answer about searches, prices, Umrah routes, or partner questions. Farely can explain the search,
-        but the travel provider handles booking, payment, ticketing, refunds, and baggage.
+        Ask anything about flights, baggage, stopovers, visas, Umrah routes, flexible travel dates or finding cheaper options.
       </p>
 
       <div className="fa-supportQuick">
@@ -116,14 +115,14 @@ export default function SupportAssistant() {
       </div>
 
       <label className="fa-supportLabel" htmlFor="farely-support-message">
-        Your question
+        Ask the assistant
       </label>
       <textarea
         id="farely-support-message"
         className="fa-supportTextarea"
         value={message}
         onChange={(event) => setMessage(event.target.value)}
-        placeholder="e.g. I clicked View deal but need help with baggage"
+        placeholder="e.g. Find cheaper London to Jeddah routes with sensible stopovers"
       />
 
       <div className="fa-supportActions">
@@ -138,8 +137,7 @@ export default function SupportAssistant() {
         <div>
           <div className="fa-supportHandoffTitle">Still need help?</div>
           <p>
-            Send your query to Farely support for website or search help. For ticketing, payment, refund, baggage, or
-            airline changes, contact the travel provider you booked with. Please allow up to 7 working days for a reply.
+            Use {CONTACT_EMAIL || "info@tryfarely.com"} for general enquiries and partnerships, {SUPPORT_EMAIL || "support@tryfarely.com"} for customer support, and {NOREPLY_EMAIL || "noreply@tryfarely.com"} for automated emails only.
           </p>
         </div>
 
@@ -165,9 +163,9 @@ export default function SupportAssistant() {
             {sendStatus === "sending" ? "Sending..." : "Send to support"}
           </button>
 
-          {CONTACT_EMAIL && (
+          {(SUPPORT_EMAIL || CONTACT_EMAIL) && (
             <a className="fa-supportSecondary" href={handoffHref}>
-              Email {CONTACT_LABEL}
+              Email {SUPPORT_LABEL || CONTACT_LABEL}
             </a>
           )}
         </div>

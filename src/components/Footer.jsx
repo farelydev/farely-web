@@ -19,8 +19,8 @@ export default function Footer() {
       </div>
 
       <p className="fa-footerDisclosure">
-        Farely may earn commission when you click or book through partner links. Final prices, payments, ticketing,
-        baggage rules, cancellations, and refunds are handled by third-party travel providers, not Farely.
+        Farely compares travel options for free. If you book with one of our trusted partners, we may earn a commission
+        at no extra cost to you.
       </p>
     </footer>
   );

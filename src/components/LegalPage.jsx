@@ -74,12 +74,12 @@ const PAGES = {
   "/support": {
     title: "Support",
     intro:
-      "Farely is a new travel search project. This page explains how to get help and what Farely can and cannot handle.",
+      "Use the Farely AI Assistant for quick travel-search questions, or contact the right inbox for human support.",
     sections: [
       {
         heading: "Contact",
         body: CONTACT_EMAIL
-          ? `For support, email ${CONTACT_EMAIL}.`
+          ? `For general enquiries and partnerships, email ${CONTACT_EMAIL}. For customer support, use the support email or assistant below.`
           : "For support, use the contact option on this page.",
       },
       {
@@ -210,20 +210,20 @@ const legalStyles = `
   .fa-legalSection p{ margin:0; color:rgba(8,16,35,.66); font-size:14px; line-height:1.65; font-weight:700; }
   .fa-legalNote{ margin-top:14px; border-radius:16px; padding:14px; background:rgba(255,248,225,.95); border:1px solid rgba(180,120,0,.18); color:rgba(105,65,0,1); font-size:13px; line-height:1.5; font-weight:800; }
   .fa-supportButton{ display:inline-flex; margin-top:14px; border-radius:14px; padding:12px 16px; background:#235fff; color:#fff; text-decoration:none; font-weight:1000; }
-  .fa-supportAssistant{ margin-top:18px; border-top:1px solid rgba(10,20,70,.08); padding-top:18px; }
-  .fa-supportAssistant h2{ margin:0; font-size:24px; letter-spacing:-.04em; }
-  .fa-supportIntro{ margin:8px 0 12px; color:rgba(8,16,35,.64); font-size:14px; line-height:1.55; font-weight:750; }
+  .fa-supportAssistant{ margin-top:18px; border-radius:20px; border:1px solid rgba(35,95,255,.12); background:linear-gradient(135deg, rgba(255,255,255,.98), rgba(240,246,255,.96)); padding:18px; box-shadow:0 16px 42px rgba(35,95,255,.10); }
+  .fa-supportAssistant h2{ margin:0; font-size:clamp(26px, 4vw, 34px); letter-spacing:-.04em; color:rgba(8,16,35,.94); }
+  .fa-supportIntro{ margin:8px 0 14px; max-width:650px; color:rgba(8,16,35,.66); font-size:15px; line-height:1.55; font-weight:800; }
   .fa-supportQuick{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
-  .fa-supportQuick button{ border:1px solid rgba(10,20,70,.10); border-radius:999px; padding:9px 12px; background:#fff; color:rgba(8,16,35,.78); font-weight:900; cursor:pointer; }
+  .fa-supportQuick button{ border:1px solid rgba(35,95,255,.14); border-radius:999px; padding:9px 12px; background:rgba(255,255,255,.86); color:rgba(8,16,35,.78); font-weight:900; cursor:pointer; }
   .fa-supportLabel{ display:block; margin:8px 0 6px; color:rgba(8,16,35,.64); font-size:12px; font-weight:1000; text-transform:uppercase; letter-spacing:.06em; }
-  .fa-supportTextarea{ width:100%; min-height:96px; resize:vertical; border:1px solid rgba(10,20,70,.10); border-radius:14px; padding:12px; color:rgba(8,16,35,.86); font:inherit; font-weight:750; background:#fff; }
+  .fa-supportTextarea{ width:100%; min-height:112px; resize:vertical; border:1px solid rgba(10,20,70,.10); border-radius:16px; padding:13px; color:rgba(8,16,35,.86); font:inherit; font-weight:750; background:#fff; box-shadow:inset 0 1px 0 rgba(10,20,70,.02); }
   .fa-supportInput{ width:100%; border:1px solid rgba(10,20,70,.10); border-radius:14px; padding:12px; color:rgba(8,16,35,.86); font:inherit; font-weight:750; background:#fff; }
   .fa-supportActions{ display:flex; align-items:center; flex-wrap:wrap; gap:10px; margin-top:10px; }
   .fa-supportPrimary, .fa-supportSecondary{ border:0; border-radius:14px; padding:11px 14px; background:#235fff; color:#fff; text-decoration:none; font-weight:1000; cursor:pointer; }
   .fa-supportPrimary:disabled{ opacity:.65; cursor:not-allowed; }
   .fa-supportSecondary{ background:rgba(35,95,255,.10); color:#235fff; }
   .fa-supportMuted{ color:rgba(8,16,35,.54); font-size:12px; font-weight:850; }
-  .fa-supportReply{ margin-top:12px; border-radius:16px; padding:14px; background:rgba(240,245,255,.95); color:rgba(8,16,35,.76); font-size:14px; line-height:1.55; font-weight:800; }
+  .fa-supportReply{ margin-top:12px; border-radius:16px; padding:14px; background:#fff; color:rgba(8,16,35,.76); font-size:14px; line-height:1.55; font-weight:850; border:1px solid rgba(35,95,255,.10); }
   .fa-supportHandoff{ margin-top:14px; border-radius:18px; padding:14px; border:1px solid rgba(10,20,70,.08); background:rgba(248,250,255,.9); }
   .fa-supportHandoffTitle{ color:rgba(8,16,35,.88); font-size:16px; font-weight:1000; }
   .fa-supportHandoff p{ margin:6px 0 12px; color:rgba(8,16,35,.62); font-size:13px; line-height:1.5; font-weight:800; }

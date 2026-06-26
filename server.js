@@ -703,7 +703,7 @@ function fallbackLocationSearch(keyword, limit = 12) {
   };
 
   const scoreLocation = (location, baseScore = 0) => {
-    const { city, name, iata, tags, hay } = locationSearchText(location);
+    const { city, name, iata, hay } = locationSearchText(location);
     const exact = city === q || iata === q ? 80 : 0;
     const starts = city.startsWith(q) || name.startsWith(q) || iata.startsWith(q) ? 35 : 0;
     const wordStarts = hay.split(/\s+/).some((part) => part.startsWith(q)) ? 18 : 0;
@@ -885,6 +885,12 @@ app.get("/api/deals/flight", async (req, res) => {
   const carrier = String(req.query.carrier || "").trim().toUpperCase();
   const offerId = String(req.query.offerId || "").trim();
   const source = String(req.query.source || "unknown").trim();
+  const cabin = String(req.query.cabin || "").trim();
+  const currency = String(req.query.currency || "").trim().toUpperCase();
+  const price = String(req.query.price || "").trim();
+  const resultRank = Number(String(req.query.resultRank || "").trim());
+  const sort = String(req.query.sort || "").trim();
+  const tripType = String(req.query.tripType || "").trim();
   const validReturnDate = isValidISODate(returnDate) ? returnDate : "";
 
   if (!validateIata(origin) || !validateIata(destination) || !isValidISODate(departureDate)) {
@@ -924,6 +930,12 @@ app.get("/api/deals/flight", async (req, res) => {
     carrier,
     offerId,
     source,
+    cabin: cabin || null,
+    currency: currency || null,
+    price: price || null,
+    resultRank: Number.isFinite(resultRank) ? resultRank : null,
+    sort: sort || null,
+    tripType: tripType || null,
     target,
     targetUrl,
     userAgent: req.get("user-agent") || null,

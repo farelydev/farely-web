@@ -6,7 +6,7 @@ import LegalPage, { getLegalPage } from "./components/LegalPage";
 import PlannerModal from "./components/PlannerModal";
 import ResultsSection from "./components/ResultsSection";
 import SearchCard from "./components/SearchCard";
-import { CONTACT_HREF, CONTACT_LABEL } from "./config/site";
+import { CONTACT_HREF, CONTACT_LABEL, NOREPLY_EMAIL, SUPPORT_HREF, SUPPORT_LABEL } from "./config/site";
 import {
   addDaysISO,
   airportLabel,
@@ -767,16 +767,16 @@ export default function App() {
         tripType={tripType}
         returnDate={returnDate}
         flexMonth={flexMonth}
+        cabin={cabin}
       />
 
       <section className="fa-infoSections" aria-label="Farely information">
         <div className="fa-infoInner">
           <div id="farely-about" className="fa-infoCard">
             <div className="fa-infoKicker">About Farely</div>
-            <h3>Built for simple, confident trip planning.</h3>
+            <h3>Find better flights in seconds.</h3>
             <p>
-              Farely helps travellers compare flight ideas quickly, then narrow them down with exact dates,
-              flexible months, and guided trip prompts.
+              Farely helps travellers compare flight ideas quickly with AI-guided prompts, exact dates, and flexible months.
             </p>
           </div>
 
@@ -789,21 +789,27 @@ export default function App() {
             </p>
           </div>
 
-          <div id="farely-booking-notice" className="fa-infoCard isWarning">
-            <div className="fa-infoKicker">Important</div>
-            <h3>Farely does not take booking payments directly.</h3>
+          <div id="farely-booking-notice" className="fa-infoCard fa-trustCard">
+            <div className="fa-infoKicker">Why travellers can compare with confidence</div>
+            <h3>Clear, partner-led booking.</h3>
+            <div className="fa-trustBadgeGrid" aria-label="Farely trust signals">
+              <span className="fa-trustBadge">Secure partner booking</span>
+              <span className="fa-trustBadge">No extra Farely booking fees</span>
+              <span className="fa-trustBadge">Transparent affiliate links</span>
+            </div>
             <p>
-              Farely helps you compare routes, ideas, and partner fares. If you choose a deal, the final booking,
-              payment, ticketing, refunds, and baggage support are handled by the travel provider you book with.
+              Farely compares travel options for free. If you choose one of our partners, we may earn a commission at no extra cost to you.
             </p>
+            <a className="fa-inlineLink" href="/affiliate-disclosure">Learn more</a>
           </div>
 
           <div id="farely-support" className="fa-infoCard">
             <div className="fa-infoKicker">Support</div>
-            <h3>Help for searches and website questions.</h3>
+            <h3>Polished contact routes.</h3>
             <p>
-              For route questions, flexible-date guidance, or help using Farely, contact{" "}
-              <a className="fa-inlineLink" href={CONTACT_HREF}>{CONTACT_LABEL}</a>.
+              <a className="fa-inlineLink" href={CONTACT_HREF}>{CONTACT_LABEL}</a> handles general enquiries and partnerships.
+              {" "}
+              <a className="fa-inlineLink" href={SUPPORT_HREF}>{SUPPORT_LABEL}</a> is for customer support. {NOREPLY_EMAIL} is for automated emails only.
             </p>
           </div>
 
@@ -1309,13 +1315,23 @@ const styles = `
   .fa-demoDot{ color: rgba(150,95,0,1); font-weight:1000; margin-left:4px; }
   .fa-price{ font-weight:1000; font-size:18px; color: rgba(8,16,35,.90); }
   .fa-resultCard{
-    border-radius:18px; background: rgba(255,255,255,.86);
+    border-radius:18px;
+    background: rgba(255,255,255,.88);
     border: 1px solid rgba(10,20,70,.08);
     box-shadow: 0 18px 55px rgba(10,20,70,.10);
     overflow:hidden;
   }
-  .fa-resultHeader{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; border-bottom: 1px solid rgba(10,20,70,.08); color: rgba(8,16,35,.70); font-weight:1000; }
-  .fa-resultHint{ max-width:260px; text-align:right; font-size:11px; line-height:1.35; color:rgba(8,16,35,.52); font-weight:900; }
+  .fa-resultHeader{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:14px 16px;
+    border-bottom: 1px solid rgba(10,20,70,.08);
+    color: rgba(8,16,35,.70);
+    font-weight:1000;
+  }
+  .fa-resultHint{ max-width:290px; text-align:right; font-size:11px; line-height:1.35; color:rgba(8,16,35,.52); font-weight:900; }
   .fa-affiliateNotice{
     padding:10px 14px;
     border-bottom:1px solid rgba(10,20,70,.08);
@@ -1327,28 +1343,71 @@ const styles = `
   }
   .fa-affiliateNotice a{ color:rgba(35,95,255,1); font-weight:1000; text-decoration:none; }
   .fa-affiliateNotice a:hover{ text-decoration:underline; }
-  .fa-viewDeal{ border:0; cursor:pointer; padding:10px 14px; border-radius:12px; font-weight:1000; color:#fff; background: linear-gradient(135deg, rgba(35,95,255,1), rgba(74,60,255,1)); }
+  .fa-viewDeal{
+    border:0;
+    cursor:pointer;
+    min-width:132px;
+    padding:13px 18px;
+    border-radius:12px;
+    font-size:14px;
+    font-weight:1000;
+    color:#fff;
+    background: linear-gradient(135deg, rgba(35,95,255,1), rgba(74,60,255,1));
+    box-shadow:0 12px 26px rgba(35,95,255,.22);
+  }
   .fa-viewDeal:disabled{ opacity:.6; cursor:not-allowed; }
   .fa-viewDeal.isActive{ display:inline-flex; align-items:center; justify-content:center; text-decoration:none; }
-  .fa-airlineList{ padding:12px; display:flex; flex-direction:column; gap:10px; }
-  .fa-airlineRow{ display:block; padding:12px; border-radius:14px; border: 1px solid rgba(10,20,70,.08); background: rgba(248,250,255,.9); }
+  .fa-airlineList{ padding:12px; display:flex; flex-direction:column; gap:12px; }
+  .fa-airlineRow{
+    display:block;
+    padding:16px;
+    border-radius:16px;
+    border: 1px solid rgba(10,20,70,.08);
+    background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,255,.92));
+    box-shadow:0 12px 28px rgba(10,20,70,.06);
+  }
   .fa-airlineRow.isDemo{ border-color: rgba(180,120,0,.18); background: linear-gradient(180deg, rgba(255,252,244,.95), rgba(248,250,255,.92)); }
   .fa-offerMain{ width:100%; }
-  .fa-offerTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:14px; }
-  .fa-airlineName{ font-weight:1000; color: rgba(8,16,35,.88); display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .fa-offerTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:18px; }
+  .fa-airlineLeft{ min-width:0; flex:1; }
+  .fa-airlineName{ font-weight:1000; color: rgba(8,16,35,.88); display:flex; align-items:center; gap:12px; min-width:0; }
+  .fa-airlineTitleLine{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; min-width:0; }
   .fa-airlineLogo{
     display:inline-grid;
     place-items:center;
-    width:40px;
-    height:40px;
-    border-radius:11px;
-    background:var(--airline-bg);
-    color:var(--airline-fg);
-    font-size:13px;
+    flex:0 0 auto;
+    width:44px;
+    height:44px;
+    border-radius:12px;
+    background:#fff;
+    color:var(--airline-bg);
+    font-size:12px;
     font-weight:1000;
     letter-spacing:.02em;
     box-shadow:0 8px 20px rgba(10,20,70,.14);
-    border:1px solid rgba(255,255,255,.34);
+    border:1px solid rgba(10,20,70,.08);
+    overflow:hidden;
+    position:relative;
+  }
+  .fa-airlineLogo img{
+    width:100%;
+    height:100%;
+    padding:7px;
+    object-fit:contain;
+    display:block;
+    background:#fff;
+    border-radius:inherit;
+    position:relative;
+    z-index:2;
+  }
+  .fa-airlineLogo span{
+    position:absolute;
+    inset:0;
+    display:grid;
+    place-items:center;
+    background:var(--airline-bg);
+    color:var(--airline-fg);
+    z-index:1;
   }
   .fa-airlineCode{
     font-size:11px;
@@ -1362,30 +1421,72 @@ const styles = `
   }
   .fa-badge{ font-size:11px; padding:4px 10px; border-radius:999px; background: rgba(35,95,255,.12); border: 1px solid rgba(35,95,255,.16); color: rgba(35,95,255,1); font-weight:1000; text-transform: lowercase; }
   .fa-demoBadge{ font-size:11px; padding:4px 10px; border-radius:999px; background: rgba(255,240,190,1); border: 1px solid rgba(180,120,0,.20); color: rgba(130,84,0,1); font-weight:1000; }
-  .fa-airlineMeta{ margin-top:6px; font-size:12px; color: rgba(8,16,35,.58); font-weight:900; }
-  .fa-airlinePrice{ font-weight:1000; font-size:22px; color: rgba(8,16,35,.92); white-space:nowrap; }
+  .fa-airlineMeta{ margin-top:5px; font-size:12px; color: rgba(8,16,35,.58); font-weight:900; }
+  .fa-pricePanel{
+    min-width:150px;
+    text-align:right;
+    padding:4px 0 0;
+  }
+  .fa-priceLabel{ font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:rgba(8,16,35,.42); font-weight:1000; }
+  .fa-airlinePrice{ margin-top:2px; font-weight:1000; font-size:30px; line-height:1; color: rgba(8,16,35,.96); white-space:nowrap; letter-spacing:0; }
+  .fa-priceSub{ margin-top:6px; font-size:11px; color:rgba(8,16,35,.55); font-weight:1000; }
   .fa-resultsHelper{ margin:-4px 0 14px; font-size:12px; color:rgba(8,16,35,.58); font-weight:900; }
-  .fa-legGrid{ display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:10px; margin-top:12px; }
-  @media (max-width:760px){ .fa-legGrid{ grid-template-columns:1fr; } .fa-offerTop{ flex-direction:column; } }
-  .fa-legDetail{ border-radius:14px; border:1px solid rgba(10,20,70,.08); background:rgba(255,255,255,.72); padding:12px; }
-  .fa-legDetail.isEmpty{ display:flex; flex-direction:column; justify-content:center; min-height:132px; }
+  .fa-legGrid{ display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:12px; margin-top:14px; }
+  @media (max-width:760px){
+    .fa-resultHeader{ align-items:flex-start; flex-direction:column; }
+    .fa-resultHint{ max-width:none; text-align:left; }
+    .fa-legGrid{ grid-template-columns:1fr; }
+    .fa-offerTop{ flex-direction:column; }
+    .fa-pricePanel{ width:100%; text-align:left; display:flex; align-items:flex-end; justify-content:space-between; gap:12px; }
+    .fa-offerActions{ flex-direction:column; align-items:stretch; }
+    .fa-viewDeal{ width:100%; }
+  }
+  .fa-legDetail{ border-radius:14px; border:1px solid rgba(10,20,70,.08); background:rgba(255,255,255,.78); padding:13px; }
+  .fa-legDetail.isEmpty{ display:flex; flex-direction:column; justify-content:center; min-height:150px; }
   .fa-legTop{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
   .fa-legLabel{ font-size:11px; font-weight:1000; color:rgba(35,95,255,1); text-transform:uppercase; letter-spacing:.08em; }
+  .fa-legFlightNo{ margin-top:4px; font-size:11px; font-weight:900; color:rgba(8,16,35,.50); }
   .fa-legMeta{ font-size:11px; font-weight:1000; color:rgba(8,16,35,.58); }
   .fa-legMain{ display:grid; grid-template-columns: minmax(70px, auto) 1fr minmax(70px, auto); align-items:center; gap:10px; }
-  .fa-legTime{ font-size:20px; font-weight:1000; color:rgba(8,16,35,.92); }
+  .fa-legTime{ font-size:22px; font-weight:1000; color:rgba(8,16,35,.92); letter-spacing:0; }
   .fa-legAirport{ margin-top:2px; font-size:13px; font-weight:1000; color:rgba(8,16,35,.70); }
   .fa-legDate{ margin-top:2px; font-size:11px; font-weight:800; color:rgba(8,16,35,.48); }
   .fa-legLine{ display:flex; align-items:center; min-width:40px; }
   .fa-legLine span{ display:block; width:100%; height:2px; border-radius:999px; background:linear-gradient(90deg, rgba(35,95,255,.25), rgba(35,95,255,.85), rgba(35,95,255,.25)); }
-  .fa-legFooter{ margin-top:10px; font-size:11px; font-weight:900; color:rgba(8,16,35,.56); }
-  .fa-legNote{ margin-top:6px; font-size:11px; font-weight:900; color:rgba(8,16,35,.46); }
+  .fa-legFooter{ margin-top:11px; font-size:11px; font-weight:900; color:rgba(8,16,35,.56); }
+  .fa-legNote{ margin-top:7px; font-size:11px; font-weight:900; color:rgba(8,16,35,.46); line-height:1.35; }
   .fa-legEmptyText{ font-size:13px; font-weight:1000; color:rgba(8,16,35,.58); }
-  .fa-offerSignals{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .fa-offerSignals{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
   .fa-signalChip{ border-radius:999px; padding:6px 10px; background:rgba(255,255,255,.82); border:1px solid rgba(10,20,70,.08); color:rgba(8,16,35,.58); font-size:11px; font-weight:1000; }
-  .fa-offerActions{ display:flex; justify-content:flex-end; margin-top:12px; }
+  .fa-offerActions{ display:flex; align-items:center; justify-content:space-between; gap:14px; margin-top:14px; padding-top:12px; border-top:1px solid rgba(10,20,70,.07); }
+  .fa-offerTrust{ max-width:470px; font-size:12px; line-height:1.4; font-weight:900; color:rgba(8,16,35,.54); }
   .fa-tip{ padding:12px 14px 14px; font-size:12px; color: rgba(8,16,35,.58); }
-  .fa-empty{ padding:16px 12px; border-radius:14px; border: 1px dashed rgba(10,20,70,.16); background: rgba(255,255,255,.65); color: rgba(8,16,35,.70); font-weight:1000; font-size:12px; }
+  .fa-empty{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    min-height:138px;
+    padding:18px;
+    border-radius:16px;
+    border: 1px dashed rgba(35,95,255,.22);
+    background: linear-gradient(135deg, rgba(255,255,255,.88), rgba(240,246,255,.92));
+    color: rgba(8,16,35,.70);
+    font-weight:1000;
+    font-size:12px;
+  }
+  .fa-emptyIcon{
+    flex:0 0 auto;
+    width:52px;
+    height:52px;
+    padding:12px;
+    border-radius:16px;
+    fill:rgba(35,95,255,1);
+    background:rgba(35,95,255,.10);
+    border:1px solid rgba(35,95,255,.12);
+    box-shadow:0 12px 28px rgba(35,95,255,.10);
+  }
+  .fa-emptyTitle{ font-size:18px; line-height:1.15; color:rgba(8,16,35,.90); font-weight:1000; letter-spacing:0; }
+  .fa-emptyText{ margin-top:6px; max-width:520px; font-size:13px; line-height:1.45; color:rgba(8,16,35,.58); font-weight:850; }
 
   .fa-infoSections{ padding: 0 18px 62px; }
   .fa-infoInner{
@@ -1429,6 +1530,18 @@ const styles = `
     line-height:1.5;
     font-weight:750;
     color:rgba(8,16,35,.62);
+  }
+  .fa-trustBadgeGrid{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .fa-trustBadge{
+    display:inline-flex;
+    align-items:center;
+    border-radius:999px;
+    padding:7px 10px;
+    background:rgba(35,95,255,.08);
+    border:1px solid rgba(35,95,255,.12);
+    color:rgba(35,95,255,1);
+    font-size:11px;
+    font-weight:1000;
   }
   .fa-inlineLink{ color:rgba(35,95,255,1); font-weight:1000; text-decoration:none; }
   .fa-inlineLink:hover{ text-decoration:underline; }
@@ -1707,22 +1820,30 @@ const styles = `
     .fa-airlineName{ color: rgba(235,240,255,.92); }
     .fa-airlineLogo{ box-shadow:none; border-color:rgba(255,255,255,.16); }
     .fa-demoBadge{ background: rgba(110,75,0,.28); border-color: rgba(255,210,120,.18); color: rgba(255,228,165,1); }
+    .fa-priceLabel{ color:rgba(235,240,255,.42); }
+    .fa-priceSub{ color:rgba(235,240,255,.56); }
     .fa-airlineMeta{ color: rgba(235,240,255,.60); }
     .fa-airlinePrice{ color: rgba(235,240,255,.92); }
     .fa-legDetail{ background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.08); }
-    .fa-legMeta, .fa-legFooter, .fa-legEmptyText{ color:rgba(235,240,255,.60); }
+    .fa-legMeta, .fa-legFooter, .fa-legEmptyText, .fa-legFlightNo{ color:rgba(235,240,255,.60); }
     .fa-legNote{ color:rgba(235,240,255,.48); }
     .fa-legTime{ color:rgba(235,240,255,.95); }
     .fa-legAirport{ color:rgba(235,240,255,.74); }
     .fa-legDate{ color:rgba(235,240,255,.48); }
     .fa-signalChip{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.08); color:rgba(235,240,255,.64); }
+    .fa-offerActions{ border-top-color:rgba(255,255,255,.08); }
+    .fa-offerTrust{ color:rgba(235,240,255,.58); }
     .fa-tip{ color: rgba(235,240,255,.62); }
     .fa-empty{ background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); color: rgba(235,240,255,.72); }
+    .fa-emptyIcon{ background:rgba(120,160,255,.14); border-color:rgba(120,160,255,.18); fill:rgba(140,175,255,1); box-shadow:none; }
+    .fa-emptyTitle{ color:rgba(235,240,255,.94); }
+    .fa-emptyText{ color:rgba(235,240,255,.62); }
     .fa-infoCard{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08); box-shadow:none; }
     .fa-infoCard.isMuted{ background: rgba(255,255,255,.04); }
     .fa-infoCard.isWarning{ background: rgba(110,75,0,.22); border-color: rgba(255,210,120,.18); }
     .fa-infoCard h3{ color: rgba(235,240,255,.94); }
     .fa-infoCard p{ color: rgba(235,240,255,.64); }
+    .fa-trustBadge{ background:rgba(120,160,255,.12); border-color:rgba(120,160,255,.18); color:rgba(140,175,255,1); }
     .fa-footer{ color: rgba(235,240,255,.62); }
     .fa-footerInner{ border-top-color: rgba(255,255,255,.08); }
     .fa-footerInner strong{ color: rgba(235,240,255,.94); }

@@ -1,4 +1,4 @@
-import { carrierLabel, cx, firstSegment, isoDurationToMinutes, lastSegment, minutesToPretty, stopsLabel } from "../utils/flightHelpers";
+import { carrierLabel, cx, firstSegment, isoDurationToMinutes, lastSegment, minutesToPretty, parseMoneyToNumber, stopsLabel } from "../utils/flightHelpers";
 
 const AIRLINE_BRANDS = {
   A1: { name: "A.P.G.", colors: ["#13294b", "#f5b700"] },
@@ -30,6 +30,7 @@ function airlineBrand(code) {
 function AirlineLogo({ code }) {
   const brand = airlineBrand(code);
   const [bg, fg] = brand.colors;
+  const logoUrl = /^[A-Z0-9]{2}$/.test(brand.code) ? `https://images.kiwi.com/airlines/64/${brand.code}.png` : "";
 
   return (
     <span
@@ -41,8 +42,26 @@ function AirlineLogo({ code }) {
       title={brand.name}
       aria-label={brand.name}
     >
-      {brand.code.slice(0, 2)}
+      {logoUrl && (
+        <img
+          src={logoUrl}
+          alt=""
+          loading="lazy"
+          onError={(event) => {
+            event.currentTarget.style.display = "none";
+          }}
+        />
+      )}
+      <span>{brand.code.slice(0, 2)}</span>
     </span>
+  );
+}
+
+function EmptyResultsIcon() {
+  return (
+    <svg className="fa-emptyIcon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+      <path d="M10 38l42-20c2.5-1.2 4.8 1.7 3.1 3.9L44 36l5 17-5.4 2.2-9.1-13.5-11 7.2.4 7.6-4.2 1.7-4.4-10.5-10.4-4.6 1.8-4.2 7.5.8L25 28.6 10 38z" />
+    </svg>
   );
 }
 
@@ -108,6 +127,42 @@ function itineraryAirlineLabel(itinerary) {
   return carriers.length ? carriers.map((code) => airlineBrand(code).name).join(" / ") : "Airline TBC";
 }
 
+function itineraryFlightNumbers(itinerary) {
+  const segs = itinerary?.segments || [];
+  const flights = segs
+    .map((seg) => `${seg.carrier || ""}${seg.flightNumber || ""}`.trim())
+    .filter(Boolean);
+
+  if (flights.length === 0) return "Flight number TBC";
+  return flights.join(" / ");
+}
+
+function formatLayoverMinutes(minutes) {
+  if (!Number.isFinite(minutes) || minutes < 0) return "";
+  return minutesToPretty(minutes);
+}
+
+function layoverSummary(itinerary) {
+  const segs = itinerary?.segments || [];
+  if (segs.length <= 1) return "Direct flight";
+
+  const layovers = [];
+
+  for (let i = 0; i < segs.length - 1; i += 1) {
+    const current = segs[i];
+    const next = segs[i + 1];
+    const arrive = new Date(current?.arriveAt || "");
+    const depart = new Date(next?.departAt || "");
+    const minutes = Math.round((depart.getTime() - arrive.getTime()) / 60000);
+    const airport = current?.to || next?.from || "connection";
+    const length = formatLayoverMinutes(minutes);
+
+    layovers.push(length ? `${length} in ${airport}` : `Connection in ${airport}`);
+  }
+
+  return `Layover: ${layovers.join(", ")}`;
+}
+
 function itineraryViaLabel(itinerary) {
   const segs = itinerary?.segments || [];
   if (segs.length <= 1) return "Direct flight";
@@ -122,6 +177,30 @@ function itineraryViaLabel(itinerary) {
   return `Via ${via.join(", ")}`;
 }
 
+function formatPrice(price, currency) {
+  const value = parseMoneyToNumber(price);
+  const symbol = currency === "GBP" ? "£" : currency === "USD" ? "$" : currency === "EUR" ? "€" : "";
+  const amount = Number.isFinite(value) ? Math.round(value).toLocaleString("en-GB") : price;
+  return `${symbol}${amount}`;
+}
+
+function dealUrlWithMetadata(dealUrl, metadata) {
+  if (!dealUrl) return "";
+
+  try {
+    const url = new URL(dealUrl, window.location.origin);
+    Object.entries(metadata).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        url.searchParams.set(key, String(value));
+      }
+    });
+
+    return `${url.pathname}${url.search}`;
+  } catch {
+    return dealUrl;
+  }
+}
+
 function ItineraryDetail({ label, itinerary }) {
   const segs = itinerary?.segments || [];
   const first = segs[0];
@@ -131,10 +210,11 @@ function ItineraryDetail({ label, itinerary }) {
   return (
     <div className="fa-legDetail">
       <div className="fa-legTop">
-        <span className="fa-legLabel">{label}</span>
-        <span className="fa-legMeta">
-          {minutesToPretty(mins)} • {itineraryStopsLabel(itinerary)}
-        </span>
+        <div>
+          <span className="fa-legLabel">{label}</span>
+          <div className="fa-legFlightNo">{itineraryFlightNumbers(itinerary)}</div>
+        </div>
+        <span className="fa-legMeta">{minutesToPretty(mins)} • {itineraryStopsLabel(itinerary)}</span>
       </div>
 
       <div className="fa-legMain">
@@ -158,7 +238,7 @@ function ItineraryDetail({ label, itinerary }) {
       <div className="fa-legFooter">
         {itineraryRouteLabel(itinerary)} • {itineraryAirlineLabel(itinerary)}
       </div>
-      <div className="fa-legNote">{itineraryViaLabel(itinerary)}</div>
+      <div className="fa-legNote">{itineraryViaLabel(itinerary)} • {layoverSummary(itinerary)}</div>
     </div>
   );
 }
@@ -166,7 +246,7 @@ function ItineraryDetail({ label, itinerary }) {
 export default function ResultsSection({
   didSearch, routeTitle, resultsTab, setResultsTab, apiWarning, shownOffers, apiSource,
   pricePills, flexMode, selectedFlexDate, onPickFlexDay, isSearching, exactMode,
-  routeFromCode, routeToCode, departDate, tripType, returnDate, flexMonth,
+  routeFromCode, routeToCode, departDate, tripType, returnDate, flexMonth, cabin,
 }) {
   const isMultiCity = tripType === "multicity";
 
@@ -256,29 +336,46 @@ export default function ResultsSection({
           </div>
 
           <div className="fa-affiliateNotice">
-            Farely may earn commission from partner links. Bookings happen with third-party travel providers.
+            Farely compares travel options for free. If you book with one of our trusted partners, Farely may earn a commission at no extra cost to you.
             <a href="/affiliate-disclosure"> Learn more</a>.
           </div>
 
           <div className="fa-airlineList">
             {shownOffers.length === 0 ? (
               <div className="fa-empty">
-                {isMultiCity
-                  ? "Multi-city search is planned in the UI. Live multi-city pricing will be added next."
-                  : didSearch
-                    ? "No reliable live fares are showing yet. Try exact dates or open a partner deal once available."
-                    : "Choose your trip, then check live fares or partner deals."}
+                <EmptyResultsIcon />
+                <div>
+                  <div className="fa-emptyTitle">
+                    {didSearch ? "No matching fares yet" : "Ready when you are"}
+                  </div>
+                  <div className="fa-emptyText">
+                    {isMultiCity
+                      ? "Multi-city search is planned in the UI. Live multi-city pricing will be added next."
+                      : didSearch
+                        ? "Try exact dates, adjust the route, or search again to compare the best available options."
+                        : "Search flights to compare the best options, then open a trusted partner deal when you are ready."}
+                  </div>
+                </div>
               </div>
             ) : (
               shownOffers.map((o, idx) => {
                 const price = o?.price;
                 const cur = o?.currency || "GBP";
                 const carrierCode = carrierLabel(o);
+                const carrier = airlineBrand(carrierCode);
                 const outbound = o?.itineraries?.[0] || null;
                 const inbound = o?.itineraries?.[1] || null;
                 const first = firstSegment(o);
                 const last = lastSegment(o);
                 const routeLine = `${first?.from || routeFromCode} — ${last?.to || routeToCode}`;
+                const dealUrl = dealUrlWithMetadata(o?.dealUrl, {
+                  price,
+                  currency: cur,
+                  cabin,
+                  resultRank: idx + 1,
+                  sort: resultsTab,
+                  tripType,
+                });
 
                 return (
                   <div key={o?.id || `${routeFromCode}-${routeToCode}-${idx}`} className={cx("fa-airlineRow", o?.isDemo && "isDemo")}>
@@ -286,20 +383,25 @@ export default function ResultsSection({
                       <div className="fa-offerTop">
                         <div className="fa-airlineLeft">
                           <div className="fa-airlineName">
-                            <AirlineLogo code={carrierCode} /> {airlineBrand(carrierCode).name}
-                            <span className="fa-airlineCode">{carrierCode}</span>
-                            <span className="fa-badge">{resultsTab}</span>
-                            {o?.isDemo && <span className="fa-demoBadge">Demo fallback</span>}
-                          </div>
-                          <div className="fa-airlineMeta">
-                            {routeLine} • {stopsLabel(o)}
-                            {inbound ? " • Return included" : ""}
+                            <AirlineLogo code={carrierCode} />
+                            <div>
+                              <div className="fa-airlineTitleLine">
+                                <span>{carrier.name}</span>
+                                <span className="fa-airlineCode">{carrierCode}</span>
+                                {o?.isDemo && <span className="fa-demoBadge">Demo fallback</span>}
+                              </div>
+                              <div className="fa-airlineMeta">
+                                {routeLine} • {stopsLabel(o)}
+                                {inbound ? " • Return included" : " • One-way fare"}
+                              </div>
+                            </div>
                           </div>
                         </div>
 
-                        <div className="fa-airlinePrice">
-                          {cur === "GBP" ? "£" : ""}
-                          {price}
+                        <div className="fa-pricePanel">
+                          <div className="fa-priceLabel">Total price</div>
+                          <div className="fa-airlinePrice">{formatPrice(price, cur)}</div>
+                          <div className="fa-priceSub">{cur} • {cabin || "Economy"}</div>
                         </div>
                       </div>
 
@@ -318,15 +420,18 @@ export default function ResultsSection({
                       </div>
 
                       <div className="fa-offerSignals">
-                        <span className="fa-signalChip">{o?.isDemo ? "Preview fare only" : "Partner booking"}</span>
-                        <span className="fa-signalChip">{inbound ? "Return fare" : "One-way fare"}</span>
-                        <span className="fa-signalChip">Confirm baggage and final price on partner site</span>
+                        <span className="fa-signalChip">Secure partner booking</span>
+                        <span className="fa-signalChip">No extra Farely booking fees</span>
+                        <span className="fa-signalChip">Transparent affiliate links</span>
                       </div>
 
                       <div className="fa-offerActions">
-                        {o?.dealUrl ? (
-                          <a className="fa-viewDeal isActive" href={o.dealUrl} target="_blank" rel="noreferrer">
-                            Check partner deal →
+                        <div className="fa-offerTrust">
+                          Check baggage, seat rules, and the final live fare before paying.
+                        </div>
+                        {dealUrl ? (
+                          <a className="fa-viewDeal isActive" href={dealUrl} target="_blank" rel="noreferrer">
+                            View deal
                           </a>
                         ) : (
                           <button type="button" className="fa-viewDeal" disabled>
@@ -342,7 +447,7 @@ export default function ResultsSection({
           </div>
 
           <div className="fa-tip">
-            Farely helps you compare ideas first. Final price, baggage, fare rules, and cancellation terms should always be checked on the partner site before booking.
+            Search, compare, then confirm final price, baggage, and fare rules on the partner site before booking.
           </div>
         </div>
       </div>
