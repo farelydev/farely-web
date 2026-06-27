@@ -31,123 +31,6 @@ import {
 const HERO_BG =
   "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2200&q=70";
 
-const MONTHS = [
-  ["january", 1],
-  ["february", 2],
-  ["march", 3],
-  ["april", 4],
-  ["may", 5],
-  ["june", 6],
-  ["july", 7],
-  ["august", 8],
-  ["september", 9],
-  ["october", 10],
-  ["november", 11],
-  ["december", 12],
-];
-
-const PLACE_ALIASES = [
-  { code: "LON", label: "London", keys: ["london"] },
-  { code: "DXB", label: "Dubai", keys: ["dubai"] },
-  { code: "DOH", label: "Doha", keys: ["doha"] },
-  { code: "PAR", label: "Paris", keys: ["paris"] },
-  { code: "NCE", label: "Nice", keys: ["nice", "south of france", "south france", "french riviera", "france"] },
-  { code: "AGP", label: "Malaga", keys: ["malaga", "south of spain", "south spain", "sunny spain", "beach"] },
-  { code: "RAK", label: "Marrakech", keys: ["marrakech", "morocco"] },
-  { code: "CMN", label: "Casablanca", keys: ["casablanca"] },
-  { code: "JED", label: "Jeddah", keys: ["jeddah", "makkah", "umrah"] },
-  { code: "MED", label: "Madinah", keys: ["madinah", "medina"] },
-  { code: "NYC", label: "New York", keys: ["new york", "nyc"] },
-  { code: "FCO", label: "Rome", keys: ["rome"] },
-  { code: "IST", label: "Istanbul", keys: ["istanbul"] },
-];
-
-function nextMonthValue(monthNumber) {
-  const now = new Date();
-  let year = now.getFullYear();
-  if (monthNumber <= now.getMonth() + 1) year += 1;
-  return `${year}-${String(monthNumber).padStart(2, "0")}`;
-}
-
-function firstDateOfMonth(monthValue) {
-  return `${monthValue}-01`;
-}
-
-function matchPlace(text) {
-  const lower = String(text || "").toLowerCase();
-  return PLACE_ALIASES.find((place) => place.keys.some((key) => lower.includes(key))) || null;
-}
-
-function parseTripPrompt(prompt) {
-  const text = String(prompt || "").trim();
-  const lower = text.toLowerCase();
-
-  if (!lower) return { kind: "suggestions", reason: "empty" };
-
-  const monthMatch = MONTHS.find(([name]) => lower.includes(name));
-  const flexMonth = monthMatch ? nextMonthValue(monthMatch[1]) : null;
-
-  const durationMatch = lower.match(/\b(\d{1,2})\s*(?:days?|nights?)\b/);
-  const tripLength = durationMatch ? Number(durationMatch[1]) : null;
-
-  const budgetMatch = lower.match(/\b(?:under|below|max|maximum|budget)\s*£?\s*(\d{2,5})\b/);
-  const budget = budgetMatch ? Number(budgetMatch[1]) : null;
-
-  const isUmrah = /\b(umrah|makkah|madinah|medina|jeddah)\b/.test(lower);
-  const isPackage = /\b(package|hotel)\b/.test(lower) || isUmrah;
-  const isWeekend = /\bweekend\b/.test(lower);
-  const isCheap = /\b(cheap|cheapest|budget|under|below)\b/.test(lower);
-  const isSunny = /\b(sunny|sun|beach|warm)\b/.test(lower);
-  const isEurope = /\beurope\b/.test(lower);
-
-  const routeMatch = lower.match(/(?:from\s+)?(.+?)\s+to\s+(.+?)(?:\s+(?:in|for|under|below|with|then)\b|$)/);
-  const origin = matchPlace(routeMatch?.[1] || lower.match(/\bfrom\s+(.+?)(?:\s+to\b|\s+in\b|$)/)?.[1]) || matchPlace("london");
-  let destination = matchPlace(routeMatch?.[2] || lower.match(/\b(?:to|in)\s+(.+?)(?:\s+in\b|\s+for\b|$)/)?.[1]);
-
-  if (!destination && isUmrah) destination = matchPlace("jeddah");
-  if (!destination && isSunny && !isEurope) destination = matchPlace("malaga");
-
-  if (lower.includes("then") || lower.includes("multi-city") || (lower.includes("morocco") && lower.includes("france"))) {
-    return {
-      kind: "multi-city",
-      origin,
-      budget,
-      flexMonth,
-      tripLength: tripLength || 3,
-      legs: [
-        { from: "London", to: "Nice" },
-        { from: "Nice", to: "Marrakech" },
-        { from: "Marrakech", to: "London" },
-      ],
-    };
-  }
-
-  if (!destination || (isEurope && !routeMatch?.[2]) || (isCheap && isSunny)) {
-    return {
-      kind: "suggestions",
-      reason: "vague-destination",
-      origin,
-      destination,
-      budget,
-      flexMonth,
-      tripLength,
-      theme: isUmrah ? "umrah" : isWeekend ? "weekend" : isSunny ? "sunny" : isEurope ? "europe" : "general",
-    };
-  }
-
-  return {
-    kind: isPackage ? "package" : "simple",
-    origin,
-    destination,
-    budget,
-    flexMonth,
-    tripLength: tripLength || (isUmrah ? 10 : isWeekend ? 3 : 5),
-    dateMode: flexMonth || isCheap ? "flex" : "exact",
-    tripType: lower.includes("one way") || lower.includes("one-way") ? "oneway" : "return",
-    theme: isUmrah ? "umrah" : isSunny ? "sunny" : isEurope ? "europe" : "general",
-  };
-}
-
 export default function App() {
   const legalPage = getLegalPage(window.location.pathname);
 
@@ -296,18 +179,25 @@ export default function App() {
           date: x.date,
           price: Math.round(x.cheapestPrice),
           source: x.source,
+          actionLabel: tripType === "return" ? "Tap to set depart date" : "Tap to search this date",
         }));
     }
 
     const seed = (routeFromCode + routeToCode).split("").reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
     const base = 35 + (seed % 70);
-    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    const start = departDate || todayPlus(30);
 
-    return days.map((d, i) => {
+    return Array.from({ length: 7 }, (_, i) => {
+      const date = addDaysISO(start, i);
+      const label = new Intl.DateTimeFormat("en-GB", {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+      }).format(new Date(`${date}T12:00:00`));
       const v = base + ((i * 13 + seed) % 60) - 20;
-      return { key: d, label: d, date: "", price: Math.max(29, v), source: "preview" };
+      return { key: date, label, date: "", price: Math.max(29, v), source: "preview", actionLabel: "Guide only" };
     });
-  }, [routeFromCode, routeToCode, flexMode, flexDays]);
+  }, [routeFromCode, routeToCode, flexMode, flexDays, departDate, tripType]);
 
   function clearSearchState() {
     setDidSearch(false);
@@ -336,7 +226,6 @@ export default function App() {
   }
 
   function openPlanner(mode) {
-    clearSearchState();
     setPlannerMode(mode);
     setPlannerOpen(true);
     setMenuOpen(false);
@@ -346,191 +235,23 @@ export default function App() {
     setPlannerOpen(false);
   }
 
-  function chooseUmrah(option) {
+  function applyConfirmedTrip(draft) {
     clearSearchState();
+    setTripType(draft.tripType || "return");
+    setDateMode(draft.dateMode || "exact");
+    setRoute(draft.originCode || "LON", draft.destinationCode || "AGP");
 
-    if (option === "jeddah-first") {
-      setTripType("return");
-      setDateMode("exact");
-      setRoute("LON", "JED");
-      setDepartDate(todayPlus(30));
-      setReturnDate(todayPlus(40));
-      setAiText("Umrah trip: fly to Jeddah first");
-    }
+    if (draft.departDate) setDepartDate(draft.departDate);
+    if (draft.returnDate) setReturnDate(draft.returnDate);
+    if (draft.flexMonth) setFlexMonth(draft.flexMonth);
+    if (draft.tripLength) setTripLength(Math.min(Math.max(Number(draft.tripLength), 1), 60));
+    if (draft.cabin) setCabin(draft.cabin);
 
-    if (option === "madinah-first") {
-      setTripType("return");
-      setDateMode("exact");
-      setRoute("LON", "MED");
-      setDepartDate(todayPlus(30));
-      setReturnDate(todayPlus(40));
-      setAiText("Umrah trip: fly to Madinah first");
-    }
-
-    if (option === "flexible") {
-      setTripType("return");
-      setDateMode("flex");
-      setRoute("LON", "JED");
-      setTripLength(10);
-      setAiText("Flexible Umrah dates: compare Jeddah and Madinah");
-    }
-
-    if (option === "package") {
-      setTripType("return");
-      setDateMode("flex");
-      setRoute("LON", "JED");
-      setTripLength(10);
-      setAiText("Umrah flight and hotel package");
-    }
-
+    setAiText(`${draft.label || "Farely AI trip"} — ${draft.reason || "confirmed by you before search"}`);
     closePlanner();
-  }
-
-  function chooseWeekend(option) {
-    clearSearchState();
-    setTripType("return");
-    setDateMode("exact");
-    setDepartDate(todayPlus(10));
-    setReturnDate(todayPlus(13));
-
-    if (option === "paris") {
-      setRoute("LON", "CDG");
-      setAiText("Weekend getaway in Paris");
-    }
-
-    if (option === "malaga") {
-      setRoute("LON", "AGP");
-      setAiText("Sunny weekend in Malaga");
-    }
-
-    if (option === "rome") {
-      setRoute("LON", "FCO");
-      setAiText("Weekend getaway in Rome");
-    }
-
-    closePlanner();
-  }
-
-  function chooseCheapest(option) {
-    clearSearchState();
-    setTripType("return");
-    setDateMode("flex");
-    setTripLength(5);
-    setFlexWindow(7);
-
-    if (option === "anywhere-sunny") {
-      setRoute("LON", "AGP");
-      setAiText("Find the cheapest sunny Europe trip");
-    }
-
-    if (option === "new-york") {
-      setRoute("LHR", "JFK");
-      setAiText("Find the cheapest month to fly to New York");
-    }
-
-    if (option === "doha") {
-      setRoute("LON", "DOH");
-      setAiText("Find the cheapest month to fly to Doha");
-    }
-
-    closePlanner();
-  }
-
-  function chooseAiSuggestion(option) {
-    clearSearchState();
-
-    if (option === "south-spain") {
-      setTripType("return");
-      setDateMode("flex");
-      setTripLength(3);
-      setRoute("LON", "AGP");
-      setAiText("3 days somewhere sunny in south of Spain");
-      closePlanner();
-    }
-
-    if (option === "spain-morocco") {
-      setTripType("multicity");
-      setDateMode("exact");
-      setMultiLegs([
-        { from: "London", to: "Malaga", date: todayPlus(30) },
-        { from: "Malaga", to: "Marrakech", date: todayPlus(33) },
-        { from: "Marrakech", to: "London", date: todayPlus(37) },
-      ]);
-      setAiText("Multi-city trip to south of Spain and Morocco");
-      closePlanner();
-    }
-
-    if (option === "umrah") {
-      setPlannerMode("umrah");
-    }
   }
 
   function handleAiButton() {
-    clearSearchState();
-    const parsed = parseTripPrompt(aiText);
-
-    if (parsed.kind === "multi-city") {
-      const startDate = parsed.flexMonth ? firstDateOfMonth(parsed.flexMonth) : todayPlus(30);
-      const firstStay = parsed.tripLength || 3;
-      const secondStay = aiText.toLowerCase().match(/\bthen\s+(\d{1,2})\s*(?:days?|nights?)\b/)?.[1];
-      const secondStayDays = secondStay ? Number(secondStay) : 4;
-
-      setTripType("multicity");
-      setDateMode("exact");
-      setMultiLegs([
-        { from: parsed.legs[0].from, to: parsed.legs[0].to, date: startDate },
-        { from: parsed.legs[1].from, to: parsed.legs[1].to, date: addDaysISO(startDate, firstStay) },
-        { from: parsed.legs[2].from, to: parsed.legs[2].to, date: addDaysISO(startDate, firstStay + secondStayDays) },
-      ]);
-      setAiText(aiText.trim() || "Multi-city trip");
-      return;
-    }
-
-    if (parsed.kind === "suggestions") {
-      if (parsed.theme === "umrah") {
-        openPlanner("umrah");
-        return;
-      }
-
-      if (parsed.theme === "weekend") {
-        openPlanner("weekend");
-        return;
-      }
-
-      if (parsed.theme === "sunny" || parsed.theme === "europe") {
-        setTripType("return");
-        setDateMode("flex");
-        setTripLength(parsed.tripLength || 5);
-        setFlexWindow(7);
-      }
-
-      openPlanner("ai");
-      return;
-    }
-
-    if (parsed.origin?.code && parsed.destination?.code) {
-      setTripType(parsed.tripType || "return");
-      setDateMode(parsed.dateMode || "exact");
-      setRoute(parsed.origin.code, parsed.destination.code);
-
-      if (parsed.flexMonth) {
-        setFlexMonth(parsed.flexMonth);
-        setDateMode("flex");
-      }
-
-      if (parsed.tripLength) {
-        setTripLength(Math.min(Math.max(parsed.tripLength, 1), 60));
-      }
-
-      if (!parsed.flexMonth && parsed.dateMode !== "flex") {
-        const depart = todayPlus(parsed.theme === "umrah" ? 150 : 30);
-        setDepartDate(depart);
-        setReturnDate(addDaysISO(depart, parsed.tripLength || 5));
-      }
-
-      return;
-    }
-
     openPlanner("ai");
   }
 
@@ -658,6 +379,8 @@ export default function App() {
 
   async function onPickFlexDay(date) {
     setSelectedFlexDate(date);
+    setDepartDate(date);
+    if (tripType === "return") setReturnDate(addDaysISO(date, tripLength));
     setSearchError("");
     setApiWarning("");
     setIsSearching(true);
@@ -682,16 +405,16 @@ export default function App() {
     <div className="fa-app">
       <style>{styles}</style>
 
-      <PlannerModal
-        open={plannerOpen}
-        mode={plannerMode}
-        aiText={aiText}
-        onClose={closePlanner}
-        onChooseUmrah={chooseUmrah}
-        onChooseWeekend={chooseWeekend}
-        onChooseCheapest={chooseCheapest}
-        onChooseAiSuggestion={chooseAiSuggestion}
-      />
+      {plannerOpen && (
+        <PlannerModal
+          key={`${plannerMode}-${aiText}`}
+          open={plannerOpen}
+          mode={plannerMode}
+          aiText={aiText}
+          onClose={closePlanner}
+          onApplyTrip={applyConfirmedTrip}
+        />
+      )}
 
       <section className="fa-hero">
         <div className="fa-heroBg" aria-hidden />
@@ -881,6 +604,7 @@ const styles = `
     background: linear-gradient(180deg, rgba(12,28,70,.78), rgba(76,74,190,.55) 55%, rgba(238,244,255,1) 100%);
   }
   .fa-heroInner{ position:relative; max-width: 980px; margin: 0 auto; }
+  .fa-headerShell{ position:relative; }
   .fa-topbar{
     display:flex; align-items:center; justify-content:space-between; gap: 12px;
     padding: 8px 12px 8px 14px; border-radius: 18px;
@@ -954,6 +678,23 @@ const styles = `
   }
   .fa-menuPanelTitle{ font-weight:1000; color:rgba(8,16,35,.90); }
   .fa-menuPanelSub{ margin-top:2px; font-size:12px; font-weight:850; color:rgba(8,16,35,.52); }
+  .fa-menuLinks{ display:flex; flex-direction:column; gap:4px; }
+  .fa-menuDropdown a,
+  .fa-menuDropdown button{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .fa-menuBadge{
+    border-radius:999px;
+    padding:3px 7px;
+    background:rgba(35,95,255,.10);
+    color:rgba(35,95,255,1);
+    font-size:10px;
+    font-weight:1000;
+    white-space:nowrap;
+  }
   @media (max-width:760px){
     .fa-menuWrap{ position:static; }
     .fa-menuOverlay{
@@ -968,32 +709,33 @@ const styles = `
     }
     .fa-menuDropdown{
       position:fixed;
-      left:14px;
-      right:auto;
-      top:14px;
-      bottom:14px;
-      width:min(310px, calc(100vw - 32px));
+      inset:0;
+      width:auto;
       z-index:90;
-      padding:14px;
-      border-radius:20px;
+      padding:18px;
+      border-radius:0;
       display:flex;
       flex-direction:column;
-      gap:4px;
+      gap:12px;
       overflow:auto;
+      box-shadow:none;
     }
     .fa-menuPanelTop{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:12px;
-      padding:4px 2px 12px;
-      margin-bottom:4px;
+      padding:8px 2px 16px;
       border-bottom:1px solid rgba(10,20,70,.08);
     }
-    .fa-menuDropdown a{
-      padding:13px 12px;
-      font-size:14px;
-      border-radius:13px;
+    .fa-menuLinks{ gap:8px; }
+    .fa-menuDropdown a,
+    .fa-menuDropdown button{
+      padding:16px 14px;
+      font-size:16px;
+      border-radius:15px;
+      background:rgba(248,250,255,.92);
+      border:1px solid rgba(10,20,70,.08);
     }
   }
   .fa-heroCopy{ text-align:center; padding: 34px 12px 16px; color:#fff; }
@@ -1313,12 +1055,15 @@ const styles = `
     border-radius:14px; border: 1px solid rgba(10,20,70,.08); background: rgba(248,250,255,.9);
     padding:12px; text-align:left;
   }
+  .fa-dayPill.isClickable{ cursor:pointer; background:#fff; box-shadow:0 10px 24px rgba(10,20,70,.07); }
+  .fa-dayPill:disabled:not(.isClickable){ opacity:1; color:inherit; }
   .fa-dayPill.isSelected{ outline: 2px solid rgba(35,95,255,.35); background: rgba(35,95,255,.08); }
   .fa-dayPill.isDemo{ border-color: rgba(180,120,0,.20); background: rgba(255,250,235,.95); }
   .fa-day{ font-weight:1000; color: rgba(8,16,35,.72); font-size:13px; margin-bottom:4px; }
   .fa-daySub{ font-size:11px; font-weight:900; color: rgba(8,16,35,.42); margin-bottom:8px; }
   .fa-demoDot{ color: rgba(150,95,0,1); font-weight:1000; margin-left:4px; }
   .fa-price{ font-weight:1000; font-size:18px; color: rgba(8,16,35,.90); }
+  .fa-dayAction{ margin-top:7px; font-size:10px; font-weight:1000; color:rgba(35,95,255,.85); }
   .fa-resultCard{
     border-radius:18px;
     background: rgba(255,255,255,.88);
@@ -1734,6 +1479,64 @@ const styles = `
     color:#fff;
     border-top-right-radius:6px;
   }
+  .fa-plannerStream{ display:flex; flex-direction:column; }
+  .fa-answerChips{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:0 0 14px;
+  }
+  .fa-answerChip{
+    border:1px solid rgba(35,95,255,.18);
+    background:rgba(35,95,255,.08);
+    color:rgba(35,95,255,1);
+    border-radius:999px;
+    padding:9px 12px;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:1000;
+  }
+  .fa-plannerInputRow{
+    display:grid;
+    grid-template-columns:minmax(0, 1fr) auto;
+    gap:8px;
+    margin-bottom:14px;
+  }
+  .fa-plannerInput{
+    min-height:46px;
+    border-radius:14px;
+    border:1px solid rgba(10,20,70,.10);
+    background:#fff;
+    color:rgba(8,16,35,.88);
+    padding:0 13px;
+    font-weight:850;
+    outline:0;
+  }
+  .fa-plannerSend,
+  .fa-useTripBtn{
+    border:0;
+    border-radius:14px;
+    background:linear-gradient(135deg, rgba(35,95,255,1), rgba(74,60,255,1));
+    color:#fff;
+    cursor:pointer;
+    font-weight:1000;
+    padding:0 16px;
+  }
+  .fa-recommendationGrid{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+    gap:12px;
+  }
+  .fa-recommendationCard{
+    border:1px solid rgba(10,20,70,.10);
+    background:rgba(248,250,255,.96);
+    border-radius:18px;
+    padding:14px;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+  }
+  .fa-useTripBtn{ min-height:42px; margin-top:auto; }
   .fa-choiceGrid{
     display:grid;
     grid-template-columns:repeat(2, minmax(0, 1fr));
@@ -1741,6 +1544,17 @@ const styles = `
   }
   @media (max-width:620px){
     .fa-choiceGrid{ grid-template-columns:1fr; }
+    .fa-modalOverlay{ align-items:flex-end; padding:0; }
+    .fa-planner{
+      width:100%;
+      max-height:92vh;
+      border-radius:24px 24px 0 0;
+      padding:16px;
+    }
+    .fa-plannerTitle{ font-size:24px; }
+    .fa-plannerInputRow{ grid-template-columns:1fr; }
+    .fa-plannerSend{ min-height:46px; }
+    .fa-recommendationGrid{ grid-template-columns:1fr; }
   }
   .fa-choiceCard{
     border:1px solid rgba(10,20,70,.10);
@@ -1800,6 +1614,7 @@ const styles = `
     .fa-menuDropdown a{ color:rgba(235,240,255,.86); }
     .fa-menuDropdown button:hover,
     .fa-menuDropdown a:hover{ background:rgba(255,255,255,.08); }
+    .fa-menuBadge{ background:rgba(120,160,255,.16); color:rgba(150,180,255,1); }
     .fa-resultsTitle{ color: rgba(235,240,255,.92); }
     .fa-resultsSubtitle{ color: rgba(235,240,255,.55); }
     .fa-resultsTabs{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08); }
@@ -1809,9 +1624,11 @@ const styles = `
     .fa-resultsWarningSub{ color: rgba(255,228,165,.72); }
     .fa-pillGrid{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08); }
     .fa-dayPill{ background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.08); }
+    .fa-dayPill.isClickable{ background:rgba(255,255,255,.08); }
     .fa-dayPill.isSelected{ outline-color: rgba(120,160,255,.35); background: rgba(120,160,255,.10); }
     .fa-dayPill.isDemo{ background: rgba(110,75,0,.14); border-color: rgba(255,210,120,.16); }
     .fa-day{ color: rgba(235,240,255,.60); }
+    .fa-dayAction{ color:rgba(140,175,255,1); }
     .fa-demoDot{ color: rgba(255,218,130,1); }
     .fa-price{ color: rgba(235,240,255,.92); }
     .fa-resultsHelper{ color: rgba(235,240,255,.62); }
@@ -1875,6 +1692,10 @@ const styles = `
     .fa-plannerTitle{ color:rgba(235,240,255,.95); }
     .fa-closeBtn{ background:rgba(255,255,255,.08); color:#fff; border-color:rgba(255,255,255,.12); }
     .fa-chatBubble.isBot{ background:rgba(255,255,255,.08); color:rgba(235,240,255,.88); }
+    .fa-answerChip{ background:rgba(120,160,255,.14); border-color:rgba(120,160,255,.18); color:rgba(150,180,255,1); }
+    .fa-plannerInput{ background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.10); color:rgba(235,240,255,.92); }
+    .fa-plannerInput::placeholder{ color:rgba(235,240,255,.48); }
+    .fa-recommendationCard{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.10); }
     .fa-choiceCard{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.10); }
     .fa-choiceCard:hover{ background:rgba(255,255,255,.10); }
     .fa-choiceTitle{ color:rgba(235,240,255,.95); }

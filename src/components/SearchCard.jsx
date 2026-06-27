@@ -1,3 +1,4 @@
+import { useState } from "react";
 import AirportAutocomplete from "./AirportAutocomplete";
 import { airportLabel, cx, todayPlus } from "../utils/flightHelpers";
 
@@ -66,8 +67,22 @@ export default function SearchCard({
   flexMonth, setFlexMonth, tripLength, setTripLength, flexWindow, setFlexWindow,
   onSearch, isSearching, routeFromCode, routeToCode, apiWarning, searchError,
 }) {
-  const updateTripLength = (nextValue) => {
-    setTripLength(clampNumber(nextValue, MIN_NIGHTS, MAX_NIGHTS));
+  const [nightDraft, setNightDraft] = useState(String(tripLength || ""));
+  const [isNightFocused, setIsNightFocused] = useState(false);
+
+  const updateTripLength = (nextValue, { commitFallback = false } = {}) => {
+    const raw = String(nextValue || "").replace(/[^\d]/g, "");
+
+    if (!raw) {
+      setNightDraft("");
+      if (commitFallback) setTripLength(MIN_NIGHTS);
+      clearSearchState();
+      return;
+    }
+
+    const clamped = clampNumber(raw, MIN_NIGHTS, MAX_NIGHTS);
+    setNightDraft(String(clamped));
+    setTripLength(clamped);
     clearSearchState();
   };
 
@@ -80,7 +95,7 @@ export default function SearchCard({
   const selectedMonthOption = monthOptions.find((month) => month.value === flexMonth) || monthOptions[0];
 
   return (
-    <div className="fa-card">
+    <div id="farely-search" className="fa-card">
       <div className="fa-cardTop">
         <div className="fa-tabs">
           <button type="button" className={cx("fa-tab", tripType === "return" && "isActive")} onClick={() => { setTripType("return"); clearSearchState(); }}>
@@ -346,10 +361,20 @@ export default function SearchCard({
                       min={MIN_NIGHTS}
                       max={MAX_NIGHTS}
                       step={1}
-                      value={tripLength}
+                      value={isNightFocused ? nightDraft : String(tripLength || "")}
                       onChange={(e) => updateTripLength(e.target.value)}
+                      onFocus={(e) => {
+                        setIsNightFocused(true);
+                        setNightDraft(String(tripLength || ""));
+                        setTimeout(() => e.target.select(), 0);
+                      }}
+                      onBlur={(e) => {
+                        updateTripLength(e.target.value, { commitFallback: true });
+                        setIsNightFocused(false);
+                      }}
                       disabled={isSearching}
                       aria-label="Number of nights"
+                      placeholder="Nights"
                     />
                     <span>nights</span>
                   </div>

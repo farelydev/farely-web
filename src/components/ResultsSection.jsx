@@ -302,11 +302,15 @@ export default function ResultsSection({
               <button
                 key={p.key}
                 type="button"
-                className={cx("fa-dayPill", flexMode && p.date && p.date === selectedFlexDate && "isSelected", p.source === "demo-fallback" && "isDemo")}
+                className={cx(
+                  "fa-dayPill",
+                  flexMode && p.date && "isClickable",
+                  flexMode && p.date && p.date === selectedFlexDate && "isSelected",
+                  p.source === "demo-fallback" && "isDemo"
+                )}
                 onClick={() => {
                   if (flexMode && p.date) onPickFlexDay(p.date);
                 }}
-                style={{ cursor: flexMode && p.date ? "pointer" : "default" }}
                 disabled={isSearching || !(flexMode && p.date)}
                 title={flexMode && p.date ? p.date : ""}
               >
@@ -316,6 +320,7 @@ export default function ResultsSection({
                 </div>
                 {p.subLabel ? <div className="fa-daySub">{p.subLabel}</div> : null}
                 <div className="fa-price">£{p.price}</div>
+                <div className="fa-dayAction">{p.actionLabel || (flexMode && p.date ? "Tap to load fares" : "Guide only")}</div>
               </button>
             ))}
           </div>
@@ -361,14 +366,14 @@ export default function ResultsSection({
                 <EmptyResultsIcon />
                 <div>
                   <div className="fa-emptyTitle">
-                    {didSearch ? "No matching fares yet" : "Ready when you are"}
+                    {didSearch ? "No matching fares yet" : "Everything is ready"}
                   </div>
                   <div className="fa-emptyText">
                     {isMultiCity
                       ? "Multi-city search is planned in the UI. Live multi-city pricing will be added next."
                       : didSearch
                         ? "Try exact dates, adjust the route, or search again to compare the best available options."
-                        : "Search flights to compare the best options, then open a trusted partner deal when you are ready."}
+                        : "Press Search flights to compare live prices from our travel partners."}
                   </div>
                 </div>
               </div>

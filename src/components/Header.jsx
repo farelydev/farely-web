@@ -3,12 +3,18 @@ import { useEffect, useRef } from "react";
 const LOGO_SRC = "/brand/B4492AEF-3192-42F5-B006-5D933BE036C2.PNG";
 
 const MENU_ITEMS = [
+  { label: "Search Flights", target: "farely-search" },
+  { label: "Plan with Farely AI", action: "ai" },
+  { label: "Cheapest Month", action: "cheapmonth" },
+  { label: "Umrah", action: "umrah" },
+  { label: "Saved Trips / Sign in", target: "farely-signin", badge: "Coming soon" },
+  { label: "Help Centre", target: "farely-support" },
+  { label: "Contact Farely", href: "mailto:support@tryfarely.com" },
+  { label: "Business & Partners", target: "farely-partner" },
   { label: "About Farely", target: "farely-about" },
-  { label: "How it works", target: "farely-how" },
-  { label: "Support", target: "farely-support" },
-  { label: "Partner with us", target: "farely-partner" },
+  { label: "Privacy", href: "/privacy" },
+  { label: "Terms", href: "/terms" },
   { label: "Analytics", target: "farely-analytics" },
-  { label: "Sign in (coming soon)", target: "farely-signin" },
 ];
 
 export default function Header({
@@ -36,12 +42,13 @@ export default function Header({
     return () => document.removeEventListener("click", onDocumentClick);
   }, [menuOpen, setMenuOpen]);
 
-  function onMenuItemClick() {
+  function onMenuItemClick(item) {
     setMenuOpen(false);
+    if (item?.action) openPlanner(item.action);
   }
 
   return (
-    <>
+    <div className="fa-headerShell" ref={menuRef}>
       <div className="fa-topbar">
         <div className="fa-topbarLeft">
           <img className="fa-logo" src={LOGO_SRC} alt="Farely logo" />
@@ -51,7 +58,7 @@ export default function Header({
           </div>
         </div>
 
-        <div className="fa-menuWrap" ref={menuRef}>
+        <div className="fa-menuWrap">
           <button
             className="fa-menuBtn"
             type="button"
@@ -60,35 +67,54 @@ export default function Header({
           >
             <span className="fa-menuIcon">☰</span>
           </button>
-
-          {menuOpen && (
-            <>
-              <button
-                className="fa-menuOverlay"
-                type="button"
-                aria-label="Close menu"
-                onClick={() => setMenuOpen(false)}
-              />
-              <div className="fa-menuDropdown">
-                <div className="fa-menuPanelTop">
-                  <div>
-                    <div className="fa-menuPanelTitle">Farely menu</div>
-                    <div className="fa-menuPanelSub">Quick links</div>
-                  </div>
-                  <button className="fa-menuClose" type="button" onClick={() => setMenuOpen(false)} aria-label="Close menu">
-                    x
-                  </button>
-                </div>
-                {visibleMenuItems.map((item) => (
-                  <a key={item.target} href={`#${item.target}`} onClick={onMenuItemClick}>
-                    {item.label}
-                  </a>
-                ))}
-              </div>
-            </>
-          )}
         </div>
       </div>
+
+      {menuOpen && (
+        <>
+          <button
+            className="fa-menuOverlay"
+            type="button"
+            aria-label="Close menu"
+            onClick={() => setMenuOpen(false)}
+          />
+          <div className="fa-menuDropdown">
+            <div className="fa-menuPanelTop">
+              <div>
+                <div className="fa-menuPanelTitle">Farely menu</div>
+                <div className="fa-menuPanelSub">Quick links</div>
+              </div>
+              <button className="fa-menuClose" type="button" onClick={() => setMenuOpen(false)} aria-label="Close menu">
+                x
+              </button>
+            </div>
+            <div className="fa-menuLinks">
+              {visibleMenuItems.map((item) => {
+                const content = (
+                  <>
+                    <span>{item.label}</span>
+                    {item.badge ? <span className="fa-menuBadge">{item.badge}</span> : null}
+                  </>
+                );
+
+                if (item.action) {
+                  return (
+                    <button key={item.label} type="button" onClick={() => onMenuItemClick(item)}>
+                      {content}
+                    </button>
+                  );
+                }
+
+                return (
+                  <a key={item.label} href={item.href || `#${item.target}`} onClick={() => onMenuItemClick(item)}>
+                    {content}
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
 
       <div className="fa-heroCopy">
         <h1 className="fa-title">
@@ -123,6 +149,6 @@ export default function Header({
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
