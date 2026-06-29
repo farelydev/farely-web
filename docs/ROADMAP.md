@@ -4,18 +4,89 @@ Last updated: 2026-06-29
 
 ## Current Phase
 
-MVP hardening and monetisation readiness.
+Milestone-led startup buildout. Current active phase: Milestone 6, Search Experience 2.0.
 
 ## Next Product Milestones
 
-1. Make flight results feel production-ready and easy to compare.
-2. Validate `View Deal` redirect and click tracking end to end.
-3. Improve the AI trip planner from a simple assistant into a useful planning flow.
-4. Prepare the first affiliate monetisation path.
-5. Add a lightweight founder dashboard for business and product visibility.
+1. Milestone 6: Search Experience 2.0.
+2. Milestone 7: Farely AI Travel Consultant.
+3. Milestone 8: Founder Intelligence Dashboard / Farely Control Centre.
+4. Milestone 9: Production Readiness.
+5. Milestone 10: Travel Platform Expansion.
+
+## Milestone 6: Search Experience 2.0
+
+- Rich flight cards.
+- Full airline names.
+- Airline logos.
+- Full airport names.
+- Filters drawer.
+- Budget filter.
+- Airline filter.
+- Morning/afternoon/evening filter.
+- Stops filter.
+- Airport selection.
+- Return-to-same-airport option.
+- Better CTA wording.
+- Remaining AI/search sync fixes.
+
+Goal: make Farely's search experience feel trustworthy, clear, and conversion-ready.
+
+## Milestone 7: Farely AI Travel Consultant
+
+- Better recommendation quality.
+- Trip-type detection.
+- Umrah mode.
+- Beach planner.
+- City break planner.
+- Ski planner.
+- Better follow-up questions.
+- Better recommendation explanations.
+- Better conversation memory.
+
+Goal: help users decide where to go rather than simply filling a search form.
+
+## Milestone 8: Founder Intelligence Dashboard
+
+Turn the current analytics page into Farely Control Centre.
+
+- Business: searches, clicks, CTR, revenue.
+- AI: prompt trends, recommendation acceptance, conversation completion.
+- Flights: top routes, top airlines, no-result searches.
+- Affiliate: partner clicks, revenue by partner.
+- System: API health, production status, Amadeus status, fallback usage.
+
+## Milestone 9: Production Readiness
+
+- Production provider.
+- SEO.
+- Security.
+- Performance.
+- Accessibility.
+- Browser compatibility.
+- Production monitoring.
+
+## Milestone 10: Travel Platform Expansion
+
+- Hotels.
+- Car hire.
+- Activities.
+- eSIMs.
+- Travel essentials.
+- Packages.
+- Trains.
+
+## Product Principle
+
+Every feature should improve user trust, user experience, conversion, long-term scalability, or revenue. If it does not, question whether it belongs in Farely.
+
+## AI Principle
+
+Farely should answer "Where should I go?" The AI should become the product, not just another feature.
 
 ## AI Planner Roadmap
 
+- Build toward Milestone 7.
 - Clarify the planner's main job: inspiration, itinerary planning, or trip refinement.
 - Improve prompt handling around budget, destination style, dates, and constraints.
 - Add better structured outputs for suggested trips.
@@ -24,10 +95,12 @@ MVP hardening and monetisation readiness.
 
 ## Flight Search Roadmap
 
+- Build toward Milestone 6.
 - Keep exact-date search stable.
 - Keep flexible-month search stable.
 - Improve outbound and return flight detail clarity.
 - Continue improving airline logos, layover details, and result ranking.
+- Add practical filters for budget, airline, time of day, stops, and airports.
 - Add clearer loading, empty, and provider-error states.
 - Validate behavior against live Amadeus provider responses after deployments.
 
@@ -42,6 +115,7 @@ MVP hardening and monetisation readiness.
 
 ## Founder Dashboard Roadmap
 
+- Build toward Milestone 8.
 - Show simple health indicators for searches, provider errors, clicks, and popular routes.
 - Show affiliate click totals and recent redirect issues.
 - Show basic funnel metrics from search to result to `View Deal`.
@@ -50,6 +124,7 @@ MVP hardening and monetisation readiness.
 
 ## Future Travel Expansion Roadmap
 
+- Build toward Milestone 10.
 - Hotels and accommodation comparison.
 - Packages or trip bundles.
 - Destination guides and SEO content.

@@ -4,6 +4,8 @@ This repo is the Farely flight comparison and AI trip-planning project.
 
 ## Long-Term Roles
 
+Farely should be developed like a real startup operating system, not a loose collection of one-off tasks. Every engineering task should connect to the current milestone unless the founder explicitly asks for a standalone admin or emergency fix.
+
 Codex acts as the Lead Software Engineer / CTO for Farely.
 
 Codex responsibilities:
@@ -31,6 +33,121 @@ ChatGPT responsibilities:
 - Reviewing completed work and deciding what to build next.
 
 The user is the founder. Before implementing large new features, assume the user may review the idea with ChatGPT first so engineering decisions stay aligned with product, UX, and business priorities. This should not slow down small safe fixes or agreed implementation work.
+
+## Company Operating System
+
+### Team Structure
+
+Founder:
+
+- Makes final product and business decisions.
+
+ChatGPT:
+
+- Acts as Head of Product, UX Lead, Business Strategist, and Growth & Monetisation Lead.
+- Owns product roadmap, UX reviews, prioritisation, AI strategy, monetisation strategy, launch readiness, and long-term vision.
+
+Codex:
+
+- Acts as CTO and Lead Software Engineer.
+- Owns engineering, architecture, refactoring, documentation, testing, GitHub, and production readiness.
+
+### Development Philosophy
+
+Before: build isolated features.
+
+After: build the highest-impact milestone.
+
+Every task should belong to a milestone. When a requested task does not clearly map to a milestone, identify the closest milestone or ask whether it should become a new one.
+
+### Current Milestone Order
+
+Milestone 6: Search Experience 2.0
+
+- Rich flight cards.
+- Full airline names.
+- Airline logos.
+- Full airport names.
+- Filters drawer.
+- Budget filter.
+- Airline filter.
+- Morning/afternoon/evening filter.
+- Stops filter.
+- Airport selection.
+- Return-to-same-airport option.
+- Better CTA wording.
+- Remaining AI/search sync fixes.
+
+Milestone 7: Farely AI Travel Consultant
+
+- Better recommendation quality.
+- Trip-type detection.
+- Umrah mode.
+- Beach planner.
+- City break planner.
+- Ski planner.
+- Better follow-up questions.
+- Better recommendation explanations.
+- Better conversation memory.
+- Goal: help users decide where to go, not just fill a search form.
+
+Milestone 8: Founder Intelligence Dashboard
+
+- Turn the current analytics page into Farely Control Centre.
+- Business: searches, clicks, CTR, revenue.
+- AI: prompt trends, recommendation acceptance, conversation completion.
+- Flights: top routes, top airlines, no-result searches.
+- Affiliate: partner clicks, revenue by partner.
+- System: API health, production status, Amadeus status, fallback usage.
+
+Milestone 9: Production Readiness
+
+- Production provider.
+- SEO.
+- Security.
+- Performance.
+- Accessibility.
+- Browser compatibility.
+- Production monitoring.
+
+Milestone 10: Travel Platform Expansion
+
+- Hotels.
+- Car hire.
+- Activities.
+- eSIMs.
+- Travel essentials.
+- Packages.
+- Trains.
+
+### Product Principle
+
+Every feature should improve at least one of:
+
+- User trust.
+- User experience.
+- Conversion.
+- Long-term scalability.
+- Revenue.
+
+If it does not, question whether it belongs in Farely.
+
+### AI Principle
+
+Farely should not become "another AI feature." The AI should become the product.
+
+- Google Flights answers: "What flights exist?"
+- Skyscanner answers: "What's the cheapest flight?"
+- Farely should answer: "Where should I go?"
+
+That difference should guide every future AI decision.
+
+### Engineering Principle
+
+- Avoid unnecessary rewrites.
+- Prefer modular architecture.
+- Prefer configurable systems.
+- Design today's code so future partners, travel products, and AI improvements can be added without major refactoring.
 
 ## Affiliate Architecture
 

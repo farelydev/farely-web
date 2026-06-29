@@ -8,7 +8,10 @@ Last updated: 2026-06-29
 | High | Affiliate | Production affiliate approval and final partner redirect template need confirmation. | Open |
 | High | Affiliate | `View Deal` click tracking should be validated end to end after each redirect change. | Open |
 | Medium | UX | Flight results still need continued clarity around outbound/return details, layovers, and comparison signals. | Open |
+| Medium | UX | Milestone 6 filters drawer and budget/airline/time/stops filters are not complete. | Open |
+| Medium | UX | Airport selection and return-to-same-airport behavior need completion or verification. | Open |
 | Medium | AI planner | Planner experience needs clearer product scope and stronger structured trip outputs. | Open |
+| Medium | AI planner | Remaining AI/search sync fixes belong to Milestone 6 before Milestone 7 begins. | Open |
 | Medium | Analytics | Founder dashboard and business reporting are not yet built. | Open |
 | Medium | Production readiness | Deployment health should be checked after each milestone, not assumed from local build success. | Open |
 | Low | Documentation | Project memory docs are new and need to be maintained after each milestone. | In progress |
@@ -20,6 +23,8 @@ Last updated: 2026-06-29
 ## UX Issues
 
 - Continue simplifying result cards for quick comparison.
+- Complete Milestone 6 search filters and airport-selection behavior.
+- Improve CTA wording so users understand where `View Deal` sends them.
 - Keep affiliate disclosure visible without making the UI feel cluttered.
 - Make AI planner next steps clearer for non-technical users.
 

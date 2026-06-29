@@ -4,7 +4,7 @@ Last updated: 2026-06-29
 
 ## Current Milestone
 
-Lightweight project memory and founder handoff system.
+Milestone 6: Search Experience 2.0.
 
 ## Current Production Readiness Status
 
@@ -13,7 +13,7 @@ Farely is in pre-launch / MVP hardening. Core flight search flows are present, b
 ## Latest Deployment / Commit
 
 - Branch: `main`
-- Latest known pushed commit before this memory setup: `b468e20` - Polish mobile planner launch UX
+- Latest known pushed commit before this operating-system update: `b8666ba` - Record Farely memory docs push status
 - Deployment source: GitHub `farelydev/farely-web` on `main`
 - Note: check Render/GitHub after each future milestone to confirm the newest deployed commit.
 
@@ -28,9 +28,12 @@ Farely is in pre-launch / MVP hardening. Core flight search flows are present, b
 - Farely uses a server-controlled affiliate redirect architecture.
 - Legal/affiliate disclosure pages and notices exist.
 - Project instructions exist in `AGENTS.md`.
+- Repo-based project memory docs exist in `docs/`.
 
 ## What Is Incomplete
 
+- Milestone 6 Search Experience 2.0 is not complete.
+- Rich flight cards, full airline names/logos, full airport names, filters drawer, budget/airline/time/stops filters, airport selection, return-to-same-airport option, CTA wording, and AI/search sync fixes need to be completed or verified as part of Milestone 6.
 - Production affiliate partner approval/configuration is not yet fully confirmed in this repo.
 - Click tracking needs ongoing validation against live traffic and analytics requirements.
 - AI trip-planning experience still needs product decisions and iteration.
@@ -46,4 +49,4 @@ Farely is in pre-launch / MVP hardening. Core flight search flows are present, b
 
 ## Recommended Next Engineering Priority
 
-Validate and harden the `View Deal` affiliate redirect and click tracking path end to end, because it is central to Farely's monetisation path.
+Complete Milestone 6 in small, verifiable slices, starting with the highest-impact search result improvements: rich flight cards, airline/airport clarity, and the filter drawer.
