@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-06-29
 
-- Commit hash: `pending`
+- Commit hash: `5c97c19`
 - What changed:
   - Removed unverified public email aliases from frontend defaults, backend support defaults, Render config, and deployment docs.
   - Standardised the public support/contact address on `info@tryfarely.com` until `support@tryfarely.com` has a verified Cloudflare route or mailbox.
@@ -13,7 +13,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - `node --check server.js` passed on 2026-06-29.
   - `vite build` passed on 2026-06-29.
 - Pushed to GitHub:
-  - Pending.
+  - Yes, pushed to `origin/main`.
 
 ## 2026-06-29
 

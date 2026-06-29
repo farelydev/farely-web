@@ -39,13 +39,13 @@ Build/lint/test status:
 - `vite build` passed on 2026-06-29.
 
 GitHub status:
-- Pending commit/push.
+- Pushed to GitHub on `origin/main`.
 
 Branch:
 - `main`
 
 Commit hash:
-- Pending.
+- `5c97c19`
 
 Recommended next product decision:
 - Decide whether Farely should keep using `info@tryfarely.com` publicly for now, or set up dedicated aliases such as `support@tryfarely.com`, `privacy@tryfarely.com`, and `security@tryfarely.com`.
