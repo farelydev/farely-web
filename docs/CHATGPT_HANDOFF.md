@@ -40,13 +40,13 @@ Build/lint/test status:
 - Local Chrome mobile render check passed using mocked flight offers because live/local searches returned no offers for the tested routes.
 
 GitHub status:
-- Pending commit and push.
+- Pushed to GitHub on `origin/main`.
 
 Branch:
 - `main`
 
 Commit hash:
-- Pending.
+- Implementation commit: `a00066b`
 
 Recommended next product decision:
 - Review whether the first-pass filters are enough for MVP launch, or whether Farely should next prioritise accessibility polish and real-data QA before adding more filter types.

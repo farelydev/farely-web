@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-06-29
 
-- Commit hash: pending
+- Commit hash: `a00066b`
 - What changed:
   - Added richer flight result cards with airline logos/fallbacks, full airline names, full airport labels where known, outbound and return sections, duration, stops, cabin, baggage notes, and prominent total price.
   - Added recommendation badges such as `Cheapest`, `Fastest`, `Best Value`, and `Direct`.
@@ -17,7 +17,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - `npm run lint` passed with 2 pre-existing warnings on 2026-06-29.
   - Local Chrome mobile render check passed with mocked flight offers on 2026-06-29.
 - Pushed to GitHub:
-  - Pending.
+  - Yes, pushed to `origin/main`.
 
 ## 2026-06-29
 
