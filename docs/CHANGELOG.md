@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-06-29
 
-- Commit hash: pending
+- Commit hash: `589c1b1`
 - What changed:
   - Added Farely Company Operating System v1 to `AGENTS.md`.
   - Reframed the project memory docs around milestone-led development.
@@ -13,7 +13,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 - Checks run:
   - `npm run build` passed on 2026-06-29.
 - Pushed to GitHub:
-  - Pending
+  - Yes, pushed to `origin/main`.
 
 ## 2026-06-29
 

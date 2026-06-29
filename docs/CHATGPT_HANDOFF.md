@@ -36,13 +36,13 @@ Build/lint/test status:
 - `npm run build` passed on 2026-06-29.
 
 GitHub status:
-- Pending commit and push.
+- Pushed to GitHub on `origin/main`.
 
 Branch:
 - `main`
 
 Commit hash:
-- Pending
+- `589c1b1`
 
 Recommended next product decision:
 - Confirm the first Milestone 6 slice to build. Recommended engineering order: rich flight cards and airline/airport clarity first, then filters drawer, then airport selection and return-to-same-airport behavior.
