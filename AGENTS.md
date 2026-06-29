@@ -57,7 +57,14 @@ After completing any successful milestone or feature change in Farely:
    - Do not include unrelated user changes.
    - Do not commit `.env`, API keys, secrets, credentials, logs, or private local files.
 4. Push the commit to the connected GitHub repository.
-5. Report back with:
+5. Update the project memory docs before committing and pushing:
+   - `docs/PROJECT_STATUS.md`
+   - `docs/ROADMAP.md`
+   - `docs/KNOWN_ISSUES.md`
+   - `docs/CHANGELOG.md`
+   - `docs/CHATGPT_HANDOFF.md`
+6. Keep `docs/CHATGPT_HANDOFF.md` as the short founder-to-ChatGPT handoff. It should include what was completed, what was not completed, files changed, build/lint/test status, GitHub status, branch, commit hash, recommended next product decision, and any questions for ChatGPT.
+7. Report back with:
    - what was implemented,
    - files changed,
    - build/test status,
