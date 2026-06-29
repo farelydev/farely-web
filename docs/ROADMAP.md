@@ -28,6 +28,7 @@ Milestone-led startup buildout. Current active phase: Milestone 6, Search Experi
 - Airport selection filters: first pass implemented from visible result airports.
 - Return-to-same-airport option: first pass implemented.
 - Better CTA wording: first pass implemented as `Check partner deal`.
+- Cheapest Month / Date Explorer UX: first pass reframed from warning-heavy flexible dates to a benefit-led flow.
 - Remaining AI/search sync fixes.
 
 Goal: make Farely's search experience feel trustworthy, clear, and conversion-ready.
@@ -97,7 +98,7 @@ Farely should answer "Where should I go?" The AI should become the product, not 
 
 - Build toward Milestone 6.
 - Keep exact-date search stable.
-- Keep flexible-month search stable.
+- Keep Cheapest Month search stable.
 - Improve outbound and return flight detail clarity.
 - Continue improving airline logos, layover details, and result ranking.
 - Add practical filters for budget, airline, time of day, stops, and airports.

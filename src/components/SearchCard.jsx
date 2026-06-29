@@ -5,7 +5,6 @@ import { airportLabel, cx, todayPlus } from "../utils/flightHelpers";
 const CABIN_OPTIONS = ["Economy", "Premium economy", "Business", "First"];
 const MIN_NIGHTS = 1;
 const MAX_NIGHTS = 60;
-const MAX_FLEX_WINDOW = 3;
 
 function clampNumber(value, min, max) {
   const n = Number(value);
@@ -59,12 +58,19 @@ function buildMonthOptions({ selectedMonth, routeFromCode, routeToCode }) {
   return months.map((month) => ({ ...month, isCheapest: month.value === cheapest.value }));
 }
 
+function flexibleSearchButtonLabel({ isSearching, tripType, flexMode }) {
+  if (isSearching) return flexMode ? "Checking travel dates..." : "Searching flights...";
+  if (tripType === "multicity") return "Review multi-city plan";
+  if (flexMode) return "Find cheaper dates";
+  return "Search flights";
+}
+
 export default function SearchCard({
   tripType, setTripType, exactMode, flexMode, setDateMode, clearSearchState,
   fromText, setFromText, fromAirport, setFromAirport, toText, setToText, toAirport, setToAirport,
   multiLegs, setMultiLegs, passengers, setPassengers, cabin, setCabin,
   departDate, setDepartDate, returnDate, setReturnDate, showReturn,
-  flexMonth, setFlexMonth, tripLength, setTripLength, flexWindow, setFlexWindow,
+  flexMonth, setFlexMonth, tripLength, setTripLength,
   onSearch, isSearching, routeFromCode, routeToCode, apiWarning, searchError,
 }) {
   const [nightDraft, setNightDraft] = useState(String(tripLength || ""));
@@ -83,11 +89,6 @@ export default function SearchCard({
     const clamped = clampNumber(raw, MIN_NIGHTS, MAX_NIGHTS);
     setNightDraft(String(clamped));
     setTripLength(clamped);
-    clearSearchState();
-  };
-
-  const updateFlexWindow = (nextValue) => {
-    setFlexWindow(clampNumber(nextValue, 0, MAX_FLEX_WINDOW));
     clearSearchState();
   };
 
@@ -114,7 +115,7 @@ export default function SearchCard({
               Exact dates
             </button>
             <button type="button" className={cx("fa-segBtn", flexMode && "isActive")} onClick={() => { setDateMode("flex"); clearSearchState(); }}>
-              Flexible dates (beta)
+              Cheapest Month
             </button>
           </div>
       </div>
@@ -327,27 +328,48 @@ export default function SearchCard({
 
           {tripType !== "multicity" && exactMode && (
             <div className="fa-providerWarning">
-              <div className="fa-providerWarningTitle">Best live option right now</div>
-              <div>Use exact dates for the most reliable live fares while Farely upgrades its flight data provider.</div>
+              <div className="fa-providerWarningTitle">Best for fixed travel plans</div>
+              <div>Choose your travel dates and Farely will check current partner fares for that route.</div>
             </div>
           )}
 
           {tripType !== "multicity" && flexMode && (
             <div className="fa-flexBox">
-              <div className="fa-providerWarning">
-                <div className="fa-providerWarningTitle">Limited live beta</div>
-                <div>Flexible search is capped to a small date range on the live site. For the safest live results, switch back to exact dates.</div>
+              <div className="fa-flexIntro">
+                <div className="fa-flexIntroTitle">Find cheaper travel dates</div>
+                <div className="fa-flexIntroText">
+                  Explore different months to discover lower fares. Once you choose dates that suit you, Farely checks live prices from travel partners.
+                </div>
+              </div>
+
+              <div className="fa-flexSteps" aria-label="Cheapest Month flow">
+                <div className="fa-flexStep isActive">
+                  <span>1</span>
+                  <strong>Choose month</strong>
+                </div>
+                <div className="fa-flexStep">
+                  <span>2</span>
+                  <strong>Pick a date</strong>
+                </div>
+                <div className="fa-flexStep">
+                  <span>3</span>
+                  <strong>Check prices</strong>
+                </div>
+                <div className="fa-flexStep">
+                  <span>4</span>
+                  <strong>Compare flights</strong>
+                </div>
               </div>
 
               <div className="fa-flexRow">
                 <div className="fa-field">
-                  <div className="fa-label">Selected month</div>
+                  <div className="fa-label">Choose month</div>
                   <div className="fa-monthSummary">
                     <div>
                       <div className="fa-monthSummaryMain">{selectedMonthOption.month} {selectedMonthOption.year}</div>
-                      <div className="fa-monthSummarySub">Guide from £{selectedMonthOption.price}</div>
+                      <div className="fa-monthSummarySub">Estimated from £{selectedMonthOption.price}</div>
                     </div>
-                    <div className="fa-monthSummaryCode">{flexMonth}</div>
+                    <div className="fa-monthSummaryCode">Best dates next</div>
                   </div>
                 </div>
 
@@ -384,8 +406,8 @@ export default function SearchCard({
               <div className="fa-monthCompare">
                 <div className="fa-monthCompareTop">
                   <div>
-                    <div className="fa-label" style={{ marginBottom: 2 }}>Compare months</div>
-                    <div className="fa-monthCompareSub">Pick the month that looks cheapest, then search for live fares.</div>
+                    <div className="fa-label" style={{ marginBottom: 2 }}>Explore months</div>
+                    <div className="fa-monthCompareSub">Pick a month first. Farely will then help you choose a departure date and compare flights.</div>
                   </div>
                   <div className="fa-monthCompareRoute">{routeFromCode} → {routeToCode}</div>
                 </div>
@@ -410,40 +432,15 @@ export default function SearchCard({
                 </div>
               </div>
 
-              <div className="fa-field">
-                <div className="fa-label">How flexible?</div>
-                <div className="fa-stepper">
-                  <button type="button" className="fa-stepBtn" onClick={() => updateFlexWindow(flexWindow - 1)} disabled={flexWindow <= 0 || isSearching} aria-label="Reduce flexible days">
-                    -
-                  </button>
-                  <div className="fa-stepInputWrap">
-                    <span>±</span>
-                    <input
-                      className="fa-stepInput"
-                      type="number"
-                      min={0}
-                      max={MAX_FLEX_WINDOW}
-                      value={flexWindow}
-                      onChange={(e) => updateFlexWindow(e.target.value)}
-                      disabled={isSearching}
-                    />
-                    <span>days</span>
-                  </div>
-                  <button type="button" className="fa-stepBtn" onClick={() => updateFlexWindow(flexWindow + 1)} disabled={flexWindow >= MAX_FLEX_WINDOW || isSearching} aria-label="Add flexible days">
-                    +
-                  </button>
-                </div>
-              </div>
-
-              <div className="fa-miniNote">
-                Flexible month scans dates around the middle of the month. Farely currently limits this to ±{MAX_FLEX_WINDOW} days to avoid unreliable live pricing on the public site.
+              <div className="fa-dateExplorerHint">
+                Next: Farely will show date options for this month. Choose a departure date to check live partner fares.
               </div>
             </div>
           )}
 
           <button className={cx("fa-searchBtn", isSearching && "isLoading")} type="button" onClick={onSearch} disabled={isSearching} aria-busy={isSearching}>
             {isSearching && <span className="fa-btnSpinner" aria-hidden />}
-            <span>{isSearching ? "Searching flights…" : tripType === "multicity" ? "Review multi-city plan" : "Search flights"}</span>
+            <span>{flexibleSearchButtonLabel({ isSearching, tripType, flexMode })}</span>
           </button>
 
           <div className="fa-miniNote">
@@ -467,18 +464,17 @@ export default function SearchCard({
                   </>
                 ) : (
                   <>
-                    in <span className="fa-miniStrong">{flexMonth}</span>
-                    {" "}with a live check of only <span className="fa-miniStrong">±{flexWindow} day{flexWindow === 1 ? "" : "s"}</span>
+                    Cheapest Month: <span className="fa-miniStrong">{selectedMonthOption.month} {selectedMonthOption.year}</span>
                   </>
                 )}
               </>
             )}
           </div>
 
-          {!!apiWarning && (
+          {!!apiWarning && exactMode && (
             <div className="fa-providerWarning">
-              <div className="fa-providerWarningTitle">Development mode</div>
-              <div>{apiWarning}</div>
+              <div className="fa-providerWarningTitle">Partner price check</div>
+              <div>Farely checks current partner fares. Final price and rules are confirmed on the partner site.</div>
             </div>
           )}
 

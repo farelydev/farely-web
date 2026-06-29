@@ -22,7 +22,7 @@ Farely is live and in MVP hardening. Core flight search flows are present, but p
 - React/Vite frontend exists.
 - Node/Express backend exists.
 - Exact-date flight search is implemented.
-- Flexible-month search is implemented.
+- Cheapest Month search is implemented on top of the existing flexible-month backend.
 - Cheapest-day results render.
 - Flight offer results render.
 - Richer result cards now show airline branding, outbound/return sections, full airport labels where known, price, cabin, baggage notes, recommendation badges, and clearer partner CTA wording.
@@ -37,7 +37,7 @@ Farely is live and in MVP hardening. Core flight search flows are present, but p
 ## What Is Incomplete
 
 - Milestone 6 Search Experience 2.0 is not complete.
-- Milestone 6 still needs live-production validation, deeper filter QA against real Amadeus responses, accessibility polish, and any remaining AI/search sync fixes.
+- Milestone 6 still needs live-production validation, deeper Cheapest Month/filter QA against real Amadeus responses, accessibility polish, and any remaining AI/search sync fixes.
 - Production affiliate partner approval/configuration is not yet fully confirmed in this repo.
 - Click tracking needs ongoing validation against live traffic and analytics requirements.
 - AI trip-planning experience still needs product decisions and iteration.
@@ -54,4 +54,4 @@ Farely is live and in MVP hardening. Core flight search flows are present, but p
 
 ## Recommended Next Engineering Priority
 
-Continue Milestone 6 with live validation of the new filters/cards on production data, then tighten accessibility and any remaining AI/search sync issues before moving deeper into Milestone 7.
+Continue Milestone 6 with live validation of the Cheapest Month flow and new filters/cards on production data, then tighten accessibility and any remaining AI/search sync issues before moving deeper into Milestone 7.

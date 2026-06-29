@@ -4,6 +4,23 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-06-29
 
+- Commit hash: pending
+- What changed:
+  - Reframed flexible search as `Cheapest Month` in the main search navigation.
+  - Removed beta/warning-heavy flexible-search language from the user-facing flow.
+  - Added positive guidance around finding cheaper travel dates.
+  - Added a simple flow: choose month, pick a date, check prices, compare flights.
+  - Kept the existing `/api/flexible` backend contract intact while designing around its current provider constraints.
+- Checks run:
+  - `git diff --check` passed on 2026-06-29.
+  - `npm run build` passed on 2026-06-29.
+  - `npm run lint` passed with 2 pre-existing warnings on 2026-06-29.
+  - Local Chrome mobile render check passed on 2026-06-29.
+- Pushed to GitHub:
+  - Pending.
+
+## 2026-06-29
+
 - Commit hash: `a00066b`
 - What changed:
   - Added richer flight result cards with airline logos/fallbacks, full airline names, full airport labels where known, outbound and return sections, duration, stops, cabin, baggage notes, and prominent total price.

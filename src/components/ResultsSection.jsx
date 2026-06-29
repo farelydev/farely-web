@@ -610,12 +610,12 @@ export default function ResultsSection({
           </div>
         )}
 
-        {!!apiWarning && filteredOffers.length > 0 && (
+        {!!apiWarning && filteredOffers.length > 0 && !flexMode && (
           <div className="fa-resultsWarning">
             <div>
-              <strong>Live fare check is limited.</strong> Some results may be preview-only or may open on a partner site for the latest price.
+              <strong>Partner price check.</strong> Farely checks current partner fares so you can compare options before opening the deal.
             </div>
-            <div className="fa-resultsWarningSub">Source: {apiSource || "demo-fallback"}</div>
+            <div className="fa-resultsWarningSub">{apiSource ? `Source: ${apiSource}` : "Partner fares"}</div>
           </div>
         )}
 
@@ -643,7 +643,7 @@ export default function ResultsSection({
                 </div>
                 {p.subLabel ? <div className="fa-daySub">{p.subLabel}</div> : null}
                 <div className="fa-price">£{p.price}</div>
-                <div className="fa-dayAction">{p.actionLabel || (flexMode && p.date ? "Tap to load fares" : "Guide only")}</div>
+                <div className="fa-dayAction">{p.actionLabel || (flexMode && p.date ? "Choose date" : "Month guide")}</div>
               </button>
             ))}
           </div>
@@ -651,7 +651,7 @@ export default function ResultsSection({
 
         {flexMode && didSearch && (
           <div className="fa-resultsHelper">
-            Tap a date card to reload live fares for that day. Exact dates are usually more dependable on the live site.
+            Choose a departure date below. Farely will check live partner prices for that date, then you can compare flights.
           </div>
         )}
 
@@ -671,7 +671,7 @@ export default function ResultsSection({
                 )
               ) : (
                 <>
-                  Flexible in {monthHeaderLabel(flexMonth)} • {selectedFlexDate ? `showing ${shortDateLabel(selectedFlexDate)}` : "ready to search"}
+                  Cheapest Month in {monthHeaderLabel(flexMonth)} • {selectedFlexDate ? `showing ${shortDateLabel(selectedFlexDate)}` : "choose a date"}
                 </>
               )}
             </div>

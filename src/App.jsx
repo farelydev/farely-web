@@ -179,7 +179,7 @@ export default function App() {
           date: x.date,
           price: Math.round(x.cheapestPrice),
           source: x.source,
-          actionLabel: tripType === "return" ? "Tap to set depart date" : "Tap to search this date",
+          actionLabel: tripType === "return" ? "Choose departure" : "Choose date",
         }));
     }
 
@@ -195,7 +195,7 @@ export default function App() {
         month: "short",
       }).format(new Date(`${date}T12:00:00`));
       const v = base + ((i * 13 + seed) % 60) - 20;
-      return { key: date, label, date: "", price: Math.max(29, v), source: "preview", actionLabel: "Guide only" };
+      return { key: date, label, date: "", price: Math.max(29, v), source: "preview", actionLabel: "Month guide" };
     });
   }, [routeFromCode, routeToCode, flexMode, flexDays, departDate, tripType]);
 
@@ -362,7 +362,7 @@ export default function App() {
 
       setApiWarning(
         json?.warning ||
-          "Flexible date search is in a limited beta on the live site. Exact dates are currently the most reliable option."
+          "Choose one of the date options below to compare current partner fares."
       );
       setApiSource(json?.source || "");
 
@@ -787,6 +787,12 @@ const styles = `
   .fa-segBtn.isActive{ background:#fff; color: rgba(8,16,35,.86); box-shadow: 0 10px 24px rgba(10,20,70,.10); }
   .fa-cardBody{ display:grid; grid-template-columns: 1.05fr 1fr; gap:14px; padding:16px; }
   @media (max-width:860px){ .fa-cardBody{ grid-template-columns: 1fr; } .fa-brandText{ display:none; } }
+  @media (max-width:520px){
+    .fa-cardTop{ align-items:stretch; flex-direction:column; }
+    .fa-tabs{ justify-content:space-between; gap:8px; padding-left:0; }
+    .fa-seg{ width:100%; box-sizing:border-box; }
+    .fa-segBtn{ flex:1; white-space:nowrap; padding-inline:10px; }
+  }
   .fa-rightCol{ border-radius:16px; background: rgba(248,250,255,.9); border: 1px solid rgba(10,20,70,.08); padding:14px; }
   .fa-field{ position:relative; margin-bottom:14px; }
   .fa-label{ font-weight:900; font-size:12px; color: rgba(8,16,35,.62); margin-bottom:8px; }
@@ -819,6 +825,72 @@ const styles = `
   .fa-dateGrid{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
   @media (max-width:520px){ .fa-dateGrid{ grid-template-columns: 1fr; } }
   .fa-flexBox{ display:flex; flex-direction:column; gap:12px; }
+  .fa-flexIntro{
+    border-radius:18px;
+    padding:14px;
+    background:linear-gradient(135deg, rgba(235,250,255,.96), rgba(238,255,247,.94));
+    border:1px solid rgba(20,150,145,.14);
+    box-shadow:0 12px 28px rgba(10,20,70,.06);
+  }
+  .fa-flexIntroTitle{
+    font-size:20px;
+    font-weight:1000;
+    color:rgba(8,16,35,.92);
+    letter-spacing:0;
+  }
+  .fa-flexIntroText{
+    margin-top:5px;
+    font-size:13px;
+    line-height:1.45;
+    font-weight:850;
+    color:rgba(8,16,35,.62);
+  }
+  .fa-flexSteps{
+    display:grid;
+    grid-template-columns:repeat(4, minmax(0, 1fr));
+    gap:7px;
+  }
+  .fa-flexStep{
+    min-height:58px;
+    border-radius:14px;
+    border:1px solid rgba(10,20,70,.08);
+    background:rgba(255,255,255,.72);
+    padding:9px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:5px;
+    color:rgba(8,16,35,.62);
+    font-size:11px;
+    line-height:1.15;
+    font-weight:1000;
+  }
+  .fa-flexStep span{
+    width:20px;
+    height:20px;
+    display:grid;
+    place-items:center;
+    border-radius:999px;
+    background:rgba(35,95,255,.10);
+    color:rgba(35,95,255,1);
+    font-size:11px;
+  }
+  .fa-flexStep.isActive{
+    border-color:rgba(35,95,255,.20);
+    background:rgba(255,255,255,.96);
+    color:rgba(8,16,35,.86);
+    box-shadow:0 10px 24px rgba(10,20,70,.06);
+  }
+  .fa-dateExplorerHint{
+    border-radius:14px;
+    padding:11px 12px;
+    background:rgba(35,95,255,.08);
+    border:1px solid rgba(35,95,255,.12);
+    color:rgba(8,16,35,.66);
+    font-size:12px;
+    line-height:1.4;
+    font-weight:900;
+  }
   .fa-flexRow{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
   @media (max-width:520px){ .fa-flexRow{ grid-template-columns: 1fr; } }
   .fa-monthSummary{
@@ -891,7 +963,11 @@ const styles = `
     font-weight:1000;
   }
   @media (max-width:900px){ .fa-monthGrid{ grid-template-columns:repeat(3, minmax(0, 1fr)); } }
-  @media (max-width:520px){ .fa-monthGrid{ grid-template-columns:repeat(2, minmax(0, 1fr)); } .fa-monthCompareTop{ flex-direction:column; } }
+  @media (max-width:520px){
+    .fa-monthGrid{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+    .fa-monthCompareTop{ flex-direction:column; }
+    .fa-flexSteps{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  }
   .fa-stepper{
     display:grid;
     grid-template-columns:44px minmax(0,1fr) 44px;
@@ -1783,6 +1859,20 @@ const styles = `
     .fa-inputWrap{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.10); box-shadow:none; }
     .fa-input, .fa-select, .fa-dateInput{ color: rgba(235,240,255,.92); }
     .fa-label{ color: rgba(235,240,255,.68); }
+    .fa-flexIntro{ background:rgba(255,255,255,.06); border-color:rgba(90,230,190,.16); box-shadow:none; }
+    .fa-flexIntroTitle{ color:rgba(235,240,255,.95); }
+    .fa-flexIntroText{ color:rgba(235,240,255,.66); }
+    .fa-flexStep{ background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.09); color:rgba(235,240,255,.62); }
+    .fa-flexStep span{ background:rgba(120,160,255,.14); color:rgba(140,175,255,1); }
+    .fa-flexStep.isActive{ background:rgba(255,255,255,.08); border-color:rgba(120,160,255,.22); color:rgba(235,240,255,.90); box-shadow:none; }
+    .fa-dateExplorerHint{ background:rgba(120,160,255,.12); border-color:rgba(120,160,255,.18); color:rgba(235,240,255,.68); }
+    .fa-monthSummary, .fa-monthCompare{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.09); box-shadow:none; }
+    .fa-monthSummaryMain, .fa-monthName{ color:rgba(235,240,255,.90); }
+    .fa-monthSummarySub, .fa-monthPrice{ color:rgba(90,230,190,.86); }
+    .fa-monthSummaryCode, .fa-monthCompareSub, .fa-monthCompareRoute, .fa-monthYear{ color:rgba(235,240,255,.55); }
+    .fa-monthCard{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.09); color:rgba(235,240,255,.76); }
+    .fa-monthCard.isSelected{ background:rgba(255,255,255,.10); border-color:rgba(120,160,255,.38); box-shadow:0 0 0 3px rgba(120,160,255,.12); }
+    .fa-monthCard.isCheapest{ background:rgba(14,165,120,.12); }
     .fa-dropdown{ background: rgba(20,28,55,.95); border-color: rgba(255,255,255,.10); }
     .fa-itemTitle{ color: rgba(235,240,255,.92); }
     .fa-itemCode{ color: rgba(235,240,255,.55); }
