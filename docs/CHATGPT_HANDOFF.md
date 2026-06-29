@@ -37,13 +37,13 @@ Build/lint/test status:
 - Local Chrome mobile render check passed on 2026-06-29.
 
 GitHub status:
-- Pending commit and push.
+- Pushed to GitHub on `origin/main`.
 
 Branch:
 - `main`
 
 Commit hash:
-- Pending.
+- Implementation commit: `494c2f0`
 
 Recommended next product decision:
 - Decide whether the final public name should remain `Cheapest Month` or become `Date Explorer`.

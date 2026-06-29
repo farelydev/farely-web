@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-06-29
 
-- Commit hash: pending
+- Commit hash: `494c2f0`
 - What changed:
   - Reframed flexible search as `Cheapest Month` in the main search navigation.
   - Removed beta/warning-heavy flexible-search language from the user-facing flow.
@@ -17,7 +17,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - `npm run lint` passed with 2 pre-existing warnings on 2026-06-29.
   - Local Chrome mobile render check passed on 2026-06-29.
 - Pushed to GitHub:
-  - Pending.
+  - Yes, pushed to `origin/main`.
 
 ## 2026-06-29
 
