@@ -195,7 +195,7 @@ export default function LegalPage({ page }) {
             <div className="fa-contactGrid" aria-label="Farely contact options">
               <a className="fa-contactTile" href={SUPPORT_HREF}>
                 <span>Customer support</span>
-                <strong>{SUPPORT_EMAIL || "support@tryfarely.com"}</strong>
+                <strong>{SUPPORT_EMAIL || CONTACT_EMAIL || "info@tryfarely.com"}</strong>
               </a>
               <a className="fa-contactTile" href={CONTACT_HREF}>
                 <span>Partnerships & general enquiries</span>
@@ -203,11 +203,11 @@ export default function LegalPage({ page }) {
               </a>
               <a className="fa-contactTile" href={PRIVACY_HREF}>
                 <span>Privacy & GDPR requests</span>
-                <strong>{PRIVACY_EMAIL || "privacy@tryfarely.com"}</strong>
+                <strong>{PRIVACY_EMAIL || CONTACT_EMAIL || "info@tryfarely.com"}</strong>
               </a>
               <a className="fa-contactTile" href={SECURITY_HREF}>
                 <span>Security reports</span>
-                <strong>{SECURITY_EMAIL || "security@tryfarely.com"}</strong>
+                <strong>{SECURITY_EMAIL || CONTACT_EMAIL || "info@tryfarely.com"}</strong>
               </a>
             </div>
           )}

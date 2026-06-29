@@ -1,8 +1,8 @@
 export const CONTACT_EMAIL = String(import.meta.env.VITE_CONTACT_EMAIL || "info@tryfarely.com").trim();
-export const SUPPORT_EMAIL = String(import.meta.env.VITE_SUPPORT_EMAIL || "support@tryfarely.com").trim();
-export const NOREPLY_EMAIL = String(import.meta.env.VITE_NOREPLY_EMAIL || "noreply@tryfarely.com").trim();
-export const PRIVACY_EMAIL = String(import.meta.env.VITE_PRIVACY_EMAIL || "privacy@tryfarely.com").trim();
-export const SECURITY_EMAIL = String(import.meta.env.VITE_SECURITY_EMAIL || "security@tryfarely.com").trim();
+export const SUPPORT_EMAIL = String(import.meta.env.VITE_SUPPORT_EMAIL || CONTACT_EMAIL).trim();
+export const NOREPLY_EMAIL = String(import.meta.env.VITE_NOREPLY_EMAIL || "").trim();
+export const PRIVACY_EMAIL = String(import.meta.env.VITE_PRIVACY_EMAIL || CONTACT_EMAIL).trim();
+export const SECURITY_EMAIL = String(import.meta.env.VITE_SECURITY_EMAIL || CONTACT_EMAIL).trim();
 
 export const CONTACT_LABEL = CONTACT_EMAIL || "Contact Farely";
 export const SUPPORT_LABEL = SUPPORT_EMAIL || CONTACT_LABEL;

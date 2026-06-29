@@ -4,6 +4,19 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-06-29
 
+- Commit hash: `pending`
+- What changed:
+  - Removed unverified public email aliases from frontend defaults, backend support defaults, Render config, and deployment docs.
+  - Standardised the public support/contact address on `info@tryfarely.com` until `support@tryfarely.com` has a verified Cloudflare route or mailbox.
+  - Rechecked live production health for Amadeus search, return search, flexible search, static pages, and `View Deal` redirect behavior.
+- Checks run:
+  - `node --check server.js` passed on 2026-06-29.
+  - `vite build` passed on 2026-06-29.
+- Pushed to GitHub:
+  - Pending.
+
+## 2026-06-29
+
 - Commit hash: `589c1b1`
 - What changed:
   - Added Farely Company Operating System v1 to `AGENTS.md`.

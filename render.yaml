@@ -32,18 +32,18 @@ services:
       - key: VITE_CONTACT_EMAIL
         sync: false
       - key: VITE_SUPPORT_EMAIL
-        value: support@tryfarely.com
+        value: info@tryfarely.com
       - key: VITE_NOREPLY_EMAIL
-        value: noreply@tryfarely.com
+        value: ""
       - key: VITE_PRIVACY_EMAIL
-        value: privacy@tryfarely.com
+        value: info@tryfarely.com
       - key: VITE_SECURITY_EMAIL
-        value: security@tryfarely.com
+        value: info@tryfarely.com
       - key: RESEND_API_KEY
         sync: false
       - key: PUBLIC_SUPPORT_EMAIL
-        value: support@tryfarely.com
+        value: info@tryfarely.com
       - key: SUPPORT_TO_EMAIL
-        value: support@tryfarely.com
+        value: info@tryfarely.com
       - key: SUPPORT_FROM_EMAIL
-        value: Farely Support <support@tryfarely.com>
+        value: Farely Support <info@tryfarely.com>

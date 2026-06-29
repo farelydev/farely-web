@@ -5,6 +5,7 @@ Last updated: 2026-06-29
 | Priority | Area | Issue | Status |
 | --- | --- | --- | --- |
 | High | API/provider | Demo fallback and Amadeus test/sandbox behavior can make provider health look better than true live readiness. | Open |
+| High | Support/contact | Unverified email aliases must not be published. `info@tryfarely.com` is the only public business email until each alias has a verified receiving route or mailbox. | In progress |
 | High | Affiliate | Production affiliate approval and final partner redirect template need confirmation. | Open |
 | High | Affiliate | `View Deal` click tracking should be validated end to end after each redirect change. | Open |
 | Medium | UX | Flight results still need continued clarity around outbound/return details, layovers, and comparison signals. | Open |
@@ -18,7 +19,7 @@ Last updated: 2026-06-29
 
 ## Open Bugs
 
-- No confirmed new runtime bug from this documentation milestone.
+- Production previously advertised `support@tryfarely.com`, which bounced because that alias was not confirmed as a receiving mailbox/route. The app should show `info@tryfarely.com` until the support alias is properly configured.
 
 ## UX Issues
 
@@ -35,6 +36,7 @@ Last updated: 2026-06-29
 
 ## Production Readiness Concerns
 
+- Contact details must only show verified receiving addresses.
 - Affiliate redirect and click tracking are core business infrastructure and need live validation.
 - Secrets must stay out of repo commits.
 - Deployment state should be confirmed against GitHub/Render after meaningful changes.

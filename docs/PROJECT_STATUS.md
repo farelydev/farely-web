@@ -8,7 +8,7 @@ Milestone 6: Search Experience 2.0.
 
 ## Current Production Readiness Status
 
-Farely is in pre-launch / MVP hardening. Core flight search flows are present, but production readiness still depends on stronger provider verification, affiliate approval/configuration, analytics validation, and continued UX polishing.
+Farely is live and in MVP hardening. Core flight search flows are present, but production readiness still depends on verified contact/email routing, stronger provider monitoring, affiliate approval/configuration, analytics validation, and continued UX polishing.
 
 ## Latest Deployment / Commit
 
@@ -27,6 +27,7 @@ Farely is in pre-launch / MVP hardening. Core flight search flows are present, b
 - Flight offer results render.
 - Farely uses a server-controlled affiliate redirect architecture.
 - Legal/affiliate disclosure pages and notices exist.
+- `info@tryfarely.com` is the only public business email that should be shown until more aliases are verified.
 - Project instructions exist in `AGENTS.md`.
 - Repo-based project memory docs exist in `docs/`.
 
@@ -44,9 +45,10 @@ Farely is in pre-launch / MVP hardening. Core flight search flows are present, b
 ## Current Blockers
 
 - Live provider behavior can be hidden by demo fallback settings unless tested carefully.
+- `support@tryfarely.com`, `privacy@tryfarely.com`, `security@tryfarely.com`, and `noreply@tryfarely.com` should not be advertised until Cloudflare Email Routing or a real mailbox provider is configured for each alias.
 - Real affiliate monetisation depends on partner approval, configured redirect templates, and reliable click metadata.
 - The founder-to-ChatGPT handoff was previously manual; this docs system now reduces that risk but needs discipline after each milestone.
 
 ## Recommended Next Engineering Priority
 
-Complete Milestone 6 in small, verifiable slices, starting with the highest-impact search result improvements: rich flight cards, airline/airport clarity, and the filter drawer.
+Finish the production contact/email fix in Render and Cloudflare first, then continue Milestone 6 in small, verifiable slices, starting with rich flight cards, airline/airport clarity, and the filter drawer.

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { SUPPORT_HREF } from "../config/site";
 
 const LOGO_SRC = "/brand/B4492AEF-3192-42F5-B006-5D933BE036C2.PNG";
 
@@ -9,7 +10,7 @@ const MENU_ITEMS = [
   { label: "Umrah", action: "umrah" },
   { label: "Saved Trips / Sign in", target: "farely-signin", badge: "Coming soon" },
   { label: "Help Centre", target: "farely-support" },
-  { label: "Contact Farely", href: "mailto:support@tryfarely.com" },
+  { label: "Contact Farely", href: SUPPORT_HREF },
   { label: "Business & Partners", target: "farely-partner" },
   { label: "About Farely", target: "farely-about" },
   { label: "Privacy", href: "/privacy" },

@@ -148,10 +148,11 @@ export default function SupportAssistant() {
         <div>
           <div className="fa-supportHandoffTitle">Still need help?</div>
           <p>
-            If Farely AI cannot answer your question, contact our team at <a className="fa-inlineLink" href={SUPPORT_HREF}>{SUPPORT_EMAIL || "support@tryfarely.com"}</a>. Use <a className="fa-inlineLink" href={CONTACT_HREF}>{CONTACT_EMAIL || "info@tryfarely.com"}</a> for partnerships and general enquiries.
+            If Farely AI cannot answer your question, contact our team at <a className="fa-inlineLink" href={SUPPORT_HREF}>{SUPPORT_EMAIL || CONTACT_EMAIL || "info@tryfarely.com"}</a>. Use <a className="fa-inlineLink" href={CONTACT_HREF}>{CONTACT_EMAIL || "info@tryfarely.com"}</a> for partnerships and general enquiries.
           </p>
           <p className="fa-supportMuted">
-            Privacy: {PRIVACY_EMAIL || "privacy@tryfarely.com"} · Security: {SECURITY_EMAIL || "security@tryfarely.com"} · Automated emails only: {NOREPLY_EMAIL || "noreply@tryfarely.com"}.
+            Privacy: {PRIVACY_EMAIL || CONTACT_EMAIL || "info@tryfarely.com"} · Security: {SECURITY_EMAIL || CONTACT_EMAIL || "info@tryfarely.com"}
+            {NOREPLY_EMAIL ? ` · Automated emails only: ${NOREPLY_EMAIL}` : ""}.
           </p>
         </div>
 
