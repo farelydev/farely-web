@@ -4,52 +4,53 @@ Last updated: 2026-06-29
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely production contact/email routing was reviewed before starting more Milestone 6 work.
+Farely Milestone 6 Search Experience 2.0 first-pass implementation is complete, with one Milestone 7 Umrah-mode starter improvement included because the product decision was confirmed.
 
 What was completed:
-- Found that production was advertising `support@tryfarely.com`, but that address bounced.
-- Confirmed the domain has Cloudflare Email Routing MX records, but the advertised support alias is not currently usable.
-- Updated frontend defaults, backend support defaults, Render config, and docs so Farely only advertises `info@tryfarely.com` until more aliases are verified.
-- Rechecked live production endpoints: `/api/health`, `/api/debug/amadeus`, exact-date search, return search, flexible search, static legal/support pages, and `View Deal` redirect.
+- Redesigned flight result cards to show airline logo/fallback, full airline name, full airport labels where known, clear outbound and return sections, duration, stops, cabin, baggage notes, and a prominent total price.
+- Added recommendation badges: `Cheapest`, `Fastest`, `Best Value`, and `Direct`.
+- Added a mobile-first `Filters` button that opens a bottom-sheet drawer.
+- Added quick filters: Direct only, Morning departures, Under £200, Best value, and Cabin bag only.
+- Added advanced filters: budget, airline, stops, departure time, arrival time, departure airport, arrival airport, return to same airport, flight duration, and cabin bag only.
+- Updated the active affiliate CTA wording to `Check partner deal`.
+- Routed Umrah-related homepage AI prompts into Umrah mode automatically.
+- Added Umrah planning questions for Makkah/Madinah order, trip split, timing such as November/Ramadan, direct flights, and flights-only vs package intent.
 
 What was not completed:
-- `support@tryfarely.com` was not made live because Cloudflare API access failed with an authentication error and no real outbound email provider is configured.
-- End-to-end receive/send testing for `support@tryfarely.com` is still blocked until the alias is created in Cloudflare Email Routing or a mailbox provider.
-- Browser-level console/mobile testing could not be completed in this environment because the in-app browser timed out.
-- Milestone 6 rich flight cards were not started; production fixes took priority.
+- Live production validation after deployment is still needed.
+- Real Amadeus result sets need broader QA because local exact/flexible searches returned zero offers during this run.
+- Multi-city Umrah live pricing is still not connected; the planner prepares the route in the UI only.
+- Baggage details are shown when supplied; many provider responses may still require `check partner` wording.
 
 Files changed:
-- `.env.example`
-- `CLOUD_HANDOFF.md`
-- `DEPLOY.md`
-- `EMAIL_SETUP.md`
-- `render.yaml`
-- `server.js`
-- `src/config/site.js`
-- `src/components/Header.jsx`
-- `src/components/LegalPage.jsx`
-- `src/components/SupportAssistant.jsx`
+- `src/components/ResultsSection.jsx`
+- `src/components/PlannerModal.jsx`
+- `src/App.jsx`
+- `src/data/airports.js`
 - `docs/PROJECT_STATUS.md`
+- `docs/ROADMAP.md`
 - `docs/KNOWN_ISSUES.md`
 - `docs/CHANGELOG.md`
 - `docs/CHATGPT_HANDOFF.md`
 
 Build/lint/test status:
-- `node --check server.js` passed on 2026-06-29.
-- `vite build` passed on 2026-06-29.
+- `git diff --check` passed on 2026-06-29.
+- `npm run build` passed on 2026-06-29.
+- `npm run lint` passed with 2 existing warnings on 2026-06-29.
+- Local Chrome mobile render check passed using mocked flight offers because live/local searches returned no offers for the tested routes.
 
 GitHub status:
-- Pushed to GitHub on `origin/main`.
+- Pending commit and push.
 
 Branch:
 - `main`
 
 Commit hash:
-- `5c97c19`
+- Pending.
 
 Recommended next product decision:
-- Decide whether Farely should keep using `info@tryfarely.com` publicly for now, or set up dedicated aliases such as `support@tryfarely.com`, `privacy@tryfarely.com`, and `security@tryfarely.com`.
+- Review whether the first-pass filters are enough for MVP launch, or whether Farely should next prioritise accessibility polish and real-data QA before adding more filter types.
 
 Questions for ChatGPT:
-- Should the support page use one public business email for simplicity during MVP, or separate aliases once the email provider is properly configured?
-- After the contact fix is deployed, should Milestone 6 start with rich result cards or filters?
+- Should `Check partner deal` remain the CTA, or should Farely test `View partner offer`?
+- For Umrah mode, should the next product step be flights-only routing or package/travel-agent lead capture?

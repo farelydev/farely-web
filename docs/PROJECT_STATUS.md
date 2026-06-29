@@ -13,7 +13,7 @@ Farely is live and in MVP hardening. Core flight search flows are present, but p
 ## Latest Deployment / Commit
 
 - Branch: `main`
-- Latest known pushed commit before this operating-system update: `b8666ba` - Record Farely memory docs push status
+- Latest known pushed commit before this Milestone 6 slice: `5c97c19` - Fix public contact email defaults
 - Deployment source: GitHub `farelydev/farely-web` on `main`
 - Note: check Render/GitHub after each future milestone to confirm the newest deployed commit.
 
@@ -25,6 +25,9 @@ Farely is live and in MVP hardening. Core flight search flows are present, but p
 - Flexible-month search is implemented.
 - Cheapest-day results render.
 - Flight offer results render.
+- Richer result cards now show airline branding, outbound/return sections, full airport labels where known, price, cabin, baggage notes, recommendation badges, and clearer partner CTA wording.
+- A mobile-first filters drawer now exists with quick filters and advanced filter controls.
+- Umrah-related AI prompts now route into the Umrah planning mode instead of the generic planner path.
 - Farely uses a server-controlled affiliate redirect architecture.
 - Legal/affiliate disclosure pages and notices exist.
 - `info@tryfarely.com` is the only public business email that should be shown until more aliases are verified.
@@ -34,7 +37,7 @@ Farely is live and in MVP hardening. Core flight search flows are present, but p
 ## What Is Incomplete
 
 - Milestone 6 Search Experience 2.0 is not complete.
-- Rich flight cards, full airline names/logos, full airport names, filters drawer, budget/airline/time/stops filters, airport selection, return-to-same-airport option, CTA wording, and AI/search sync fixes need to be completed or verified as part of Milestone 6.
+- Milestone 6 still needs live-production validation, deeper filter QA against real Amadeus responses, accessibility polish, and any remaining AI/search sync fixes.
 - Production affiliate partner approval/configuration is not yet fully confirmed in this repo.
 - Click tracking needs ongoing validation against live traffic and analytics requirements.
 - AI trip-planning experience still needs product decisions and iteration.
@@ -51,4 +54,4 @@ Farely is live and in MVP hardening. Core flight search flows are present, but p
 
 ## Recommended Next Engineering Priority
 
-Finish the production contact/email fix in Render and Cloudflare first, then continue Milestone 6 in small, verifiable slices, starting with rich flight cards, airline/airport clarity, and the filter drawer.
+Continue Milestone 6 with live validation of the new filters/cards on production data, then tighten accessibility and any remaining AI/search sync issues before moving deeper into Milestone 7.

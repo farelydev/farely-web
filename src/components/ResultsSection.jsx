@@ -1,4 +1,5 @@
-import { carrierLabel, cx, firstSegment, isoDurationToMinutes, lastSegment, minutesToPretty, parseMoneyToNumber, stopsLabel } from "../utils/flightHelpers";
+import { useMemo, useState } from "react";
+import { carrierLabel, cx, findAirport, firstSegment, isoDurationToMinutes, lastSegment, minutesToPretty, parseMoneyToNumber, stopsLabel } from "../utils/flightHelpers";
 
 const AIRLINE_BRANDS = {
   A1: { name: "A.P.G.", colors: ["#13294b", "#f5b700"] },
@@ -11,11 +12,30 @@ const AIRLINE_BRANDS = {
   IB: { name: "Iberia", colors: ["#d71920", "#f7b500"] },
   KL: { name: "KLM", colors: ["#00a1de", "#ffffff"] },
   LH: { name: "Lufthansa", colors: ["#05164d", "#ffcc00"] },
+  LS: { name: "Jet2", colors: ["#d71920", "#ffffff"] },
+  PC: { name: "Pegasus Airlines", colors: ["#f7b500", "#ffffff"] },
+  TP: { name: "TAP Air Portugal", colors: ["#006b54", "#d71920"] },
   QR: { name: "Qatar Airways", colors: ["#5c0632", "#ffffff"] },
+  UX: { name: "Air Europa", colors: ["#1d4ed8", "#ffffff"] },
   TK: { name: "Turkish Airlines", colors: ["#c70a0c", "#ffffff"] },
   U2: { name: "easyJet", colors: ["#ff6600", "#ffffff"] },
+  VY: { name: "Vueling", colors: ["#ffcc00", "#1f2937"] },
   VS: { name: "Virgin Atlantic", colors: ["#da0530", "#ffffff"] },
+  W9: { name: "Wizz Air UK", colors: ["#c0007a", "#ffffff"] },
   X1: { name: "Hahn Air Systems", colors: ["#1f2937", "#d1d5db"] },
+};
+
+const DEFAULT_FILTERS = {
+  maxPrice: "",
+  airline: "any",
+  stops: "any",
+  departTime: "any",
+  arriveTime: "any",
+  departAirport: "any",
+  arriveAirport: "any",
+  sameReturnAirport: false,
+  maxDuration: "",
+  cabinBagOnly: false,
 };
 
 function airlineBrand(code) {
@@ -25,6 +45,17 @@ function airlineBrand(code) {
     name: AIRLINE_BRANDS[normalized]?.name || normalized || "Airline",
     colors: AIRLINE_BRANDS[normalized]?.colors || ["#315bff", "#ffffff"],
   };
+}
+
+function airportDisplay(code) {
+  const normalized = String(code || "").toUpperCase();
+  if (!normalized) return "Airport TBC";
+
+  const airport = findAirport(normalized);
+  if (!airport) return normalized;
+
+  const name = airport.name === "All airports" ? "all airports" : airport.name;
+  return `${airport.city} ${name} (${airport.iata})`;
 }
 
 function AirlineLogo({ code }) {
@@ -118,7 +149,7 @@ function itineraryRouteLabel(itinerary) {
   const first = segs[0];
   const last = segs[segs.length - 1];
   if (!first || !last) return "Route details unavailable";
-  return `${first.from || "—"} → ${last.to || "—"}`;
+  return `${airportDisplay(first.from)} → ${airportDisplay(last.to)}`;
 }
 
 function itineraryAirlineLabel(itinerary) {
@@ -201,6 +232,110 @@ function dealUrlWithMetadata(dealUrl, metadata) {
   }
 }
 
+function timeBucket(value) {
+  if (!value || typeof value !== "string") return "any";
+  const hour = Number(value.slice(11, 13));
+  if (!Number.isFinite(hour)) return "any";
+  if (hour >= 5 && hour < 12) return "morning";
+  if (hour >= 12 && hour < 17) return "afternoon";
+  if (hour >= 17 && hour < 22) return "evening";
+  return "overnight";
+}
+
+function outboundStops(offer) {
+  const outbound = offer?.itineraries?.[0] || null;
+  return Math.max(0, (outbound?.segments || []).length - 1);
+}
+
+function outboundDurationMinutes(offer) {
+  return isoDurationToMinutes(offer?.itineraries?.[0]?.duration);
+}
+
+function offerValueScore(offer) {
+  const price = parseMoneyToNumber(offer?.price);
+  const duration = outboundDurationMinutes(offer);
+  const stops = outboundStops(offer);
+  return price * 0.7 + duration * 0.3 + stops * 40;
+}
+
+function baggageSummary(offer) {
+  const explicit =
+    offer?.baggage ||
+    offer?.baggageInfo ||
+    offer?.includedBags ||
+    offer?.travelerPricings?.[0]?.fareDetailsBySegment?.[0]?.includedCheckedBags?.quantity;
+
+  if (typeof explicit === "number") {
+    return explicit > 0 ? `${explicit} checked bag${explicit === 1 ? "" : "s"} listed` : "Cabin bag only listed";
+  }
+
+  if (typeof explicit === "string" && explicit.trim()) return explicit.trim();
+
+  return "Baggage: check partner";
+}
+
+function offerMentionsCabinBag(offer) {
+  const summary = baggageSummary(offer).toLowerCase();
+  if (summary === "baggage: check partner") return true;
+  return /cabin|carry|hand/.test(summary);
+}
+
+function offerMatchesFilters(offer, filters) {
+  const outbound = offer?.itineraries?.[0] || null;
+  const inbound = offer?.itineraries?.[1] || null;
+  const first = firstSegment(offer);
+  const last = lastSegment(offer);
+  const inboundLast = inbound?.segments?.[inbound.segments.length - 1] || null;
+  const price = parseMoneyToNumber(offer?.price);
+  const stops = outboundStops(offer);
+  const durationMinutes = isoDurationToMinutes(outbound?.duration);
+
+  if (filters.maxPrice && price > Number(filters.maxPrice)) return false;
+  if (filters.airline !== "any" && carrierLabel(offer) !== filters.airline) return false;
+  if (filters.stops === "direct" && stops !== 0) return false;
+  if (filters.stops === "one" && stops !== 1) return false;
+  if (filters.departTime !== "any" && timeBucket(first?.departAt) !== filters.departTime) return false;
+  if (filters.arriveTime !== "any" && timeBucket(last?.arriveAt) !== filters.arriveTime) return false;
+  if (filters.departAirport !== "any" && first?.from !== filters.departAirport) return false;
+  if (filters.arriveAirport !== "any" && last?.to !== filters.arriveAirport) return false;
+  if (filters.sameReturnAirport && inboundLast?.to && first?.from && inboundLast.to !== first.from) return false;
+  if (filters.maxDuration && durationMinutes > Number(filters.maxDuration) * 60) return false;
+  if (filters.cabinBagOnly && !offerMentionsCabinBag(offer)) return false;
+
+  return true;
+}
+
+function uniqueOptions(values) {
+  return [...new Set(values.filter(Boolean))].sort();
+}
+
+function rankingStats(offers) {
+  const prices = offers.map((offer) => parseMoneyToNumber(offer?.price)).filter(Number.isFinite);
+  const durations = offers.map(outboundDurationMinutes).filter(Number.isFinite);
+  const values = offers.map(offerValueScore).filter(Number.isFinite);
+
+  return {
+    cheapest: prices.length ? Math.min(...prices) : Infinity,
+    fastest: durations.length ? Math.min(...durations) : Infinity,
+    bestValue: values.length ? Math.min(...values) : Infinity,
+  };
+}
+
+function recommendationBadges(offer, stats) {
+  const badges = [];
+  const price = parseMoneyToNumber(offer?.price);
+  const duration = outboundDurationMinutes(offer);
+  const stops = outboundStops(offer);
+  const valueScore = offerValueScore(offer);
+
+  if (Number.isFinite(price) && price === stats.cheapest) badges.push("Cheapest");
+  if (Number.isFinite(duration) && duration === stats.fastest) badges.push("Fastest");
+  if (Number.isFinite(valueScore) && valueScore === stats.bestValue && !badges.includes("Cheapest")) badges.push("Best Value");
+  if (stops === 0) badges.push("Direct");
+
+  return badges.slice(0, 3);
+}
+
 function ItineraryDetail({ label, itinerary }) {
   const segs = itinerary?.segments || [];
   const first = segs[0];
@@ -220,7 +355,7 @@ function ItineraryDetail({ label, itinerary }) {
       <div className="fa-legMain">
         <div>
           <div className="fa-legTime">{timeFromDateTime(first?.departAt)}</div>
-          <div className="fa-legAirport">{first?.from || "—"}</div>
+          <div className="fa-legAirport">{airportDisplay(first?.from)}</div>
           <div className="fa-legDate">{dateFromDateTime(first?.departAt)}</div>
         </div>
 
@@ -230,7 +365,7 @@ function ItineraryDetail({ label, itinerary }) {
 
         <div>
           <div className="fa-legTime">{timeFromDateTime(last?.arriveAt)}</div>
-          <div className="fa-legAirport">{last?.to || "—"}</div>
+          <div className="fa-legAirport">{airportDisplay(last?.to)}</div>
           <div className="fa-legDate">{dateFromDateTime(last?.arriveAt)}</div>
         </div>
       </div>
@@ -249,6 +384,57 @@ export default function ResultsSection({
   routeFromCode, routeToCode, departDate, tripType, returnDate, flexMonth, cabin,
 }) {
   const isMultiCity = tripType === "multicity";
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [filters, setFilters] = useState(DEFAULT_FILTERS);
+
+  const airlineOptions = useMemo(
+    () => uniqueOptions(shownOffers.map((offer) => carrierLabel(offer))),
+    [shownOffers]
+  );
+  const departAirportOptions = useMemo(
+    () => uniqueOptions(shownOffers.map((offer) => firstSegment(offer)?.from)),
+    [shownOffers]
+  );
+  const arriveAirportOptions = useMemo(
+    () => uniqueOptions(shownOffers.map((offer) => lastSegment(offer)?.to)),
+    [shownOffers]
+  );
+  const filteredOffers = useMemo(
+    () => shownOffers.filter((offer) => offerMatchesFilters(offer, filters)),
+    [filters, shownOffers]
+  );
+  const filteredStats = useMemo(() => rankingStats(filteredOffers), [filteredOffers]);
+  const activeFilterCount = Object.entries(filters).filter(([key, value]) => {
+    if (key === "sameReturnAirport") return Boolean(value);
+    if (key === "cabinBagOnly") return Boolean(value);
+    return value !== "" && value !== "any";
+  }).length;
+
+  function updateFilter(key, value) {
+    setFilters((current) => ({ ...current, [key]: value }));
+  }
+
+  function resetFilters() {
+    setFilters(DEFAULT_FILTERS);
+  }
+
+  function setQuickFilter(key) {
+    if (key === "direct") {
+      updateFilter("stops", filters.stops === "direct" ? "any" : "direct");
+    }
+    if (key === "morning") {
+      updateFilter("departTime", filters.departTime === "morning" ? "any" : "morning");
+    }
+    if (key === "under200") {
+      updateFilter("maxPrice", filters.maxPrice === "200" ? "" : "200");
+    }
+    if (key === "best") {
+      setResultsTab(resultsTab === "best" ? "cheapest" : "best");
+    }
+    if (key === "cabinBag") {
+      updateFilter("cabinBagOnly", !filters.cabinBagOnly);
+    }
+  }
 
   return (
     <section className="fa-results">
@@ -259,35 +445,172 @@ export default function ResultsSection({
         </h2>
 
         {!isMultiCity && (
-          <div className="fa-resultsTabs">
-            <button
-              type="button"
-              className={cx("fa-rTab", resultsTab === "cheapest" && "isActive")}
-              aria-pressed={resultsTab === "cheapest"}
-              onClick={() => setResultsTab("cheapest")}
-            >
-              Cheapest
-            </button>
-            <button
-              type="button"
-              className={cx("fa-rTab", resultsTab === "fastest" && "isActive")}
-              aria-pressed={resultsTab === "fastest"}
-              onClick={() => setResultsTab("fastest")}
-            >
-              Fastest
-            </button>
-            <button
-              type="button"
-              className={cx("fa-rTab", resultsTab === "best" && "isActive")}
-              aria-pressed={resultsTab === "best"}
-              onClick={() => setResultsTab("best")}
-            >
-              Best
+          <div className="fa-resultsControls">
+            <div className="fa-resultsTabs">
+              <button
+                type="button"
+                className={cx("fa-rTab", resultsTab === "cheapest" && "isActive")}
+                aria-pressed={resultsTab === "cheapest"}
+                onClick={() => setResultsTab("cheapest")}
+              >
+                Cheapest
+              </button>
+              <button
+                type="button"
+                className={cx("fa-rTab", resultsTab === "fastest" && "isActive")}
+                aria-pressed={resultsTab === "fastest"}
+                onClick={() => setResultsTab("fastest")}
+              >
+                Fastest
+              </button>
+              <button
+                type="button"
+                className={cx("fa-rTab", resultsTab === "best" && "isActive")}
+                aria-pressed={resultsTab === "best"}
+                onClick={() => setResultsTab("best")}
+              >
+                Best
+              </button>
+            </div>
+
+            <button type="button" className="fa-filterBtn" onClick={() => setFiltersOpen(true)}>
+              Filters{activeFilterCount ? ` (${activeFilterCount})` : ""}
             </button>
           </div>
         )}
 
-        {!!apiWarning && shownOffers.length > 0 && (
+        {filtersOpen && (
+          <div className="fa-filterOverlay" onMouseDown={() => setFiltersOpen(false)}>
+            <div className="fa-filterDrawer" role="dialog" aria-modal="true" aria-label="Flight filters" onMouseDown={(event) => event.stopPropagation()}>
+              <div className="fa-filterTop">
+                <div>
+                  <div className="fa-filterTitle">Filters</div>
+                  <div className="fa-filterSub">{filteredOffers.length} of {shownOffers.length} offers shown</div>
+                </div>
+                <button type="button" className="fa-filterClose" onClick={() => setFiltersOpen(false)} aria-label="Close filters">x</button>
+              </div>
+
+              <div className="fa-quickFilters" aria-label="Quick flight filters">
+                <button type="button" className={cx("fa-quickFilter", filters.stops === "direct" && "isActive")} onClick={() => setQuickFilter("direct")}>
+                  Direct only
+                </button>
+                <button type="button" className={cx("fa-quickFilter", filters.departTime === "morning" && "isActive")} onClick={() => setQuickFilter("morning")}>
+                  Morning departures
+                </button>
+                <button type="button" className={cx("fa-quickFilter", filters.maxPrice === "200" && "isActive")} onClick={() => setQuickFilter("under200")}>
+                  Under £200
+                </button>
+                <button type="button" className={cx("fa-quickFilter", resultsTab === "best" && "isActive")} onClick={() => setQuickFilter("best")}>
+                  Best value
+                </button>
+                <button type="button" className={cx("fa-quickFilter", filters.cabinBagOnly && "isActive")} onClick={() => setQuickFilter("cabinBag")}>
+                  Cabin bag only
+                </button>
+              </div>
+
+              <div className="fa-filterGrid">
+                <label className="fa-filterField">
+                  Budget slider
+                  <div className="fa-budgetControl">
+                    <input
+                      type="range"
+                      min="50"
+                      max="1000"
+                      step="25"
+                      value={filters.maxPrice || "1000"}
+                      onChange={(event) => updateFilter("maxPrice", event.target.value === "1000" ? "" : event.target.value)}
+                      aria-label="Maximum budget"
+                    />
+                    <input type="number" min="0" value={filters.maxPrice} onChange={(event) => updateFilter("maxPrice", event.target.value)} placeholder="No max" />
+                  </div>
+                </label>
+
+                <label className="fa-filterField">
+                  Airline
+                  <select value={filters.airline} onChange={(event) => updateFilter("airline", event.target.value)}>
+                    <option value="any">Any airline</option>
+                    {airlineOptions.map((code) => (
+                      <option key={code} value={code}>{airlineBrand(code).name} ({code})</option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="fa-filterField">
+                  Stops
+                  <select value={filters.stops} onChange={(event) => updateFilter("stops", event.target.value)}>
+                    <option value="any">Any</option>
+                    <option value="direct">Direct only</option>
+                    <option value="one">1 stop</option>
+                  </select>
+                </label>
+
+                <label className="fa-filterField">
+                  Departure time
+                  <select value={filters.departTime} onChange={(event) => updateFilter("departTime", event.target.value)}>
+                    <option value="any">Any time</option>
+                    <option value="morning">Morning</option>
+                    <option value="afternoon">Afternoon</option>
+                    <option value="evening">Evening</option>
+                    <option value="overnight">Overnight</option>
+                  </select>
+                </label>
+
+                <label className="fa-filterField">
+                  Arrival time
+                  <select value={filters.arriveTime} onChange={(event) => updateFilter("arriveTime", event.target.value)}>
+                    <option value="any">Any time</option>
+                    <option value="morning">Morning</option>
+                    <option value="afternoon">Afternoon</option>
+                    <option value="evening">Evening</option>
+                    <option value="overnight">Overnight</option>
+                  </select>
+                </label>
+
+                <label className="fa-filterField">
+                  Departure airport
+                  <select value={filters.departAirport} onChange={(event) => updateFilter("departAirport", event.target.value)}>
+                    <option value="any">Any departure airport</option>
+                    {departAirportOptions.map((code) => (
+                      <option key={code} value={code}>{airportDisplay(code)}</option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="fa-filterField">
+                  Arrival airport
+                  <select value={filters.arriveAirport} onChange={(event) => updateFilter("arriveAirport", event.target.value)}>
+                    <option value="any">Any arrival airport</option>
+                    {arriveAirportOptions.map((code) => (
+                      <option key={code} value={code}>{airportDisplay(code)}</option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="fa-filterField">
+                  Max flight duration
+                  <input type="number" min="1" value={filters.maxDuration} onChange={(event) => updateFilter("maxDuration", event.target.value)} placeholder="Hours" />
+                </label>
+
+                <label className="fa-filterCheck">
+                  <input type="checkbox" checked={filters.sameReturnAirport} onChange={(event) => updateFilter("sameReturnAirport", event.target.checked)} />
+                  Return to same airport
+                </label>
+
+                <label className="fa-filterCheck">
+                  <input type="checkbox" checked={filters.cabinBagOnly} onChange={(event) => updateFilter("cabinBagOnly", event.target.checked)} />
+                  Cabin bag only
+                </label>
+              </div>
+
+              <div className="fa-filterActions">
+                <button type="button" className="fa-filterSecondary" onClick={resetFilters}>Reset</button>
+                <button type="button" className="fa-filterApply" onClick={() => setFiltersOpen(false)}>Show results</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {!!apiWarning && filteredOffers.length > 0 && (
           <div className="fa-resultsWarning">
             <div>
               <strong>Live fare check is limited.</strong> Some results may be preview-only or may open on a partner site for the latest price.
@@ -361,15 +684,17 @@ export default function ResultsSection({
           </div>
 
           <div className="fa-airlineList">
-            {shownOffers.length === 0 ? (
+            {filteredOffers.length === 0 ? (
               <div className="fa-empty">
                 <EmptyResultsIcon />
                 <div>
                   <div className="fa-emptyTitle">
-                    {didSearch ? "No matching fares yet" : "Everything is ready"}
+                    {shownOffers.length > 0 ? "No fares match these filters" : didSearch ? "No matching fares yet" : "Everything is ready"}
                   </div>
                   <div className="fa-emptyText">
-                    {isMultiCity
+                    {shownOffers.length > 0
+                      ? "Try clearing filters or widening your budget, stops, airport, or time preferences."
+                      : isMultiCity
                       ? "Multi-city search is planned in the UI. Live multi-city pricing will be added next."
                       : didSearch
                         ? "Try exact dates, adjust the route, or search again to compare the best available options."
@@ -378,7 +703,7 @@ export default function ResultsSection({
                 </div>
               </div>
             ) : (
-              shownOffers.map((o, idx) => {
+              filteredOffers.map((o, idx) => {
                 const price = o?.price;
                 const cur = o?.currency || "GBP";
                 const carrierCode = carrierLabel(o);
@@ -388,7 +713,8 @@ export default function ResultsSection({
                 const inbound = o?.itineraries?.[1] || null;
                 const first = firstSegment(o);
                 const last = lastSegment(o);
-                const routeLine = `${first?.from || routeFromCode} — ${last?.to || routeToCode}`;
+                const routeLine = `${airportDisplay(first?.from || routeFromCode)} — ${airportDisplay(last?.to || routeToCode)}`;
+                const badges = recommendationBadges(o, filteredStats);
                 const dealUrl = dealUrlWithMetadata(o?.dealUrl, {
                   price,
                   currency: cur,
@@ -409,6 +735,9 @@ export default function ResultsSection({
                               <div className="fa-airlineTitleLine">
                                 <span>{carrier.name}</span>
                                 <span className="fa-airlineCode">{carrierCode}</span>
+                                {badges.map((badge) => (
+                                  <span key={badge} className={cx("fa-recBadge", badge === "Direct" && "isDirect")}>{badge}</span>
+                                ))}
                                 {o?.isDemo && <span className="fa-demoBadge">Demo fallback</span>}
                               </div>
                               <div className="fa-airlineMeta">
@@ -441,6 +770,7 @@ export default function ResultsSection({
                       </div>
 
                       <div className="fa-offerSignals">
+                        <span className="fa-signalChip">{baggageSummary(o)}</span>
                         <span className="fa-signalChip">Secure partner booking</span>
                         <span className="fa-signalChip">No extra Farely booking fees</span>
                         <span className="fa-signalChip">Transparent affiliate links</span>
@@ -452,7 +782,7 @@ export default function ResultsSection({
                         </div>
                         {dealUrl ? (
                           <a className="fa-viewDeal isActive" href={dealUrl} target="_blank" rel="noreferrer">
-                            View deal
+                            Check partner deal
                           </a>
                         ) : (
                           <button type="button" className="fa-viewDeal" disabled>

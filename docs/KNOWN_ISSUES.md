@@ -8,10 +8,10 @@ Last updated: 2026-06-29
 | High | Support/contact | Unverified email aliases must not be published. `info@tryfarely.com` is the only public business email until each alias has a verified receiving route or mailbox. | In progress |
 | High | Affiliate | Production affiliate approval and final partner redirect template need confirmation. | Open |
 | High | Affiliate | `View Deal` click tracking should be validated end to end after each redirect change. | Open |
-| Medium | UX | Flight results still need continued clarity around outbound/return details, layovers, and comparison signals. | Open |
-| Medium | UX | Milestone 6 filters drawer and budget/airline/time/stops filters are not complete. | Open |
-| Medium | UX | Airport selection and return-to-same-airport behavior need completion or verification. | Open |
-| Medium | AI planner | Planner experience needs clearer product scope and stronger structured trip outputs. | Open |
+| Medium | UX | Flight results still need live-production validation against real provider responses after the richer card update. | In progress |
+| Medium | UX | Milestone 6 filters drawer and budget/airline/time/stops filters need broader QA against real result sets. | In progress |
+| Medium | UX | Airport selection and return-to-same-airport filter behavior need production-data verification. | In progress |
+| Medium | AI planner | Planner experience needs clearer product scope and stronger structured trip outputs after first-pass Umrah routing. | Open |
 | Medium | AI planner | Remaining AI/search sync fixes belong to Milestone 6 before Milestone 7 begins. | Open |
 | Medium | Analytics | Founder dashboard and business reporting are not yet built. | Open |
 | Medium | Production readiness | Deployment health should be checked after each milestone, not assumed from local build success. | Open |
@@ -23,9 +23,9 @@ Last updated: 2026-06-29
 
 ## UX Issues
 
-- Continue simplifying result cards for quick comparison.
-- Complete Milestone 6 search filters and airport-selection behavior.
-- Improve CTA wording so users understand where `View Deal` sends them.
+- Continue validating result cards for quick comparison with real provider data.
+- QA Milestone 6 search filters and airport-selection behavior on live routes with multiple offers.
+- CTA wording has been changed to `Check partner deal`; validate click-through tracking after deployment.
 - Keep affiliate disclosure visible without making the UI feel cluttered.
 - Make AI planner next steps clearer for non-technical users.
 

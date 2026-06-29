@@ -239,7 +239,11 @@ export default function App() {
     clearSearchState();
     setTripType(draft.tripType || "return");
     setDateMode(draft.dateMode || "exact");
-    setRoute(draft.originCode || "LON", draft.destinationCode || "AGP");
+    if (draft.multiLegs?.length) {
+      setMultiLegs(draft.multiLegs);
+    } else {
+      setRoute(draft.originCode || "LON", draft.destinationCode || "AGP");
+    }
 
     if (draft.departDate) setDepartDate(draft.departDate);
     if (draft.returnDate) setReturnDate(draft.returnDate);
@@ -252,7 +256,8 @@ export default function App() {
   }
 
   function handleAiButton() {
-    openPlanner("ai");
+    const prompt = String(aiText || "").toLowerCase();
+    openPlanner(/umrah|makkah|mecca|madinah|medina|jeddah|ramadan/.test(prompt) ? "umrah" : "ai");
   }
 
   async function fetchJson(url) {
@@ -1023,15 +1028,175 @@ const styles = `
   .fa-resultsInner{ max-width: 980px; margin:0 auto; }
   .fa-resultsTitle{ margin:0 0 10px; font-size: clamp(34px, 4vw, 48px); letter-spacing:-0.03em; color: rgba(8,16,35,.92); }
   .fa-resultsSubtitle{ font-weight:900; color: rgba(8,16,35,.55); font-size:0.60em; margin-left:6px; }
+  .fa-resultsControls{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:14px;
+  }
   .fa-resultsTabs{
     display:inline-flex; gap:8px; padding:6px; border-radius:14px;
     background: rgba(255,255,255,.85);
     border: 1px solid rgba(10,20,70,.08);
     box-shadow: 0 10px 30px rgba(10,20,70,.08);
-    margin-bottom:14px;
   }
   .fa-rTab{ border:0; cursor:pointer; padding:10px 14px; border-radius:12px; font-weight:1000; background:transparent; color: rgba(8,16,35,.58); }
   .fa-rTab.isActive{ background: rgba(35,95,255,.10); color: rgba(35,95,255,1); border: 1px solid rgba(35,95,255,.15); }
+  .fa-filterBtn{
+    border:1px solid rgba(10,20,70,.10);
+    background:rgba(255,255,255,.9);
+    color:rgba(8,16,35,.78);
+    border-radius:14px;
+    padding:12px 14px;
+    cursor:pointer;
+    font-weight:1000;
+    box-shadow:0 10px 30px rgba(10,20,70,.08);
+  }
+  .fa-filterOverlay{
+    position:fixed;
+    inset:0;
+    z-index:220;
+    background:rgba(5,10,30,.44);
+    backdrop-filter:blur(6px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+  }
+  .fa-filterDrawer{
+    width:min(760px, 100%);
+    max-height:86vh;
+    overflow:auto;
+    border-radius:22px;
+    background:rgba(255,255,255,.98);
+    border:1px solid rgba(255,255,255,.4);
+    box-shadow:0 34px 90px rgba(0,0,0,.34);
+    padding:18px;
+  }
+  .fa-filterTop{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    padding-bottom:14px;
+    border-bottom:1px solid rgba(10,20,70,.08);
+    margin-bottom:14px;
+  }
+  .fa-filterTitle{ font-size:22px; font-weight:1000; color:rgba(8,16,35,.92); }
+  .fa-filterSub{ margin-top:2px; font-size:12px; font-weight:900; color:rgba(8,16,35,.52); }
+  .fa-filterClose{
+    width:38px;
+    height:38px;
+    border:1px solid rgba(10,20,70,.10);
+    border-radius:12px;
+    background:#fff;
+    color:rgba(8,16,35,.78);
+    cursor:pointer;
+    font-size:20px;
+    font-weight:1000;
+  }
+  .fa-quickFilters{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:0 0 14px;
+  }
+  .fa-quickFilter{
+    min-height:38px;
+    border:1px solid rgba(10,20,70,.10);
+    border-radius:999px;
+    background:rgba(248,250,255,.94);
+    color:rgba(8,16,35,.66);
+    padding:0 12px;
+    cursor:pointer;
+    font-size:12px;
+    font-weight:1000;
+  }
+  .fa-quickFilter.isActive{
+    background:rgba(35,95,255,.10);
+    border-color:rgba(35,95,255,.22);
+    color:rgba(35,95,255,1);
+  }
+  .fa-filterGrid{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:12px;
+  }
+  .fa-filterField{
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+    font-size:12px;
+    font-weight:1000;
+    color:rgba(8,16,35,.62);
+  }
+  .fa-filterField input,
+  .fa-filterField select{
+    min-height:44px;
+    width:100%;
+    border:1px solid rgba(10,20,70,.10);
+    border-radius:13px;
+    background:#fff;
+    color:rgba(8,16,35,.86);
+    padding:0 11px;
+    font-weight:850;
+  }
+  .fa-budgetControl{
+    display:grid;
+    grid-template-columns:minmax(120px, 1fr) 104px;
+    gap:10px;
+    align-items:center;
+  }
+  .fa-budgetControl input[type="range"]{
+    padding:0;
+    accent-color:rgba(35,95,255,1);
+  }
+  .fa-filterCheck{
+    min-height:44px;
+    display:flex;
+    align-items:center;
+    gap:9px;
+    border:1px solid rgba(10,20,70,.10);
+    border-radius:13px;
+    background:rgba(248,250,255,.92);
+    padding:0 12px;
+    font-size:12px;
+    font-weight:1000;
+    color:rgba(8,16,35,.70);
+  }
+  .fa-filterActions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:16px;
+  }
+  .fa-filterSecondary,
+  .fa-filterApply{
+    min-height:44px;
+    border-radius:13px;
+    padding:0 16px;
+    cursor:pointer;
+    font-weight:1000;
+  }
+  .fa-filterSecondary{ border:1px solid rgba(10,20,70,.10); background:#fff; color:rgba(8,16,35,.72); }
+  .fa-filterApply{ border:0; background:linear-gradient(135deg, rgba(35,95,255,1), rgba(74,60,255,1)); color:#fff; }
+  @media (max-width:760px){
+    .fa-resultsControls{ align-items:stretch; }
+    .fa-resultsTabs{ flex:1; overflow:auto; }
+    .fa-filterBtn{ white-space:nowrap; }
+    .fa-filterOverlay{ align-items:flex-end; padding:0; }
+    .fa-filterDrawer{
+      width:100%;
+      max-height:88vh;
+      border-radius:24px 24px 0 0;
+      padding:16px;
+    }
+    .fa-filterGrid{ grid-template-columns:1fr; }
+    .fa-budgetControl{ grid-template-columns:1fr; }
+    .fa-filterActions{ position:sticky; bottom:0; background:inherit; padding-top:12px; }
+    .fa-filterApply, .fa-filterSecondary{ flex:1; }
+  }
   .fa-resultsWarning{
     display:flex; align-items:center; justify-content:space-between; gap:12px;
     margin: 0 0 14px; padding: 12px 14px; border-radius: 16px;
@@ -1168,6 +1333,20 @@ const styles = `
     color:rgba(8,16,35,.62);
     font-weight:1000;
     letter-spacing:.04em;
+  }
+  .fa-recBadge{
+    font-size:11px;
+    padding:4px 9px;
+    border-radius:999px;
+    background:rgba(35,95,255,.10);
+    border:1px solid rgba(35,95,255,.16);
+    color:rgba(35,95,255,1);
+    font-weight:1000;
+  }
+  .fa-recBadge.isDirect{
+    background:rgba(14,165,120,.10);
+    border-color:rgba(14,165,120,.18);
+    color:rgba(0,120,88,1);
   }
   .fa-badge{ font-size:11px; padding:4px 10px; border-radius:999px; background: rgba(35,95,255,.12); border: 1px solid rgba(35,95,255,.16); color: rgba(35,95,255,1); font-weight:1000; text-transform: lowercase; }
   .fa-demoBadge{ font-size:11px; padding:4px 10px; border-radius:999px; background: rgba(255,240,190,1); border: 1px solid rgba(180,120,0,.20); color: rgba(130,84,0,1); font-weight:1000; }
@@ -1620,6 +1799,17 @@ const styles = `
     .fa-resultsTabs{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08); }
     .fa-rTab{ color: rgba(235,240,255,.60); }
     .fa-rTab.isActive{ background: rgba(120,160,255,.14); color: rgba(120,160,255,1); border-color: rgba(120,160,255,.18); }
+    .fa-filterBtn{ background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.10); color:rgba(235,240,255,.82); }
+    .fa-filterDrawer{ background:rgba(20,28,55,.98); border-color:rgba(255,255,255,.10); }
+    .fa-filterTop{ border-bottom-color:rgba(255,255,255,.10); }
+    .fa-filterTitle{ color:rgba(235,240,255,.94); }
+    .fa-filterSub, .fa-filterField{ color:rgba(235,240,255,.62); }
+    .fa-filterClose, .fa-filterSecondary{ background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.10); color:rgba(235,240,255,.82); }
+    .fa-quickFilter{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.10); color:rgba(235,240,255,.72); }
+    .fa-quickFilter.isActive{ background:rgba(120,160,255,.14); border-color:rgba(120,160,255,.22); color:rgba(140,175,255,1); }
+    .fa-filterField input,
+    .fa-filterField select{ background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.10); color:rgba(235,240,255,.92); }
+    .fa-filterCheck{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.10); color:rgba(235,240,255,.74); }
     .fa-resultsWarning{ background: rgba(110,75,0,.22); border-color: rgba(255,210,120,.18); color: rgba(255,228,165,1); }
     .fa-resultsWarningSub{ color: rgba(255,228,165,.72); }
     .fa-pillGrid{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08); }
@@ -1641,6 +1831,8 @@ const styles = `
     .fa-airlineRow.isDemo{ background: rgba(110,75,0,.12); border-color: rgba(255,210,120,.16); }
     .fa-airlineName{ color: rgba(235,240,255,.92); }
     .fa-airlineLogo{ box-shadow:none; border-color:rgba(255,255,255,.16); }
+    .fa-recBadge{ background:rgba(120,160,255,.14); border-color:rgba(120,160,255,.22); color:rgba(140,175,255,1); }
+    .fa-recBadge.isDirect{ background:rgba(14,165,120,.16); border-color:rgba(14,165,120,.24); color:rgba(90,230,190,1); }
     .fa-demoBadge{ background: rgba(110,75,0,.28); border-color: rgba(255,210,120,.18); color: rgba(255,228,165,1); }
     .fa-priceLabel{ color:rgba(235,240,255,.42); }
     .fa-priceSub{ color:rgba(235,240,255,.56); }

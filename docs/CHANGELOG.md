@@ -4,6 +4,23 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-06-29
 
+- Commit hash: pending
+- What changed:
+  - Added richer flight result cards with airline logos/fallbacks, full airline names, full airport labels where known, outbound and return sections, duration, stops, cabin, baggage notes, and prominent total price.
+  - Added recommendation badges such as `Cheapest`, `Fastest`, `Best Value`, and `Direct`.
+  - Added a mobile-first filters bottom sheet with quick filters and advanced budget, airline, stops, time, airport, return-to-same-airport, duration, and cabin-bag controls.
+  - Changed the active partner CTA wording to `Check partner deal`.
+  - Routed Umrah-related AI prompts into Umrah mode and added Umrah-specific planning questions.
+- Checks run:
+  - `git diff --check` passed on 2026-06-29.
+  - `npm run build` passed on 2026-06-29.
+  - `npm run lint` passed with 2 pre-existing warnings on 2026-06-29.
+  - Local Chrome mobile render check passed with mocked flight offers on 2026-06-29.
+- Pushed to GitHub:
+  - Pending.
+
+## 2026-06-29
+
 - Commit hash: `5c97c19`
 - What changed:
   - Removed unverified public email aliases from frontend defaults, backend support defaults, Render config, and deployment docs.

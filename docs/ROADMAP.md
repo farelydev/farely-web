@@ -16,18 +16,18 @@ Milestone-led startup buildout. Current active phase: Milestone 6, Search Experi
 
 ## Milestone 6: Search Experience 2.0
 
-- Rich flight cards.
-- Full airline names.
-- Airline logos.
-- Full airport names.
-- Filters drawer.
-- Budget filter.
-- Airline filter.
-- Morning/afternoon/evening filter.
-- Stops filter.
-- Airport selection.
-- Return-to-same-airport option.
-- Better CTA wording.
+- Rich flight cards: first pass implemented.
+- Full airline names: first pass implemented.
+- Airline logos: first pass implemented with carrier-code fallback.
+- Full airport names: first pass implemented where the airport is known locally.
+- Filters drawer: first pass implemented as a mobile-first bottom sheet.
+- Budget filter: first pass implemented.
+- Airline filter: first pass implemented.
+- Morning/afternoon/evening filter: first pass implemented.
+- Stops filter: first pass implemented.
+- Airport selection filters: first pass implemented from visible result airports.
+- Return-to-same-airport option: first pass implemented.
+- Better CTA wording: first pass implemented as `Check partner deal`.
 - Remaining AI/search sync fixes.
 
 Goal: make Farely's search experience feel trustworthy, clear, and conversion-ready.
@@ -36,7 +36,7 @@ Goal: make Farely's search experience feel trustworthy, clear, and conversion-re
 
 - Better recommendation quality.
 - Trip-type detection.
-- Umrah mode.
+- Umrah mode: core launch use case, first-pass prompt routing and questions implemented.
 - Beach planner.
 - City break planner.
 - Ski planner.

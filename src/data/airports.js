@@ -5,6 +5,8 @@ export const AIRPORTS = [
   { city: "London", country: "United Kingdom", name: "Stansted", iata: "STN", tags: ["STN"] },
   { city: "London", country: "United Kingdom", name: "Luton", iata: "LTN", tags: ["LTN"] },
   { city: "London", country: "United Kingdom", name: "City", iata: "LCY", tags: ["LCY"] },
+  { city: "Manchester", country: "United Kingdom", name: "Manchester", iata: "MAN", tags: ["MAN"] },
+  { city: "Birmingham", country: "United Kingdom", name: "Birmingham", iata: "BHX", tags: ["BHX"] },
 
   { city: "Paris", country: "France", name: "Charles de Gaulle", iata: "CDG", tags: ["CDG"] },
   { city: "Paris", country: "France", name: "All airports", iata: "PAR", tags: ["CDG", "ORY"] },
@@ -26,8 +28,10 @@ export const AIRPORTS = [
   { city: "Abu Dhabi", country: "United Arab Emirates", name: "Zayed International", iata: "AUH", tags: ["AUH"] },
 
   { city: "Malaga", country: "Spain", name: "Costa del Sol", iata: "AGP", tags: ["AGP", "south Spain", "sunny"] },
+  { city: "Faro", country: "Portugal", name: "Faro", iata: "FAO", tags: ["FAO", "Algarve", "sunny", "beach"] },
   { city: "Alicante", country: "Spain", name: "Alicante-Elche", iata: "ALC", tags: ["ALC", "sunny"] },
   { city: "Seville", country: "Spain", name: "Seville", iata: "SVQ", tags: ["SVQ", "Andalusia"] },
   { city: "Marrakech", country: "Morocco", name: "Marrakech Menara", iata: "RAK", tags: ["RAK", "Morocco"] },
   { city: "Casablanca", country: "Morocco", name: "Mohammed V", iata: "CMN", tags: ["CMN", "Morocco"] },
+  { city: "Antalya", country: "Türkiye", name: "Antalya", iata: "AYT", tags: ["AYT", "Turkey", "Türkiye", "sunny", "halal friendly"] },
 ];
