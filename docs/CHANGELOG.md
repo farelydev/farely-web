@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-06-29
 
-- Commit hash: pending
+- Commit hash: `4bb3f0e`
 - What changed:
   - Created the lightweight project memory system in `docs/`.
   - Added founder-to-ChatGPT handoff tracking.
@@ -12,4 +12,4 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 - Checks run:
   - `npm run build` passed on 2026-06-29.
 - Pushed to GitHub:
-  - Pending
+  - Yes, pushed to `origin/main`.
