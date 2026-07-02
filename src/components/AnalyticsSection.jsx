@@ -93,7 +93,7 @@ export default function AnalyticsSection() {
         <div className="fa-analyticsTop">
           <div>
             <div className="fa-infoKicker">Founder dashboard</div>
-            <h2 className="fa-analyticsTitle">Deal-click analytics</h2>
+            <h2 className="fa-analyticsTitle">Farely Control Centre</h2>
             <p className="fa-analyticsText">
               This is the first money-path dashboard: it shows whether people are clicking flight deals,
               which routes they click, and which partners or carriers get attention.
@@ -210,6 +210,15 @@ export default function AnalyticsSection() {
               No clicks yet. Click a result’s “View deal” button, then refresh this panel.
             </div>
           )}
+        </div>
+
+        <div className="fa-analyticsPanel">
+          <h3>Lightweight dashboard roadmap</h3>
+          <div className="fa-roadmapGrid">
+            <div><strong>Now</strong><span>Deal clicks, top routes, top carriers, source mix, recent clicks.</span></div>
+            <div><strong>Next</strong><span>Total searches, no-result searches, top destinations, CTR once search events are logged.</span></div>
+            <div><strong>Later</strong><span>AI conversations, prompt trends, API health, Amadeus environment, fallback usage, affiliate partner clicks.</span></div>
+          </div>
         </div>
           </>
         )}

@@ -13,6 +13,7 @@ import {
   findAirport,
   getIataCode,
   isoDurationToMinutes,
+  timeBandFromDateTime,
   pad2,
   parseMoneyToNumber,
   todayPlus,
@@ -67,6 +68,11 @@ export default function App() {
   const [apiWarning, setApiWarning] = useState("");
   const [apiSource, setApiSource] = useState("");
   const [apiResults, setApiResults] = useState([]);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [resultFilters, setResultFilters] = useState({
+    maxPrice: "", airline: "", stops: "any", departTime: "any", arrivalTime: "any",
+    departureAirport: "", arrivalAirport: "", returnSameAirport: false, maxDuration: "",
+  });
 
   const [flexDays, setFlexDays] = useState([]);
   const [selectedFlexDate, setSelectedFlexDate] = useState("");
@@ -139,7 +145,33 @@ export default function App() {
     const list = Array.isArray(apiResults) ? apiResults.slice() : [];
     if (list.length === 0) return [];
 
-    const withStats = list.map((o) => {
+    const filtered = list.filter((o) => {
+      const outbound = o?.itineraries?.[0];
+      const inbound = o?.itineraries?.[1];
+      const outboundSegments = outbound?.segments || [];
+      const inboundSegments = inbound?.segments || [];
+      const first = outboundSegments[0];
+      const last = outboundSegments[outboundSegments.length - 1];
+      const returnLast = inboundSegments[inboundSegments.length - 1];
+      const price = parseMoneyToNumber(o?.price);
+      const stops = Math.max(0, outboundSegments.length - 1);
+      const carrier = (first?.carrier || o?.validatingAirlines?.[0] || "").toUpperCase();
+      const totalDuration = (o?.itineraries || []).reduce((sum, it) => sum + isoDurationToMinutes(it?.duration), 0);
+
+      if (resultFilters.maxPrice && price > Number(resultFilters.maxPrice)) return false;
+      if (resultFilters.airline && !carrier.includes(resultFilters.airline.trim().toUpperCase())) return false;
+      if (resultFilters.stops === "direct" && stops !== 0) return false;
+      if (resultFilters.stops === "one" && stops !== 1) return false;
+      if (resultFilters.departTime !== "any" && timeBandFromDateTime(first?.departAt) !== resultFilters.departTime) return false;
+      if (resultFilters.arrivalTime !== "any" && timeBandFromDateTime(last?.arriveAt) !== resultFilters.arrivalTime) return false;
+      if (resultFilters.departureAirport && first?.from !== resultFilters.departureAirport.trim().toUpperCase()) return false;
+      if (resultFilters.arrivalAirport && last?.to !== resultFilters.arrivalAirport.trim().toUpperCase()) return false;
+      if (resultFilters.returnSameAirport && inbound && returnLast?.to !== first?.from) return false;
+      if (resultFilters.maxDuration && totalDuration > Number(resultFilters.maxDuration) * 60) return false;
+      return true;
+    });
+
+    const withStats = filtered.map((o) => {
       const price = parseMoneyToNumber(o?.price);
       const mins = isoDurationToMinutes(o?.itineraries?.[0]?.duration);
       const stops = Math.max(0, (o?.itineraries?.[0]?.segments || []).length - 1);
@@ -159,7 +191,7 @@ export default function App() {
     }
 
     return withStats.map((x) => x.offer).slice(0, 12);
-  }, [apiResults, resultsTab]);
+  }, [apiResults, resultsTab, resultFilters]);
 
   const pricePills = useMemo(() => {
     if (flexMode && flexDays.length > 0) {
@@ -496,6 +528,10 @@ export default function App() {
         returnDate={returnDate}
         flexMonth={flexMonth}
         cabin={cabin}
+        filtersOpen={filtersOpen}
+        setFiltersOpen={setFiltersOpen}
+        resultFilters={resultFilters}
+        setResultFilters={setResultFilters}
       />
 
       <section className="fa-infoSections" aria-label="Farely information">
@@ -1023,15 +1059,27 @@ const styles = `
   .fa-resultsInner{ max-width: 980px; margin:0 auto; }
   .fa-resultsTitle{ margin:0 0 10px; font-size: clamp(34px, 4vw, 48px); letter-spacing:-0.03em; color: rgba(8,16,35,.92); }
   .fa-resultsSubtitle{ font-weight:900; color: rgba(8,16,35,.55); font-size:0.60em; margin-left:6px; }
+  .fa-resultsControls{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
   .fa-resultsTabs{
     display:inline-flex; gap:8px; padding:6px; border-radius:14px;
     background: rgba(255,255,255,.85);
     border: 1px solid rgba(10,20,70,.08);
     box-shadow: 0 10px 30px rgba(10,20,70,.08);
-    margin-bottom:14px;
   }
   .fa-rTab{ border:0; cursor:pointer; padding:10px 14px; border-radius:12px; font-weight:1000; background:transparent; color: rgba(8,16,35,.58); }
   .fa-rTab.isActive{ background: rgba(35,95,255,.10); color: rgba(35,95,255,1); border: 1px solid rgba(35,95,255,.15); }
+  .fa-filterBtn{ border:1px solid rgba(10,20,70,.10); cursor:pointer; padding:11px 15px; border-radius:14px; background:#fff; color:rgba(8,16,35,.76); font-weight:1000; box-shadow:0 10px 30px rgba(10,20,70,.08); }
+  .fa-filterOverlay{ position:fixed; inset:0; z-index:180; background:rgba(5,10,30,.45); display:flex; align-items:center; justify-content:center; padding:18px; }
+  .fa-filterSheet{ width:min(760px, 100%); max-height:88vh; overflow:auto; border-radius:22px; background:rgba(255,255,255,.98); padding:18px; box-shadow:0 34px 90px rgba(0,0,0,.30); border:1px solid rgba(10,20,70,.08); }
+  .fa-filterTop{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
+  .fa-filterTop h3{ margin:0; font-size:24px; color:rgba(8,16,35,.92); }
+  .fa-filterGrid{ display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; }
+  .fa-filterGrid label{ display:flex; flex-direction:column; gap:6px; font-size:11px; text-transform:uppercase; letter-spacing:.07em; font-weight:1000; color:rgba(8,16,35,.55); }
+  .fa-filterGrid input, .fa-filterGrid select{ min-height:42px; border-radius:12px; border:1px solid rgba(10,20,70,.10); padding:0 11px; background:#fff; color:rgba(8,16,35,.86); font-weight:850; }
+  .fa-checkFilter{ flex-direction:row !important; align-items:center; text-transform:none !important; letter-spacing:0 !important; }
+  .fa-checkFilter input{ min-height:auto; width:auto; }
+  .fa-filterActions{ display:flex; justify-content:flex-end; gap:10px; margin-top:14px; }
+  @media (max-width:620px){ .fa-filterOverlay{ align-items:flex-end; padding:0; } .fa-filterSheet{ border-radius:24px 24px 0 0; max-height:92vh; } .fa-filterGrid{ grid-template-columns:1fr; } .fa-filterActions{ flex-direction:column; } }
   .fa-resultsWarning{
     display:flex; align-items:center; justify-content:space-between; gap:12px;
     margin: 0 0 14px; padding: 12px 14px; border-radius: 16px;
@@ -1399,12 +1447,17 @@ const styles = `
   .fa-clickTable{ display:flex; flex-direction:column; }
   .fa-clickRow{ grid-template-columns:1.2fr .9fr .8fr 1.1fr; }
   .fa-emptyMini{ padding:10px 0; color:rgba(8,16,35,.58); font-size:12px; font-weight:900; }
+  .fa-roadmapGrid{ display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:10px; }
+  .fa-roadmapGrid div{ border-radius:13px; border:1px solid rgba(10,20,70,.08); background:rgba(255,255,255,.65); padding:11px; display:flex; flex-direction:column; gap:6px; }
+  .fa-roadmapGrid strong{ color:rgba(35,95,255,1); font-size:12px; }
+  .fa-roadmapGrid span{ color:rgba(8,16,35,.62); font-size:12px; font-weight:850; line-height:1.4; }
   @media (max-width:820px){
     .fa-analyticsTop{ flex-direction:column; }
     .fa-analyticsActions{ width:100%; }
     .fa-adminUnlock{ grid-template-columns:1fr; }
     .fa-metricGrid, .fa-analyticsGrid{ grid-template-columns:1fr; }
     .fa-clickRow{ grid-template-columns:1fr; gap:4px; }
+    .fa-roadmapGrid{ grid-template-columns:1fr; }
   }
 
   .fa-modalOverlay{
@@ -1435,7 +1488,6 @@ const styles = `
     gap:12px;
     padding-bottom:14px;
     border-bottom:1px solid rgba(10,20,70,.08);
-    margin-bottom:14px;
   }
   .fa-plannerKicker{
     font-size:12px;
@@ -1500,7 +1552,6 @@ const styles = `
     display:grid;
     grid-template-columns:minmax(0, 1fr) auto;
     gap:8px;
-    margin-bottom:14px;
   }
   .fa-plannerInput{
     min-height:46px;
@@ -1573,6 +1624,7 @@ const styles = `
     background:#fff;
   }
   .fa-choiceIcon{ font-size:24px; }
+  .fa-confidenceBadge{ align-self:flex-start; border-radius:999px; padding:4px 8px; background:rgba(35,95,255,.10); color:rgba(35,95,255,1); font-size:10px; font-weight:1000; text-transform:uppercase; letter-spacing:.06em; }
   .fa-choiceTitle{ font-weight:1000; color:rgba(8,16,35,.90); font-size:15px; }
   .fa-choiceText{ color:rgba(8,16,35,.58); font-weight:800; font-size:12px; line-height:1.35; }
   .fa-plannerNote{
@@ -1617,7 +1669,8 @@ const styles = `
     .fa-menuBadge{ background:rgba(120,160,255,.16); color:rgba(150,180,255,1); }
     .fa-resultsTitle{ color: rgba(235,240,255,.92); }
     .fa-resultsSubtitle{ color: rgba(235,240,255,.55); }
-    .fa-resultsTabs{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08); }
+    .fa-resultsControls{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+  .fa-resultsTabs{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08); }
     .fa-rTab{ color: rgba(235,240,255,.60); }
     .fa-rTab.isActive{ background: rgba(120,160,255,.14); color: rgba(120,160,255,1); border-color: rgba(120,160,255,.18); }
     .fa-resultsWarning{ background: rgba(110,75,0,.22); border-color: rgba(255,210,120,.18); color: rgba(255,228,165,1); }
@@ -1698,7 +1751,8 @@ const styles = `
     .fa-recommendationCard{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.10); }
     .fa-choiceCard{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.10); }
     .fa-choiceCard:hover{ background:rgba(255,255,255,.10); }
-    .fa-choiceTitle{ color:rgba(235,240,255,.95); }
+    .fa-confidenceBadge{ align-self:flex-start; border-radius:999px; padding:4px 8px; background:rgba(35,95,255,.10); color:rgba(35,95,255,1); font-size:10px; font-weight:1000; text-transform:uppercase; letter-spacing:.06em; }
+  .fa-choiceTitle{ color:rgba(235,240,255,.95); }
     .fa-choiceText{ color:rgba(235,240,255,.62); }
     .fa-plannerNote{ background:rgba(110,75,0,.22); color:rgba(255,228,165,1); border-color:rgba(255,210,120,.18); }
   }

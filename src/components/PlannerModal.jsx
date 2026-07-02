@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { parsePlannerPrompt, UMRAH_PATTERN } from "../utils/plannerLogic";
 
 const INITIAL_MESSAGES = {
   ai: "Tell me what you have in mind. I will ask a few quick questions before preparing a search.",
@@ -38,22 +39,34 @@ const DESTINATIONS = [
     name: "Malaga",
     code: "AGP",
     from: "LON",
-    theme: ["warm", "beach", "cheapmonth"],
+    theme: ["warm", "beach", "cheapmonth", "halal"],
     tripLength: 5,
-    flexMonth: "2026-07",
-    reason: "I suggested Malaga because it matches warm-weather and beach prompts, usually has good UK flight coverage, and suits flexible dates.",
-    note: "Weather and fares should be checked live before booking.",
+    flexMonth: null,
+    reason: "Strong match: warm August break, UK flight coverage, realistic 5-night holiday pattern, and better halal-friendly access than a generic city break.",
+    note: "Confidence: high when the brief asks for warm, budget-aware, halal-friendly sunshine.",
   },
   {
     id: "faro",
     name: "Faro",
     code: "FAO",
     from: "LON",
-    theme: ["warm", "beach", "family"],
+    theme: ["warm", "beach", "family", "halal"],
     tripLength: 5,
-    flexMonth: "2026-07",
-    reason: "I suggested Faro because it is a simple warm-weather option with beaches and a relaxed trip style.",
-    note: "Farely will use this as a search starting point, not a booking guarantee.",
+    flexMonth: null,
+    reason: "Good match: warm coastal trip with short-haul flights and a calmer family-friendly pace.",
+    note: "Confidence: medium — halal options should be checked by area before booking.",
+  },
+
+  {
+    id: "marrakech",
+    name: "Marrakech",
+    code: "RAK",
+    from: "LON",
+    theme: ["warm", "halal", "cheapmonth", "city"],
+    tripLength: 5,
+    flexMonth: null,
+    reason: "Strong match: warm, Muslim-friendly destination with halal food access and good 5-night trip potential.",
+    note: "Confidence: high for warm and halal-friendly briefs; live prices still decide budget fit.",
   },
   {
     id: "jeddah",
@@ -92,43 +105,35 @@ function todayPlus(days) {
 }
 
 function parsePrompt(prompt, mode) {
-  const lower = String(prompt || "").toLowerCase();
-  const tags = new Set();
-
-  if (mode === "weekend" || lower.includes("weekend")) tags.add("weekend");
-  if (mode === "cheapmonth" || /cheap|cheapest|budget|under|flexible/.test(lower)) tags.add("cheapmonth");
-  if (mode === "umrah" || /umrah|makkah|madinah|medina|jeddah/.test(lower)) tags.add("umrah");
-  if (/warm|sun|sunny|beach|hot/.test(lower)) tags.add("warm");
-  if (/beach|coast|sea/.test(lower)) tags.add("beach");
-  if (/city|paris|rome|italy/.test(lower)) tags.add("city");
-  if (/family|kids|children/.test(lower)) tags.add("family");
-  if (/halal|muslim/.test(lower)) tags.add("halal");
-
-  if (lower.includes("paris")) tags.add("paris");
-  if (lower.includes("malaga") || lower.includes("spain")) tags.add("malaga");
-
-  const nights = lower.match(/\b(\d{1,2})\s*(?:nights?|days?)\b/)?.[1] || "";
-  const budget = lower.match(/\b(?:under|below|max|budget|£)\s*£?\s*(\d{2,5})\b/)?.[1] || "";
-
-  return { tags: Array.from(tags), nights, budget };
+  return parsePlannerPrompt(prompt, mode);
 }
+
 
 function buildRecommendations(intent, mode) {
   const promptTags = new Set([mode, ...intent.tags, ...(intent.style || [])].filter(Boolean));
+  const isUmrah = mode === "umrah" || promptTags.has("umrah");
   const scored = DESTINATIONS.map((destination) => {
     let score = 0;
     destination.theme.forEach((tag) => {
-      if (promptTags.has(tag)) score += 2;
+      if (promptTags.has(tag)) score += tag === "halal" || tag === "warm" ? 3 : 2;
     });
-    if (promptTags.has(destination.id)) score += 4;
+    if (promptTags.has(destination.id)) score += 5;
+    if (promptTags.has("warm") && destination.id === "paris") score -= 6;
+    if (promptTags.has("halal") && !destination.theme.includes("halal")) score -= 4;
+    if (intent.budget && !destination.theme.includes("cheapmonth") && !isUmrah) score -= 1;
     if (mode === "weekend" && destination.id === "paris") score += 2;
-    if (mode === "cheapmonth" && destination.id === "malaga") score += 2;
-    if (mode === "umrah" && ["jeddah", "madinah"].includes(destination.id)) score += 3;
-    return { ...destination, score };
+    if (mode === "cheapmonth" && ["malaga", "marrakech"].includes(destination.id)) score += 2;
+    if (isUmrah && ["jeddah", "madinah"].includes(destination.id)) score += 8;
+    if (isUmrah && !destination.theme.includes("umrah")) score -= 20;
+    return {
+      ...destination,
+      score,
+      confidence: score >= 8 ? "High" : score >= 4 ? "Medium" : "Low",
+    };
   });
 
   const ranked = scored.sort((a, b) => b.score - a.score);
-  return ranked.slice(0, mode === "umrah" ? 2 : 3);
+  return ranked.filter((item) => item.score > (isUmrah ? 0 : 1)).slice(0, isUmrah ? 2 : 3);
 }
 
 function nextQuestion(intent) {
@@ -160,6 +165,7 @@ export default function PlannerModal({
       tags: parsed.tags,
       nights: parsed.nights,
       budget: parsed.budget ? `Under £${parsed.budget}` : "",
+      flexMonth: parsed.flexMonth,
       style: [],
     };
   }, [aiText, mode]);
@@ -176,8 +182,9 @@ export default function PlannerModal({
   const [question, setQuestion] = useState(initialQuestion);
   const [showRecommendations, setShowRecommendations] = useState(false);
 
-  const title = MODE_TITLES[mode] || MODE_TITLES.ai;
-  const recommendations = useMemo(() => buildRecommendations(intent, mode), [intent, mode]);
+  const activeMode = UMRAH_PATTERN.test(aiText || "") ? "umrah" : mode;
+  const title = MODE_TITLES[activeMode] || MODE_TITLES.ai;
+  const recommendations = useMemo(() => buildRecommendations(intent, activeMode), [intent, activeMode]);
 
   if (!open) return null;
 
@@ -210,7 +217,7 @@ export default function PlannerModal({
   }
 
   function applyRecommendation(recommendation) {
-    const flexible = intent.timing === "Flexible" || mode === "cheapmonth" || Boolean(recommendation.flexMonth);
+    const flexible = intent.timing === "Flexible" || activeMode === "cheapmonth" || Boolean(recommendation.flexMonth) || Boolean(intent.flexMonth);
     const departDate = flexible ? null : todayPlus(mode === "weekend" ? 10 : 30);
     const nights = Number(intent.nights || recommendation.tripLength || 5);
 
@@ -221,10 +228,10 @@ export default function PlannerModal({
       destinationCode: recommendation.code,
       departDate,
       returnDate: departDate ? todayPlus((mode === "weekend" ? 10 : 30) + nights) : null,
-      flexMonth: recommendation.flexMonth || addMonthsISO(1),
+      flexMonth: intent.flexMonth || recommendation.flexMonth || addMonthsISO(1),
       tripLength: nights,
       cabin: "Economy",
-      label: `${recommendation.name} trip`,
+      label: activeMode === "umrah" ? `${recommendation.name} Umrah routing` : `${recommendation.name} trip`,
       reason: recommendation.reason,
     });
   }
@@ -282,6 +289,7 @@ export default function PlannerModal({
             {recommendations.map((recommendation) => (
               <div key={recommendation.id} className="fa-recommendationCard">
                 <div className="fa-choiceTitle">{recommendation.name}</div>
+                <div className="fa-confidenceBadge">{recommendation.confidence} confidence</div>
                 <div className="fa-choiceText">{recommendation.reason}</div>
                 <div className="fa-choiceText">{recommendation.note}</div>
                 <button type="button" className="fa-useTripBtn" onClick={() => applyRecommendation(recommendation)}>
@@ -293,7 +301,7 @@ export default function PlannerModal({
         )}
 
         <div className="fa-plannerNote">
-          Farely AI will ask before it changes your search form. You can review and edit the form before searching live partner prices.
+          {activeMode === "umrah" ? "Umrah mode: check visa, package rules, hotel distance to Haram/Nabawi, Nusuk guidance, and ground transfers before booking." : "Farely AI will ask before it changes your search form."} You can review and edit the form before searching live partner prices.
         </div>
       </div>
     </div>

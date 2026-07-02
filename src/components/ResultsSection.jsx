@@ -1,4 +1,4 @@
-import { carrierLabel, cx, firstSegment, isoDurationToMinutes, lastSegment, minutesToPretty, parseMoneyToNumber, stopsLabel } from "../utils/flightHelpers";
+import { airportDisplayName, carrierLabel, cx, firstSegment, isoDurationToMinutes, lastSegment, minutesToPretty, parseMoneyToNumber, stopsLabel } from "../utils/flightHelpers";
 
 const AIRLINE_BRANDS = {
   A1: { name: "A.P.G.", colors: ["#13294b", "#f5b700"] },
@@ -118,7 +118,7 @@ function itineraryRouteLabel(itinerary) {
   const first = segs[0];
   const last = segs[segs.length - 1];
   if (!first || !last) return "Route details unavailable";
-  return `${first.from || "—"} → ${last.to || "—"}`;
+  return `${airportDisplayName(first.from)} → ${airportDisplayName(last.to)}`;
 }
 
 function itineraryAirlineLabel(itinerary) {
@@ -220,7 +220,7 @@ function ItineraryDetail({ label, itinerary }) {
       <div className="fa-legMain">
         <div>
           <div className="fa-legTime">{timeFromDateTime(first?.departAt)}</div>
-          <div className="fa-legAirport">{first?.from || "—"}</div>
+          <div className="fa-legAirport">{airportDisplayName(first?.from)}</div>
           <div className="fa-legDate">{dateFromDateTime(first?.departAt)}</div>
         </div>
 
@@ -230,7 +230,7 @@ function ItineraryDetail({ label, itinerary }) {
 
         <div>
           <div className="fa-legTime">{timeFromDateTime(last?.arriveAt)}</div>
-          <div className="fa-legAirport">{last?.to || "—"}</div>
+          <div className="fa-legAirport">{airportDisplayName(last?.to)}</div>
           <div className="fa-legDate">{dateFromDateTime(last?.arriveAt)}</div>
         </div>
       </div>
@@ -247,6 +247,7 @@ export default function ResultsSection({
   didSearch, routeTitle, resultsTab, setResultsTab, apiWarning, shownOffers, apiSource,
   pricePills, flexMode, selectedFlexDate, onPickFlexDay, isSearching, exactMode,
   routeFromCode, routeToCode, departDate, tripType, returnDate, flexMonth, cabin,
+  filtersOpen, setFiltersOpen, resultFilters, setResultFilters,
 }) {
   const isMultiCity = tripType === "multicity";
 
@@ -259,6 +260,7 @@ export default function ResultsSection({
         </h2>
 
         {!isMultiCity && (
+          <div className="fa-resultsControls">
           <div className="fa-resultsTabs">
             <button
               type="button"
@@ -284,6 +286,28 @@ export default function ResultsSection({
             >
               Best
             </button>
+          </div>
+          <button type="button" className="fa-filterBtn" onClick={() => setFiltersOpen(true)}>Filters</button>
+          </div>
+        )}
+
+        {filtersOpen && (
+          <div className="fa-filterOverlay" onMouseDown={() => setFiltersOpen(false)}>
+            <div className="fa-filterSheet" onMouseDown={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="Filter flight results">
+              <div className="fa-filterTop"><h3>Filters</h3><button type="button" className="fa-closeBtn" onClick={() => setFiltersOpen(false)}>×</button></div>
+              <div className="fa-filterGrid">
+                <label>Max price (£)<input value={resultFilters.maxPrice} onChange={(e) => setResultFilters((f) => ({ ...f, maxPrice: e.target.value }))} inputMode="numeric" /></label>
+                <label>Airline code<input value={resultFilters.airline} onChange={(e) => setResultFilters((f) => ({ ...f, airline: e.target.value }))} placeholder="BA, QR, UX" /></label>
+                <label>Stops<select value={resultFilters.stops} onChange={(e) => setResultFilters((f) => ({ ...f, stops: e.target.value }))}><option value="any">Any</option><option value="direct">Direct only</option><option value="one">1 stop</option></select></label>
+                <label>Departure time<select value={resultFilters.departTime} onChange={(e) => setResultFilters((f) => ({ ...f, departTime: e.target.value }))}><option value="any">Any</option><option value="morning">Morning</option><option value="afternoon">Afternoon</option><option value="evening">Evening</option><option value="overnight">Overnight</option></select></label>
+                <label>Arrival time<select value={resultFilters.arrivalTime} onChange={(e) => setResultFilters((f) => ({ ...f, arrivalTime: e.target.value }))}><option value="any">Any</option><option value="morning">Morning</option><option value="afternoon">Afternoon</option><option value="evening">Evening</option><option value="overnight">Overnight</option></select></label>
+                <label>Departure airport<input value={resultFilters.departureAirport} onChange={(e) => setResultFilters((f) => ({ ...f, departureAirport: e.target.value }))} placeholder="LGW" maxLength={3} /></label>
+                <label>Arrival airport<input value={resultFilters.arrivalAirport} onChange={(e) => setResultFilters((f) => ({ ...f, arrivalAirport: e.target.value }))} placeholder="AGP" maxLength={3} /></label>
+                <label>Max total duration (hours)<input value={resultFilters.maxDuration} onChange={(e) => setResultFilters((f) => ({ ...f, maxDuration: e.target.value }))} inputMode="numeric" /></label>
+                <label className="fa-checkFilter"><input type="checkbox" checked={resultFilters.returnSameAirport} onChange={(e) => setResultFilters((f) => ({ ...f, returnSameAirport: e.target.checked }))} /> Return to same airport</label>
+              </div>
+              <div className="fa-filterActions"><button type="button" className="fa-secondaryBtn" onClick={() => setResultFilters({ maxPrice: "", airline: "", stops: "any", departTime: "any", arrivalTime: "any", departureAirport: "", arrivalAirport: "", returnSameAirport: false, maxDuration: "" })}>Clear filters</button><button type="button" className="fa-refreshBtn" onClick={() => setFiltersOpen(false)}>Show results</button></div>
+            </div>
           </div>
         )}
 
@@ -452,7 +476,7 @@ export default function ResultsSection({
                         </div>
                         {dealUrl ? (
                           <a className="fa-viewDeal isActive" href={dealUrl} target="_blank" rel="noreferrer">
-                            View deal
+                            Check partner deal
                           </a>
                         ) : (
                           <button type="button" className="fa-viewDeal" disabled>
