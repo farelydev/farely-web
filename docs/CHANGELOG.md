@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-03
 
-- Commit hash: pending
+- Commit hash: `c83a05c`
 - What changed:
   - Improved the Farely AI planner so requested destinations matter in the recommendation order.
   - Added Bosnia/Sarajevo as a recognised planner/search destination.
@@ -18,7 +18,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - `npm run lint` passed with 1 pre-existing warning in `src/components/LegalPage.jsx` on 2026-07-03.
   - Local Chrome QA passed for a Bosnia under-£300 prompt.
 - Pushed to GitHub:
-  - Pending.
+  - Yes, pushed to GitHub `main` on 2026-07-03.
 
 ## 2026-07-03
 
