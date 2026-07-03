@@ -4,6 +4,22 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-03
 
+- Commit hash: `53a5179`
+- What changed:
+  - Set `USE_DEMO_FALLBACK=false` in the Render dashboard for the live `farely-web` service.
+  - Verified the live API now reports `demoFallbackEnabled:false`.
+  - Verified exact-date search and flexible-month search still return live Amadeus results with fallback off.
+  - Verified `View Deal` still returns a tracked partner redirect.
+- Checks run:
+  - Live `/api/health` probe passed.
+  - Live `/api/flights` probe passed for `LHR` to `IST` on `2026-09-10`.
+  - Live `/api/flexible` probe passed for `LHR` to `IST` in `2026-09`.
+  - Live `/api/deals/flight` redirect probe returned `302`.
+- Pushed to GitHub:
+  - Pending push.
+
+## 2026-07-03
+
 - Commit hash: `0739d9b`
 - What changed:
   - Pushed the security hardening, guided Cheapest Month UX, fallback-off flexible-search handling, and ChatGPT handoff workflow to GitHub `main`.

@@ -8,7 +8,7 @@ Milestone 6: Search Experience 2.0.
 
 ## Current Production Readiness Status
 
-Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and flexible-search error handling has been prepared for turning demo fallback off. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
+Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
 
 Delivery state rule: work is only complete when it is `Implemented`, `Deployed`, and `Verified` on the live production site. The current security hardening has reached `Verified` on `https://tryfarely.com`.
 
@@ -25,7 +25,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 - Node/Express backend exists.
 - Exact-date flight search is implemented.
 - Cheapest Month search is implemented on top of the existing flexible-month backend.
-- Cheapest Month now has a clearer fallback-off failure path: if every live flexible date fails while demo fallback is disabled, the API returns a visible rate-limit/provider-unavailable response instead of a normal-looking empty success.
+- Cheapest Month now runs with demo fallback disabled in production; fallback-off live checks returned Amadeus results, and the API has a visible rate-limit/provider-unavailable response if every live flexible date fails.
 - Cheapest-day results render.
 - Cheapest Month results now use a guided workflow: choose month, choose travel day, compare flights, then book with a partner.
 - Flight offer results render.
@@ -53,7 +53,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 
 ## Current Blockers
 
-- Live provider behavior can be hidden by demo fallback settings until the Render service confirms `USE_DEMO_FALLBACK=false` is active.
+- Live provider behavior is now easier to verify because `USE_DEMO_FALLBACK=false` is active on Render.
 - Cloudflare SSL/TLS mode and WAF/security settings still need live dashboard verification.
 - `support@tryfarely.com`, `privacy@tryfarely.com`, `security@tryfarely.com`, and `noreply@tryfarely.com` should not be advertised until Cloudflare Email Routing or a real mailbox provider is configured for each alias.
 - Real affiliate monetisation depends on partner approval, configured redirect templates, and reliable click metadata.
@@ -61,4 +61,4 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 
 ## Recommended Next Engineering Priority
 
-Next engineering priority: verify Render has applied `USE_DEMO_FALLBACK=false`, rerun the API health monitor against `https://tryfarely.com`, and only then move toward production Amadeus credentials.
+Next engineering priority: monitor fallback-off API reliability on live traffic, then move toward production Amadeus credentials when the founder is ready.

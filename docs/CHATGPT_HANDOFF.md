@@ -4,7 +4,7 @@ Last updated: 2026-07-03
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely security hardening has now been pushed, deployed, and verified on `https://tryfarely.com`. The current branch also includes the guided Cheapest Month UX update and fallback-off flexible-search handling. The product rule remains: `Implemented`, `Deployed`, then `Verified`; only `Verified` counts as complete.
+Farely security hardening and fallback-off API behavior have now been pushed, deployed, and verified on `https://tryfarely.com`. The current branch also includes the guided Cheapest Month UX update. The product rule remains: `Implemented`, `Deployed`, then `Verified`; only `Verified` counts as complete.
 
 What was completed:
 - Guided Cheapest Month results flow: choose month, choose travel day, compare flights, book with partner.
@@ -21,7 +21,7 @@ What was completed:
 What was not completed:
 - Cloudflare dashboard settings still need manual verification: Full (strict), WAF/security level, TLS settings, and relevant security modes.
 - Founder/admin analytics has not yet moved to a separate authenticated dashboard.
-- The repo blueprint now sets `USE_DEMO_FALLBACK=false`; the live Render service still needs verification with the API health monitor.
+- `USE_DEMO_FALLBACK=false` is now active on Render and verified by the live `/api/health` endpoint.
 
 Files changed:
 - `AGENTS.md`
@@ -44,6 +44,7 @@ Build/lint/test status:
 - Local production probes confirmed bad-origin CORS is not reflected, allowed Farely origin still works, `/api/debug/amadeus` returns 404 in production, query-token analytics auth returns 401, header-token analytics auth still works, and security headers are present.
 - Local fallback-disabled probe passed: with `USE_DEMO_FALLBACK=false` and dummy Amadeus credentials, `/api/flexible` returned `503 Service Unavailable`, `source: "amadeus-unavailable"`, and a user-friendly Exact Dates retry message.
 - Live verification passed after deployment on 2026-07-03: the new frontend bundle was served, `/api/debug/amadeus` returned `404`, bad-origin CORS was not reflected, Helmet security headers were present, exact-date and flexible searches returned live Amadeus results, and `/api/deals/flight` returned a tracked `302` partner redirect.
+- Fallback-off live probes on 2026-07-03 confirmed `/api/health` reports `demoFallbackEnabled:false`, exact-date `/api/flights` returns live Amadeus offers, `/api/flexible` returns live Amadeus cheapest-day results, and `/api/deals/flight` still returns a tracked partner redirect.
 
 GitHub status:
 - Pushed to GitHub `main`.
@@ -55,7 +56,7 @@ Commit hash:
 - Verified deployment commit: `0739d9b`
 
 Recommended next product decision:
-- Verify Render has applied `USE_DEMO_FALLBACK=false`, rerun the API health monitor, and only then move toward Amadeus production credentials.
+- Monitor fallback-off reliability, then decide when to request or switch to Amadeus production credentials.
 
 Questions for ChatGPT:
-- After fallback-off live verification passes, should Codex prioritise production Amadeus credentials or private founder dashboard authentication first?
+- Should Codex prioritise Amadeus production credentials or private founder dashboard authentication first?

@@ -31,8 +31,8 @@ After the security gate, the agreed priority order is search reliability, Amadeu
 
 Current API robustness action:
 
-- Prepare graceful flexible-search errors before disabling demo fallback: deployed and verified with current fallback-on live API checks.
-- Verify Render has applied `USE_DEMO_FALLBACK=false`, then rerun the API health monitor.
+- Prepare graceful flexible-search errors before disabling demo fallback: deployed.
+- Verify Render has applied `USE_DEMO_FALLBACK=false`, then rerun the API health monitor: completed on 2026-07-03.
 - Move from Amadeus test credentials to production credentials only after fallback-off behavior is verified.
 
 - Rich flight cards: first pass implemented.
