@@ -4,6 +4,23 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-03
 
+- Commit hash: `a55f2f3`
+- What changed:
+  - Polished the Milestone 6 Cheapest Month flow so the user path is clearly `Choose month -> Choose travel day -> Compare flights -> Check partner deal`.
+  - Changed flexible-search copy from stronger price claims to safer guide-price and partner-check wording.
+  - Added selected departure/return date summary chips under the native exact-date inputs for better mobile context.
+  - Improved the mobile Filters drawer with scroll locking, Escape-to-close behavior, sticky header/actions, quick-filter overflow handling, and no-horizontal-overflow safeguards.
+  - Tightened mobile spacing for result titles, date cards, flight cards, airline metadata, badges, leg details, and CTA layout.
+  - Replaced overpromising public copy including `Umrah packages` -> `Plan Umrah trip` and softened the hero subtitle.
+- Checks run:
+  - `npm run build` passed on 2026-07-03 using the local nvm Node path.
+  - `npm run lint` passed with 1 pre-existing warning in `src/components/LegalPage.jsx` on 2026-07-03.
+  - Local browser QA passed for desktop and mobile Search Experience checks, including Cheapest Month date selection and Filters drawer behavior.
+- Pushed to GitHub:
+  - Pending deployment/live verification.
+
+## 2026-07-03
+
 - Commit hash: `c83a05c`
 - What changed:
   - Improved the Farely AI planner so requested destinations matter in the recommendation order.

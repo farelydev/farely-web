@@ -8,7 +8,7 @@ Milestone 6: Search Experience 2.0.
 
 ## Current Production Readiness Status
 
-Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
+Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. The Milestone 6 final-sprint polish is implemented locally and needs deployment, live verification, and founder approval before Milestone 6 can be called complete. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
 
 Delivery state rule: work is only complete when it is `Implemented`, `Deployed`, and `Verified` on the live production site. The current security hardening has reached `Verified` on `https://tryfarely.com`.
 
@@ -27,10 +27,12 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 - Cheapest Month search is implemented on top of the existing flexible-month backend.
 - Cheapest Month now runs with demo fallback disabled in production; fallback-off live checks returned Amadeus results, and the API has a visible rate-limit/provider-unavailable response if every live flexible date fails.
 - Cheapest-day results render.
-- Cheapest Month results now use a guided workflow: choose month, choose travel day, compare flights, then book with a partner.
+- Cheapest Month results now use a guided workflow: choose month, choose travel day, compare flights, then check partner deal.
 - Flight offer results render.
 - Richer result cards now show airline branding, outbound/return sections, full airport labels where known, price, cabin, baggage notes, recommendation badges, and clearer partner CTA wording.
-- A mobile-first filters drawer now exists with quick filters and advanced filter controls.
+- A mobile-first filters drawer now exists with quick filters, advanced filter controls, scroll locking, Escape-to-close behavior, and mobile overflow safeguards.
+- Exact-date date selection now keeps the selected departure and return dates visible below the native date inputs.
+- Public copy has been softened where needed, including replacing `Umrah packages` with `Plan Umrah trip`.
 - Umrah-related AI prompts now route into the Umrah planning mode instead of the generic planner path.
 - The AI planner now respects requested destinations in its recommendation order, shows a short analysing state, presents visual recommendation cards with match scores and scannable trip details, explains why alternatives were suggested, and fills the search form for review before live search.
 - Farely uses a server-controlled affiliate redirect architecture.
@@ -42,8 +44,8 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 
 ## What Is Incomplete
 
-- Milestone 6 Search Experience 2.0 is not complete.
-- Milestone 6 still needs live-production validation, deeper Cheapest Month/filter QA against real Amadeus responses, accessibility polish, and any remaining AI/search sync fixes.
+- Milestone 6 Search Experience 2.0 is not complete until the final-sprint polish is deployed, verified on `https://tryfarely.com`, and founder approved.
+- Milestone 6 still needs live-production validation after this polish commit, broader accessibility review, and founder acceptance.
 - Production affiliate partner approval/configuration is not yet fully confirmed in this repo.
 - Click tracking needs ongoing validation against live traffic and analytics requirements.
 - Founder analytics should move out of the public app into a private dashboard with proper authentication.
@@ -62,4 +64,4 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 
 ## Recommended Next Engineering Priority
 
-Next engineering priority: monitor fallback-off API reliability on live traffic, then move toward production Amadeus credentials when the founder is ready.
+Next engineering priority: deploy and live-verify the Milestone 6 final-sprint polish, then ask the founder for acceptance before moving to Milestone 7.

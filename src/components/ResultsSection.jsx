@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { carrierLabel, cx, findAirport, firstSegment, isoDurationToMinutes, lastSegment, minutesToPretty, parseMoneyToNumber, stopsLabel } from "../utils/flightHelpers";
 
 const AIRLINE_BRANDS = {
@@ -437,6 +437,23 @@ export default function ResultsSection({
     }
   }
 
+  useEffect(() => {
+    if (!filtersOpen) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    function onKeyDown(event) {
+      if (event.key === "Escape") setFiltersOpen(false);
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [filtersOpen]);
+
   return (
     <section className="fa-results">
       <div className="fa-resultsInner">
@@ -450,16 +467,16 @@ export default function ResultsSection({
             <span className="isDone">Choose month ✓</span>
             <span className={cx(!selectedFlexDate && "isCurrent", selectedFlexDate && "isDone")}>Choose travel day{selectedFlexDate ? " ✓" : " ←"}</span>
             <span className={cx(selectedFlexDate && "isCurrent")}>Compare flights</span>
-            <span>Book with partner</span>
+            <span>Check partner deal</span>
           </div>
         )}
 
         {flexMode && !isMultiCity && (
           <div className="fa-flexDateIntro">
             <div>
-              <div className="fa-flexStepEyebrow">Step 1</div>
-              <h3>Choose your departure date</h3>
-              <p>We’ve found the cheapest travel dates. Tap a date below to compare live flights.</p>
+              <div className="fa-flexStepEyebrow">{selectedFlexDate ? "Step 3" : "Step 2"}</div>
+              <h3>{selectedFlexDate ? "Compare flights for your travel day" : "Choose your travel day"}</h3>
+              <p>{selectedFlexDate ? "These are live partner fares for the date you selected. Check the partner deal before booking." : "Tap a date below to compare live flights for that travel day."}</p>
             </div>
             {selectedFlexDate ? <span className="fa-flexSelectedDate">Selected {shortDateLabel(selectedFlexDate)}</span> : null}
           </div>
@@ -508,7 +525,7 @@ export default function ResultsSection({
                   <div className="fa-filterTitle">Filters</div>
                   <div className="fa-filterSub">{filteredOffers.length} of {shownOffers.length} offers shown</div>
                 </div>
-                <button type="button" className="fa-filterClose" onClick={() => setFiltersOpen(false)} aria-label="Close filters">x</button>
+                <button type="button" className="fa-filterClose" onClick={() => setFiltersOpen(false)} aria-label="Close filters">×</button>
               </div>
 
               <div className="fa-quickFilters" aria-label="Quick flight filters">
@@ -793,7 +810,7 @@ export default function ResultsSection({
 
                       <div className="fa-offerSignals">
                         <span className="fa-signalChip">{baggageSummary(o)}</span>
-                        <span className="fa-signalChip">Secure partner booking</span>
+                        <span className="fa-signalChip">Partner booking</span>
                         <span className="fa-signalChip">No extra Farely booking fees</span>
                         <span className="fa-signalChip">Transparent affiliate links</span>
                       </div>

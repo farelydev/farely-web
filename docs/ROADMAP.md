@@ -4,7 +4,7 @@ Last updated: 2026-07-03
 
 ## Current Phase
 
-Milestone-led startup buildout. Current active phase: security hardening before returning to Milestone 6 Search Experience 2.0.
+Milestone-led startup buildout. Current active phase: Milestone 6 final sprint and founder acceptance for Search Experience 2.0.
 
 Delivery workflow: every milestone must move through `Implemented`, `Deployed`, and `Verified`. Only `Verified` counts as complete.
 
@@ -46,12 +46,17 @@ Current API robustness action:
 - Stops filter: first pass implemented.
 - Airport selection filters: first pass implemented from visible result airports.
 - Return-to-same-airport option: first pass implemented.
-- Better CTA wording: first pass implemented as `Check partner deal`.
-- Cheapest Month / Date Explorer UX: first pass reframed from warning-heavy flexible dates to a benefit-led flow; second pass now guides users through choosing a travel day before flight-comparison controls appear.
+- Better CTA wording: implemented as `Check partner deal`.
+- Cheapest Month / Date Explorer UX: final-sprint polish now guides users through choosing a month, choosing a travel day, comparing flights, and checking the partner deal.
+- Mobile date picker clarity: selected departure and return dates stay visible below the native date inputs.
+- Mobile filters drawer: scroll locking, sticky drawer header/actions, quick-filter overflow handling, and no horizontal overflow checks added.
+- Copy audit: overpromising copy softened, including `Umrah packages` changed to `Plan Umrah trip`.
 - Flexible provider failures: fallback-off path now returns clear rate-limit/provider-unavailable guidance instead of silently looking healthy.
 - Remaining AI/search sync fixes.
 
 Goal: make Farely's search experience feel trustworthy, clear, and conversion-ready.
+
+Milestone 6 completion gate: this milestone is not complete until the final-sprint polish is deployed, verified live on `https://tryfarely.com`, and founder approved.
 
 ## Milestone 7: Farely AI Travel Consultant
 

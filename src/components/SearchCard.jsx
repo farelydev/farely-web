@@ -61,7 +61,7 @@ function buildMonthOptions({ selectedMonth, routeFromCode, routeToCode }) {
 function flexibleSearchButtonLabel({ isSearching, tripType, flexMode }) {
   if (isSearching) return flexMode ? "Checking travel dates..." : "Searching flights...";
   if (tripType === "multicity") return "Review multi-city plan";
-  if (flexMode) return "Find cheaper dates";
+  if (flexMode) return "Show travel days";
   return "Search flights";
 }
 
@@ -323,6 +323,10 @@ export default function SearchCard({
                   </div>
                 </div>
               )}
+              <div className="fa-dateRangeSummary" aria-live="polite">
+                <span className="isActive">Depart {departDate || "pick date"}</span>
+                {showReturn ? <span>Return {returnDate || "pick date"}</span> : <span>One-way trip</span>}
+              </div>
             </div>
           )}
 
@@ -338,7 +342,7 @@ export default function SearchCard({
               <div className="fa-flexIntro">
                 <div className="fa-flexIntroTitle">Find cheaper travel dates</div>
                 <div className="fa-flexIntroText">
-                  Explore different months to discover lower fares. Once you choose dates that suit you, Farely checks live prices from travel partners.
+                  Choose a month, pick a travel day, compare the live flight options, then check the final deal with the partner.
                 </div>
               </div>
 
@@ -349,15 +353,15 @@ export default function SearchCard({
                 </div>
                 <div className="fa-flexStep">
                   <span>2</span>
-                  <strong>Pick a date</strong>
+                  <strong>Choose travel day</strong>
                 </div>
                 <div className="fa-flexStep">
                   <span>3</span>
-                  <strong>Check prices</strong>
+                  <strong>Compare flights</strong>
                 </div>
                 <div className="fa-flexStep">
                   <span>4</span>
-                  <strong>Compare flights</strong>
+                  <strong>Check partner deal</strong>
                 </div>
               </div>
 
@@ -367,9 +371,9 @@ export default function SearchCard({
                   <div className="fa-monthSummary">
                     <div>
                       <div className="fa-monthSummaryMain">{selectedMonthOption.month} {selectedMonthOption.year}</div>
-                      <div className="fa-monthSummarySub">Estimated from £{selectedMonthOption.price}</div>
+                      <div className="fa-monthSummarySub">Guide price from £{selectedMonthOption.price}</div>
                     </div>
-                    <div className="fa-monthSummaryCode">Best dates next</div>
+                    <div className="fa-monthSummaryCode">Travel days next</div>
                   </div>
                 </div>
 
@@ -407,7 +411,7 @@ export default function SearchCard({
                 <div className="fa-monthCompareTop">
                   <div>
                     <div className="fa-label" style={{ marginBottom: 2 }}>Explore months</div>
-                    <div className="fa-monthCompareSub">Pick a month first. Farely will then help you choose a departure date and compare flights.</div>
+                    <div className="fa-monthCompareSub">Pick a month first. Farely will then show travel days so you can compare flights.</div>
                   </div>
                   <div className="fa-monthCompareRoute">{routeFromCode} → {routeToCode}</div>
                 </div>
@@ -433,7 +437,7 @@ export default function SearchCard({
               </div>
 
               <div className="fa-dateExplorerHint">
-                Next: Farely will show date options for this month. Choose a departure date to check live partner fares.
+                Next: choose a travel day, compare flights, then check the partner deal before booking.
               </div>
             </div>
           )}

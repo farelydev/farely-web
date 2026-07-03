@@ -121,7 +121,7 @@ export default function Header({
         <h1 className="fa-title">
           Plan my trip <span className="fa-sparkle">✨</span>
         </h1>
-        <p className="fa-subtitle">Tell us about your dream holiday, and we&apos;ll help plan the perfect trip.</p>
+        <p className="fa-subtitle">Tell us what kind of trip you want, and Farely will suggest a practical starting point.</p>
 
         <div className="fa-aiBar">
           <input
@@ -146,7 +146,7 @@ export default function Header({
             <span className="fa-chipIcon">🗓️</span> Cheapest month to fly
           </button>
           <button className="fa-chip" type="button" onClick={() => openPlanner("umrah")}>
-            <span className="fa-chipIcon">🕋</span> Umrah packages
+            <span className="fa-chipIcon">🕋</span> Plan Umrah trip
           </button>
         </div>
       </div>
