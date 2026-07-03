@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-03
 
-- Commit hash: `53a5179`
+- Commit hash: `a5f251c`
 - What changed:
   - Set `USE_DEMO_FALLBACK=false` in the Render dashboard for the live `farely-web` service.
   - Verified the live API now reports `demoFallbackEnabled:false`.
@@ -16,7 +16,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - Live `/api/flexible` probe passed for `LHR` to `IST` in `2026-09`.
   - Live `/api/deals/flight` redirect probe returned `302`.
 - Pushed to GitHub:
-  - Pending push.
+  - Yes, pushed to GitHub `main` on 2026-07-03.
 
 ## 2026-07-03
 
