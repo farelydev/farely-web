@@ -6,6 +6,8 @@ Last updated: 2026-07-03
 
 Milestone-led startup buildout. Current active phase: security hardening before returning to Milestone 6 Search Experience 2.0.
 
+Delivery workflow: every milestone must move through `Implemented`, `Deployed`, and `Verified`. Only `Verified` counts as complete.
+
 ## Next Product Milestones
 
 1. Milestone 6: Search Experience 2.0.
@@ -22,9 +24,16 @@ Security gate before further UX/traffic/SEO/affiliate work:
 - Restrict production CORS to `https://tryfarely.com` and `https://www.tryfarely.com`: completed locally.
 - Remove URL/localStorage analytics token handling: completed locally.
 - Add Express security headers and remove `X-Powered-By`: completed locally.
+- Current state: `Implemented` locally, not yet `Deployed` or `Verified` because GitHub push is blocked.
 - Keep founder/admin analytics out of the public app long term; move toward a private authenticated dashboard.
 
 After the security gate, the agreed priority order is search reliability, Amadeus/API robustness, affiliate redirect tracking, revenue analytics, SEO landing pages, then UX polish.
+
+Current API robustness action:
+
+- Prepare graceful flexible-search errors before disabling demo fallback: completed locally.
+- Turn `USE_DEMO_FALLBACK=false` in Render after deployment, then rerun the API health monitor.
+- Move from Amadeus test credentials to production credentials only after fallback-off behavior is verified.
 
 - Rich flight cards: first pass implemented.
 - Full airline names: first pass implemented.
@@ -39,6 +48,7 @@ After the security gate, the agreed priority order is search reliability, Amadeu
 - Return-to-same-airport option: first pass implemented.
 - Better CTA wording: first pass implemented as `Check partner deal`.
 - Cheapest Month / Date Explorer UX: first pass reframed from warning-heavy flexible dates to a benefit-led flow; second pass now guides users through choosing a travel day before flight-comparison controls appear.
+- Flexible provider failures: fallback-off path now returns clear rate-limit/provider-unavailable guidance instead of silently looking healthy.
 - Remaining AI/search sync fixes.
 
 Goal: make Farely's search experience feel trustworthy, clear, and conversion-ready.
@@ -109,6 +119,7 @@ Farely should answer "Where should I go?" The AI should become the product, not 
 - Build toward Milestone 6.
 - Keep exact-date search stable.
 - Keep Cheapest Month search stable.
+- Treat fallback-off provider failures as a visible degraded state, not a successful empty result.
 - Improve outbound and return flight detail clarity.
 - Continue improving airline logos, layover details, and result ranking.
 - Add practical filters for budget, airline, time of day, stops, and airports.

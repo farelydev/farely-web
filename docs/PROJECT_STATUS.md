@@ -8,7 +8,9 @@ Milestone 6: Search Experience 2.0.
 
 ## Current Production Readiness Status
 
-Farely is live and in MVP hardening. Core flight search flows are present, and the first small security-hardening pass has been completed locally. Production readiness still depends on deployment verification, Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
+Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been completed locally, and flexible-search error handling has been prepared for turning demo fallback off. Production readiness still depends on deployment verification, Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
+
+Delivery state rule: work is only complete when it is `Implemented`, `Deployed`, and `Verified` on the live production site. The current security hardening is `Implemented` locally, but not yet `Deployed` or `Verified` because GitHub push is blocked.
 
 ## Latest Deployment / Commit
 
@@ -23,6 +25,7 @@ Farely is live and in MVP hardening. Core flight search flows are present, and t
 - Node/Express backend exists.
 - Exact-date flight search is implemented.
 - Cheapest Month search is implemented on top of the existing flexible-month backend.
+- Cheapest Month now has a clearer fallback-off failure path: if every live flexible date fails while demo fallback is disabled, the API returns a visible rate-limit/provider-unavailable response instead of a normal-looking empty success.
 - Cheapest-day results render.
 - Cheapest Month results now use a guided workflow: choose month, choose travel day, compare flights, then book with a partner.
 - Flight offer results render.
@@ -50,7 +53,8 @@ Farely is live and in MVP hardening. Core flight search flows are present, and t
 
 ## Current Blockers
 
-- Live provider behavior can be hidden by demo fallback settings unless tested carefully.
+- GitHub push is blocked on this host by SSH authentication, so the latest local security commits are not live yet.
+- Live provider behavior can be hidden by demo fallback settings until `USE_DEMO_FALLBACK=false` is tested and deployed safely.
 - Cloudflare SSL/TLS mode, WAF/security settings, and post-deployment headers still need live dashboard/site verification after the security-hardening deployment.
 - `support@tryfarely.com`, `privacy@tryfarely.com`, `security@tryfarely.com`, and `noreply@tryfarely.com` should not be advertised until Cloudflare Email Routing or a real mailbox provider is configured for each alias.
 - Real affiliate monetisation depends on partner approval, configured redirect templates, and reliable click metadata.
@@ -58,4 +62,4 @@ Farely is live and in MVP hardening. Core flight search flows are present, and t
 
 ## Recommended Next Engineering Priority
 
-Next engineering priority: deploy and verify the security hardening on `https://tryfarely.com`, then continue with search reliability, Amadeus/API robustness, affiliate redirect tracking, revenue analytics, SEO landing pages, and UX polish.
+Next engineering priority: deploy and verify the security hardening on `https://tryfarely.com`, then deploy the fallback-off graceful error path, turn `USE_DEMO_FALLBACK=false` in Render, rerun the API health monitor, and only then move toward production Amadeus credentials.

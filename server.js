@@ -305,6 +305,53 @@ function makeUserFriendlyError(err, context = {}) {
   };
 }
 
+function makeFlexibleProviderUnavailable({ origin, destination, month, flexWindow, cabin, currency, days, dayErrors, dates, middleDay }) {
+  const rateLimited = dayErrors.some((error) => Number(error.statusCode) === 429);
+  const statusCode = rateLimited ? 429 : 503;
+  const message = rateLimited
+    ? "Live flexible search is temporarily busy. Please try a narrower date range, choose Exact Dates, or try again in a moment."
+    : "Live flexible search is temporarily unavailable. Please use Exact Dates for the most reliable live fares, or try this search again shortly.";
+
+  return {
+    statusCode,
+    body: {
+      error: rateLimited ? "FLEXIBLE_SEARCH_RATE_LIMITED" : "FLEXIBLE_SEARCH_UNAVAILABLE",
+      type: rateLimited ? "AMADEUS_RATE_LIMIT_OR_QUOTA" : "AMADEUS_PROVIDER_ERROR",
+      message,
+      origin,
+      destination,
+      month,
+      requestedCabin: {
+        label: cabin.label,
+        travelClass: cabin.travelClass,
+      },
+      flexWindow,
+      days,
+      best: {
+        date: null,
+        cheapestPrice: null,
+        currency,
+        offers: [],
+        source: null,
+      },
+      source: "amadeus-unavailable",
+      warning: message,
+      debug: {
+        successfulDays: 0,
+        failedOrFallbackDays: dayErrors.length,
+        scannedDays: dates.length,
+        scanStart: dates[0],
+        scanEnd: dates[dates.length - 1],
+        cabin: cabin.label,
+        travelClass: cabin.travelClass,
+        middleDay,
+        firstFewErrors: dayErrors.slice(0, 5),
+        demoFallbackEnabled: USE_DEMO_FALLBACK,
+      },
+    },
+  };
+}
+
 function todayISO() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -1782,6 +1829,24 @@ app.get("/api/flexible", async (req, res) => {
 
     const successfulDays = days.filter((d) => d.offerCount > 0);
     const usedFallback = days.some((d) => d.source === "demo-fallback");
+    const allLiveDaysFailed = !USE_DEMO_FALLBACK && successfulDays.length === 0 && dayErrors.length > 0;
+
+    if (allLiveDaysFailed) {
+      const unavailable = makeFlexibleProviderUnavailable({
+        origin,
+        destination,
+        month,
+        flexWindow,
+        cabin,
+        currency,
+        days,
+        dayErrors,
+        dates,
+        middleDay,
+      });
+
+      return res.status(unavailable.statusCode).json(unavailable.body);
+    }
 
     return res.status(200).json({
       origin,

@@ -267,7 +267,10 @@ export default function App() {
     }
 
     if (!res.ok) {
-      throw new Error(json?.message || json?.error || "Request failed");
+      const error = new Error(json?.message || json?.error || "Request failed");
+      error.status = res.status;
+      error.payload = json;
+      throw error;
     }
 
     return json;
@@ -366,6 +369,18 @@ export default function App() {
         setSearchError(`No ${cabin} fares found in that month. Try another month, route, or cabin class.`);
       }
     } catch (e) {
+      if (flexMode && e?.payload?.source === "amadeus-unavailable") {
+        const message =
+          e.payload.warning ||
+          e.payload.message ||
+          "Live flexible search is temporarily unavailable. Try a narrower date range or use Exact Dates for the latest live fares.";
+        setApiWarning(message);
+        setApiSource(e.payload.source || "");
+        setFlexDays(Array.isArray(e.payload.days) ? e.payload.days : []);
+        setSearchError(message);
+        return;
+      }
+
       setSearchError(e?.message || "Search failed");
     } finally {
       setIsSearching(false);

@@ -471,10 +471,14 @@ export default function SearchCard({
             )}
           </div>
 
-          {!!apiWarning && exactMode && (
+          {!!apiWarning && !searchError && (
             <div className="fa-providerWarning">
-              <div className="fa-providerWarningTitle">Partner price check</div>
-              <div>Farely checks current partner fares. Final price and rules are confirmed on the partner site.</div>
+              <div className="fa-providerWarningTitle">{exactMode ? "Partner price check" : "Live search status"}</div>
+              <div>
+                {exactMode
+                  ? "Farely checks current partner fares. Final price and rules are confirmed on the partner site."
+                  : apiWarning}
+              </div>
             </div>
           )}
 

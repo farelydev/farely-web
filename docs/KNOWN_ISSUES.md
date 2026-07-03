@@ -4,12 +4,13 @@ Last updated: 2026-07-03
 
 | Priority | Area | Issue | Status |
 | --- | --- | --- | --- |
-| High | API/provider | Demo fallback and Amadeus test/sandbox behavior can make provider health look better than true live readiness. | Open |
+| High | API/provider | Demo fallback and Amadeus test/sandbox behavior can make provider health look better than true live readiness. Fallback-off graceful error handling is implemented locally and still needs live deployment plus monitor verification. | In progress |
 | High | Support/contact | Unverified email aliases must not be published. `info@tryfarely.com` is the only public business email until each alias has a verified receiving route or mailbox. | In progress |
 | High | Affiliate | Production affiliate approval and final partner redirect template need confirmation. | Open |
 | High | Affiliate | `View Deal` click tracking should be validated end to end after each redirect change. | Open |
 | Medium | UX | Flight results and the guided Cheapest Month journey still need live-production validation against real provider responses after the richer card and workflow updates. | In progress |
 | High | Security | Cloudflare SSL/TLS mode, WAF/security settings, and live post-deployment headers need verification after the security-hardening deploy. | Open |
+| High | Delivery | GitHub push is blocked on this host by SSH authentication, so local security commits are not deployed or verified live. | Open |
 | Medium | Security | Founder/admin analytics still exists inside the public app surface and should move to a separate private dashboard with proper authentication. | Open |
 | Medium | UX | Milestone 6 filters drawer and budget/airline/time/stops filters need broader QA against real result sets. | In progress |
 | Medium | UX | Airport selection and return-to-same-airport filter behavior need production-data verification. | In progress |
@@ -35,10 +36,12 @@ Last updated: 2026-07-03
 
 - Amadeus sandbox/test responses may fail or return limited results for some routes and dates.
 - Fallback/demo behavior is useful for development but should not be treated as proof of production provider health.
+- Before `USE_DEMO_FALLBACK=false` is enabled on Render, deploy and verify the graceful flexible-search degraded-state handling.
 
 ## Production Readiness Concerns
 
 - The first small security-hardening pass is complete locally, but live deployment verification is still required.
+- Milestones now require three states: `Implemented`, `Deployed`, and `Verified`; only live verification counts as complete.
 - Contact details must only show verified receiving addresses.
 - Affiliate redirect and click tracking are core business infrastructure and need live validation.
 - Secrets must stay out of repo commits.

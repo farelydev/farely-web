@@ -18,7 +18,24 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-03
 
-- Commit hash: pending
+- Commit hash: pending local commit
+- What changed:
+  - Added a clear fallback-off failure path for `/api/flexible`.
+  - When demo fallback is disabled and every scanned flexible date fails, the backend now returns `429` for rate limits or `503` for provider unavailable instead of a normal-looking `200` response with no useful fares.
+  - Added frontend handling for the new `amadeus-unavailable` response so users see plain-English guidance to narrow the date range, use Exact Dates, or retry shortly.
+  - Updated the search card warning area so flexible-search live status messages can be shown before result cards.
+- Checks run:
+  - `node --check server.js` passed on 2026-07-03.
+  - `npm run build` passed on 2026-07-03.
+  - `npm run lint` passed with 1 pre-existing warning in `src/components/LegalPage.jsx` on 2026-07-03.
+  - `npm install` audit output reported 0 vulnerabilities on 2026-07-03.
+  - Local fallback-disabled probe passed: with `USE_DEMO_FALLBACK=false` and dummy Amadeus credentials, `/api/flexible` returned `503 Service Unavailable`, `source: "amadeus-unavailable"`, and a user-friendly Exact Dates retry message.
+- Pushed to GitHub:
+  - Pending push attempt.
+
+## 2026-07-03
+
+- Commit hash: `638ad58`
 - What changed:
   - Added Express security hardening with Helmet, a CSP, referrer policy, content-type hardening, frame protection, permissions policy, and disabled `X-Powered-By`.
   - Restricted production CORS to `https://tryfarely.com` and `https://www.tryfarely.com`.
