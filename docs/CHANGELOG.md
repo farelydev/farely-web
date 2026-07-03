@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-03
 
-- Commit hash: `a55f2f3`
+- Commit hash: `2b1c86e`
 - What changed:
   - Polished the Milestone 6 Cheapest Month flow so the user path is clearly `Choose month -> Choose travel day -> Compare flights -> Check partner deal`.
   - Changed flexible-search copy from stronger price claims to safer guide-price and partner-check wording.

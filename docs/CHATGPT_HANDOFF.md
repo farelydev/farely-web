@@ -73,7 +73,7 @@ Branch:
 - `main`
 
 Commit hash:
-- Milestone 6 final-sprint polish: `a55f2f3`.
+- Milestone 6 final-sprint polish: `2b1c86e`.
 - Verified deployment commit: `0739d9b`
 
 Recommended next product decision:
