@@ -4,7 +4,7 @@ Last updated: 2026-07-03
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely Milestone 6 final-sprint polish is now implemented locally for Search Experience 2.0. The user path is clearer: choose month, choose travel day, compare flights, then check partner deal. Local build/lint and browser QA passed, but Milestone 6 is not complete until this commit is pushed, deployed, verified on `https://tryfarely.com`, and founder approved. The product rule remains: `Implemented`, `Deployed`, then `Verified`; only `Verified` counts as complete.
+Farely Milestone 6 final-sprint polish is now implemented, pushed, deployed, and live-verified for Search Experience 2.0. The user path is clearer: choose month, choose travel day, compare flights, then check partner deal. Milestone 6 is still not complete until the founder accepts it. The product rule remains: `Implemented`, `Deployed`, then `Verified`; only `Verified` counts as complete before founder approval.
 
 Temporary Render retry note, 2026-07-03 05:50 BST:
 - This temporary retry was requested because Render/Chrome was slow.
@@ -37,7 +37,6 @@ What was completed:
 
 What was not completed:
 - Milestone 6 is not founder-approved yet.
-- Production deployment and live verification for this final-sprint polish are still pending until the commit is pushed and Render serves it.
 - Cloudflare dashboard settings still need manual verification: Full (strict), WAF/security level, TLS settings, and relevant security modes.
 - Founder/admin analytics has not yet moved to a separate authenticated dashboard.
 - `USE_DEMO_FALLBACK=false` is now active on Render and verified by the live `/api/health` endpoint.
@@ -57,6 +56,7 @@ Build/lint/test status:
 - `npm run build` passed on 2026-07-03 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
 - `npm run lint` passed on 2026-07-03 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
 - Local browser QA passed on 2026-07-03 for desktop app render, Cheapest Month mode, travel-day selection, result-card display, Filters drawer behavior, and a 390px mobile viewport no-horizontal-overflow check.
+- Live verification passed on 2026-07-03: the live bundle contains the new Milestone 6 copy, `/api/health` reports `demoFallbackEnabled:false`, exact-date `/api/flights` returns Amadeus `isDemo:false` offers, `/api/flexible` returns Amadeus cheapest-day results, `/api/deals/flight` returns a tracked `302`, and the 390px live mobile render has no horizontal overflow or console warnings/errors.
 - `npm run build` passed on 2026-07-03 for the security hardening.
 - `npm run lint` passed with 1 existing warning in `src/components/LegalPage.jsx`.
 - `npm audit --omit=dev` passed with 0 vulnerabilities.
@@ -67,13 +67,14 @@ Build/lint/test status:
 - Planner QA passed locally on 2026-07-03: a Bosnia under-£300 prompt showed the analysing state, put Bosnia first with the highest match score, explained alternatives, and populated `London -> Sarajevo` without starting a live search.
 
 GitHub status:
-- Commit created locally; push/deployment/live verification pending for the Milestone 6 final-sprint polish.
+- Pushed to GitHub `main`; Render served the new frontend asset and live verification passed.
 
 Branch:
 - `main`
 
 Commit hash:
 - Milestone 6 final-sprint polish: `2b1c86e`.
+- Latest pushed handoff/docs commit before live verification: `c10ff5f`.
 - Verified deployment commit: `0739d9b`
 
 Recommended next product decision:

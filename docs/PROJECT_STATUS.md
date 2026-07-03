@@ -8,13 +8,15 @@ Milestone 6: Search Experience 2.0.
 
 ## Current Production Readiness Status
 
-Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. The Milestone 6 final-sprint polish is implemented locally and needs deployment, live verification, and founder approval before Milestone 6 can be called complete. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
+Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. The Milestone 6 final-sprint polish has been pushed, deployed, and live-verified on `https://tryfarely.com`; founder approval is still needed before Milestone 6 can be called complete. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
 
 Delivery state rule: work is only complete when it is `Implemented`, `Deployed`, and `Verified` on the live production site. The current security hardening has reached `Verified` on `https://tryfarely.com`.
 
 ## Latest Deployment / Commit
 
 - Branch: `main`
+- Latest verified Milestone 6 final-sprint implementation commit: `2b1c86e`
+- Latest pushed handoff/docs commit: `c10ff5f`
 - Latest verified security-hardening commit: `0739d9b`
 - Deployment source: GitHub `farelydev/farely-web` on `main`
 - Live verification: `https://tryfarely.com` served the new frontend bundle, `/api/debug/amadeus` returned `404`, bad-origin CORS was not reflected, Helmet security headers were present, exact-date and flexible searches returned live Amadeus results, and `/api/deals/flight` returned a tracked `302` partner redirect.
@@ -44,8 +46,8 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 
 ## What Is Incomplete
 
-- Milestone 6 Search Experience 2.0 is not complete until the final-sprint polish is deployed, verified on `https://tryfarely.com`, and founder approved.
-- Milestone 6 still needs live-production validation after this polish commit, broader accessibility review, and founder acceptance.
+- Milestone 6 Search Experience 2.0 is not complete until the founder approves the final-sprint polish.
+- Milestone 6 still needs founder acceptance and a broader accessibility review.
 - Production affiliate partner approval/configuration is not yet fully confirmed in this repo.
 - Click tracking needs ongoing validation against live traffic and analytics requirements.
 - Founder analytics should move out of the public app into a private dashboard with proper authentication.
@@ -64,4 +66,4 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 
 ## Recommended Next Engineering Priority
 
-Next engineering priority: deploy and live-verify the Milestone 6 final-sprint polish, then ask the founder for acceptance before moving to Milestone 7.
+Next engineering priority: ask the founder for Milestone 6 acceptance before moving to Milestone 7.

@@ -56,7 +56,7 @@ Current API robustness action:
 
 Goal: make Farely's search experience feel trustworthy, clear, and conversion-ready.
 
-Milestone 6 completion gate: this milestone is not complete until the final-sprint polish is deployed, verified live on `https://tryfarely.com`, and founder approved.
+Milestone 6 completion gate: the final-sprint polish is deployed and live-verified; this milestone is not complete until founder approval is given.
 
 ## Milestone 7: Farely AI Travel Consultant
 

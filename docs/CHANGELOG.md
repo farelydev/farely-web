@@ -16,8 +16,11 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - `npm run build` passed on 2026-07-03 using the local nvm Node path.
   - `npm run lint` passed with 1 pre-existing warning in `src/components/LegalPage.jsx` on 2026-07-03.
   - Local browser QA passed for desktop and mobile Search Experience checks, including Cheapest Month date selection and Filters drawer behavior.
+  - Live bundle verification passed on 2026-07-03: `https://tryfarely.com` served the new frontend asset containing `Plan Umrah trip`, `Show travel days`, `Guide price from`, and `Check partner deal`.
+  - Live API smoke checks passed on 2026-07-03: `/api/health` reported `demoFallbackEnabled:false`, exact-date `/api/flights` returned Amadeus `isDemo:false` offers, `/api/flexible` returned Amadeus cheapest-day results, and `/api/deals/flight` returned a tracked `302` redirect.
+  - Live mobile browser render check passed at 390px with no console warnings/errors and no horizontal overflow.
 - Pushed to GitHub:
-  - Pending deployment/live verification.
+  - Yes. Implementation commit `2b1c86e`; latest pushed docs/handoff commit before live verification was `c10ff5f`.
 
 ## 2026-07-03
 
