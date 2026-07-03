@@ -404,6 +404,7 @@ export default function ResultsSection({
     [filters, shownOffers]
   );
   const filteredStats = useMemo(() => rankingStats(filteredOffers), [filteredOffers]);
+  const hasChosenFlexDate = !flexMode || Boolean(selectedFlexDate);
   const activeFilterCount = Object.entries(filters).filter(([key, value]) => {
     if (key === "sameReturnAirport") return Boolean(value);
     if (key === "cabinBagOnly") return Boolean(value);
@@ -444,7 +445,27 @@ export default function ResultsSection({
           <span className="fa-resultsSubtitle">— {routeTitle}</span>
         </h2>
 
-        {!isMultiCity && (
+        {flexMode && !isMultiCity && (
+          <div className="fa-flexWorkflow" aria-label="Cheapest Month progress">
+            <span className="isDone">Choose month ✓</span>
+            <span className={cx(!selectedFlexDate && "isCurrent", selectedFlexDate && "isDone")}>Choose travel day{selectedFlexDate ? " ✓" : " ←"}</span>
+            <span className={cx(selectedFlexDate && "isCurrent")}>Compare flights</span>
+            <span>Book with partner</span>
+          </div>
+        )}
+
+        {flexMode && !isMultiCity && (
+          <div className="fa-flexDateIntro">
+            <div>
+              <div className="fa-flexStepEyebrow">Step 1</div>
+              <h3>Choose your departure date</h3>
+              <p>We’ve found the cheapest travel dates. Tap a date below to compare live flights.</p>
+            </div>
+            {selectedFlexDate ? <span className="fa-flexSelectedDate">Selected {shortDateLabel(selectedFlexDate)}</span> : null}
+          </div>
+        )}
+
+        {!isMultiCity && hasChosenFlexDate && (
           <div className="fa-resultsControls">
             <div className="fa-resultsTabs">
               <button
@@ -649,13 +670,14 @@ export default function ResultsSection({
           </div>
         )}
 
-        {flexMode && didSearch && (
+        {flexMode && didSearch && !selectedFlexDate && (
           <div className="fa-resultsHelper">
-            Choose a departure date below. Farely will check live partner prices for that date, then you can compare flights.
+            Step 2 will appear after you choose a travel day. Farely will then compare the cheapest, fastest, and best live flight options for that date.
           </div>
         )}
 
-        <div className="fa-resultCard">
+        {hasChosenFlexDate && (
+        <div className={cx("fa-resultCard", flexMode && selectedFlexDate && "isRevealed")}>
           <div className="fa-resultHeader">
             <div className="fa-resultHeaderLeft">
               {exactMode ? (
@@ -801,6 +823,7 @@ export default function ResultsSection({
             Search, compare, then confirm final price, baggage, and fare rules on the partner site before booking.
           </div>
         </div>
+        )}
       </div>
     </section>
   );

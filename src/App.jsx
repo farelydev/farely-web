@@ -179,7 +179,7 @@ export default function App() {
           date: x.date,
           price: Math.round(x.cheapestPrice),
           source: x.source,
-          actionLabel: tripType === "return" ? "Choose departure" : "Choose date",
+          actionLabel: "Tap to compare flights",
         }));
     }
 
@@ -197,7 +197,7 @@ export default function App() {
       const v = base + ((i * 13 + seed) % 60) - 20;
       return { key: date, label, date: "", price: Math.max(29, v), source: "preview", actionLabel: "Month guide" };
     });
-  }, [routeFromCode, routeToCode, flexMode, flexDays, departDate, tripType]);
+  }, [routeFromCode, routeToCode, flexMode, flexDays, departDate]);
 
   function clearSearchState() {
     setDidSearch(false);
@@ -774,6 +774,8 @@ const styles = `
     box-shadow: 0 26px 70px rgba(10,20,70,.22);
     overflow:hidden;
   }
+  .fa-resultCard.isRevealed{ animation: faRevealResults .28s ease both; }
+  @keyframes faRevealResults{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
   .fa-cardTop{
     display:flex; align-items:center; justify-content:space-between; gap:12px;
     padding:14px 16px; border-bottom: 1px solid rgba(10,20,70,.08);
@@ -1273,6 +1275,57 @@ const styles = `
     .fa-filterActions{ position:sticky; bottom:0; background:inherit; padding-top:12px; }
     .fa-filterApply, .fa-filterSecondary{ flex:1; }
   }
+
+  .fa-flexWorkflow{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:0 0 12px;
+  }
+  .fa-flexWorkflow span{
+    border:1px solid rgba(10,20,70,.08);
+    border-radius:999px;
+    background:rgba(255,255,255,.76);
+    color:rgba(8,16,35,.52);
+    padding:8px 11px;
+    font-size:12px;
+    font-weight:1000;
+  }
+  .fa-flexWorkflow span.isDone{
+    background:rgba(15,165,120,.10);
+    border-color:rgba(15,165,120,.18);
+    color:rgba(10,115,90,.95);
+  }
+  .fa-flexWorkflow span.isCurrent{
+    background:rgba(35,95,255,.10);
+    border-color:rgba(35,95,255,.22);
+    color:rgba(35,95,255,1);
+    box-shadow:0 10px 28px rgba(35,95,255,.10);
+  }
+  .fa-flexDateIntro{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    margin:0 0 12px;
+    padding:16px;
+    border-radius:18px;
+    background:linear-gradient(135deg, rgba(255,255,255,.94), rgba(238,244,255,.90));
+    border:1px solid rgba(35,95,255,.12);
+    box-shadow:0 14px 40px rgba(10,20,70,.08);
+  }
+  .fa-flexStepEyebrow{ font-size:11px; font-weight:1000; color:rgba(35,95,255,.82); text-transform:uppercase; letter-spacing:.08em; }
+  .fa-flexDateIntro h3{ margin:3px 0 3px; font-size:22px; line-height:1.1; color:rgba(8,16,35,.92); }
+  .fa-flexDateIntro p{ margin:0; font-size:13px; font-weight:900; color:rgba(8,16,35,.58); }
+  .fa-flexSelectedDate{
+    white-space:nowrap;
+    border-radius:999px;
+    background:rgba(35,95,255,.10);
+    color:rgba(35,95,255,1);
+    padding:9px 12px;
+    font-size:12px;
+    font-weight:1000;
+  }
   .fa-resultsWarning{
     display:flex; align-items:center; justify-content:space-between; gap:12px;
     margin: 0 0 14px; padding: 12px 14px; border-radius: 16px;
@@ -1296,9 +1349,10 @@ const styles = `
     border-radius:14px; border: 1px solid rgba(10,20,70,.08); background: rgba(248,250,255,.9);
     padding:12px; text-align:left;
   }
-  .fa-dayPill.isClickable{ cursor:pointer; background:#fff; box-shadow:0 10px 24px rgba(10,20,70,.07); }
+  .fa-dayPill.isClickable{ cursor:pointer; background:#fff; box-shadow:0 10px 24px rgba(10,20,70,.07); transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease; }
+  .fa-dayPill.isClickable:hover{ transform:translateY(-2px); border-color:rgba(35,95,255,.24); box-shadow:0 16px 34px rgba(35,95,255,.12); }
   .fa-dayPill:disabled:not(.isClickable){ opacity:1; color:inherit; }
-  .fa-dayPill.isSelected{ outline: 2px solid rgba(35,95,255,.35); background: rgba(35,95,255,.08); }
+  .fa-dayPill.isSelected{ outline: 2px solid rgba(35,95,255,.35); background: rgba(35,95,255,.08); box-shadow:0 18px 42px rgba(35,95,255,.16); }
   .fa-dayPill.isDemo{ border-color: rgba(180,120,0,.20); background: rgba(255,250,235,.95); }
   .fa-day{ font-weight:1000; color: rgba(8,16,35,.72); font-size:13px; margin-bottom:4px; }
   .fa-daySub{ font-size:11px; font-weight:900; color: rgba(8,16,35,.42); margin-bottom:8px; }
@@ -1438,6 +1492,8 @@ const styles = `
   .fa-resultsHelper{ margin:-4px 0 14px; font-size:12px; color:rgba(8,16,35,.58); font-weight:900; }
   .fa-legGrid{ display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:12px; margin-top:14px; }
   @media (max-width:760px){
+    .fa-flexDateIntro{ align-items:flex-start; flex-direction:column; }
+    .fa-flexSelectedDate{ white-space:normal; }
     .fa-resultHeader{ align-items:flex-start; flex-direction:column; }
     .fa-resultHint{ max-width:none; text-align:left; }
     .fa-legGrid{ grid-template-columns:1fr; }
@@ -1900,8 +1956,13 @@ const styles = `
     .fa-filterField input,
     .fa-filterField select{ background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.10); color:rgba(235,240,255,.92); }
     .fa-filterCheck{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.10); color:rgba(235,240,255,.74); }
-    .fa-resultsWarning{ background: rgba(110,75,0,.22); border-color: rgba(255,210,120,.18); color: rgba(255,228,165,1); }
+
+  .fa-resultsWarning{ background: rgba(110,75,0,.22); border-color: rgba(255,210,120,.18); color: rgba(255,228,165,1); }
     .fa-resultsWarningSub{ color: rgba(255,228,165,.72); }
+    .fa-flexWorkflow span{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.08); color:rgba(235,240,255,.62); }
+    .fa-flexDateIntro{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.08); }
+    .fa-flexDateIntro h3{ color:rgba(255,255,255,.92); }
+    .fa-flexDateIntro p{ color:rgba(235,240,255,.62); }
     .fa-pillGrid{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08); }
     .fa-dayPill{ background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.08); }
     .fa-dayPill.isClickable{ background:rgba(255,255,255,.08); }

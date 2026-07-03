@@ -1,6 +1,6 @@
 # Farely Known Issues
 
-Last updated: 2026-06-29
+Last updated: 2026-07-03
 
 | Priority | Area | Issue | Status |
 | --- | --- | --- | --- |
@@ -8,7 +8,7 @@ Last updated: 2026-06-29
 | High | Support/contact | Unverified email aliases must not be published. `info@tryfarely.com` is the only public business email until each alias has a verified receiving route or mailbox. | In progress |
 | High | Affiliate | Production affiliate approval and final partner redirect template need confirmation. | Open |
 | High | Affiliate | `View Deal` click tracking should be validated end to end after each redirect change. | Open |
-| Medium | UX | Flight results still need live-production validation against real provider responses after the richer card update. | In progress |
+| Medium | UX | Flight results and the guided Cheapest Month journey still need live-production validation against real provider responses after the richer card and workflow updates. | In progress |
 | Medium | UX | Milestone 6 filters drawer and budget/airline/time/stops filters need broader QA against real result sets. | In progress |
 | Medium | UX | Airport selection and return-to-same-airport filter behavior need production-data verification. | In progress |
 | Medium | AI planner | Planner experience needs clearer product scope and stronger structured trip outputs after first-pass Umrah routing. | Open |
@@ -23,7 +23,7 @@ Last updated: 2026-06-29
 
 ## UX Issues
 
-- Continue validating result cards for quick comparison with real provider data.
+- Continue validating result cards and the guided Cheapest Month flow for quick comparison with real provider data.
 - QA Milestone 6 search filters and airport-selection behavior on live routes with multiple offers.
 - CTA wording has been changed to `Check partner deal`; validate click-through tracking after deployment.
 - Keep affiliate disclosure visible without making the UI feel cluttered.
