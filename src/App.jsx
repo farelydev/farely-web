@@ -1838,21 +1838,168 @@ const styles = `
     font-weight:1000;
     padding:0 16px;
   }
+  .fa-plannerSend:disabled,
+  .fa-plannerInput:disabled{
+    cursor:not-allowed;
+    opacity:.62;
+  }
+  .fa-analyzingBox{
+    display:grid;
+    gap:8px;
+    margin:0 0 14px;
+    padding:12px;
+    border-radius:18px;
+    background:linear-gradient(135deg, rgba(240,245,255,.96), rgba(232,255,247,.92));
+    border:1px solid rgba(35,95,255,.10);
+  }
+  .fa-analyzingStep{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    color:rgba(8,16,35,.72);
+    font-size:12px;
+    font-weight:1000;
+  }
+  .fa-analyzingDot{
+    width:8px;
+    height:8px;
+    border-radius:999px;
+    background:rgba(35,95,255,1);
+    box-shadow:0 0 0 0 rgba(35,95,255,.35);
+    animation:faAnalyzePulse 1.2s ease-in-out infinite;
+  }
+  @keyframes faAnalyzePulse{
+    0%{ transform:scale(.82); box-shadow:0 0 0 0 rgba(35,95,255,.30); }
+    70%{ transform:scale(1); box-shadow:0 0 0 8px rgba(35,95,255,0); }
+    100%{ transform:scale(.82); box-shadow:0 0 0 0 rgba(35,95,255,0); }
+  }
+  .fa-plannerInsight{
+    margin:0 0 12px;
+    border-radius:18px;
+    border:1px solid rgba(35,95,255,.12);
+    background:rgba(35,95,255,.07);
+    color:rgba(8,16,35,.72);
+    padding:12px 14px;
+    font-size:13px;
+    font-weight:900;
+    line-height:1.35;
+  }
   .fa-recommendationGrid{
     display:grid;
-    grid-template-columns:repeat(3, minmax(0, 1fr));
+    grid-template-columns:repeat(2, minmax(0, 1fr));
     gap:12px;
   }
   .fa-recommendationCard{
     border:1px solid rgba(10,20,70,.10);
-    background:rgba(248,250,255,.96);
+    background:#fff;
     border-radius:18px;
-    padding:14px;
+    overflow:hidden;
     display:flex;
     flex-direction:column;
-    gap:9px;
+    min-height:100%;
+    box-shadow:0 18px 44px rgba(10,20,70,.10);
+  }
+  .fa-recImage{
+    min-height:138px;
+    background-size:cover;
+    background-position:center;
+    display:flex;
+    align-items:flex-start;
+    justify-content:flex-end;
+    padding:10px;
+    position:relative;
+  }
+  .fa-recImage::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(0,0,0,.20), rgba(0,0,0,.04) 52%, rgba(0,0,0,.28));
+  }
+  .fa-recImage span{
+    position:relative;
+    z-index:1;
+    border-radius:999px;
+    background:rgba(255,255,255,.92);
+    color:rgba(8,16,35,.88);
+    padding:7px 9px;
+    font-size:11px;
+    font-weight:1000;
+    box-shadow:0 10px 24px rgba(0,0,0,.16);
+  }
+  .fa-recBody{
+    display:flex;
+    flex:1;
+    flex-direction:column;
+    gap:10px;
+    padding:13px;
+  }
+  .fa-recTopLine{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .fa-recCountry{
+    margin-top:2px;
+    color:rgba(8,16,35,.46);
+    font-size:11px;
+    font-weight:900;
+  }
+  .fa-recBadge{
+    flex:0 0 auto;
+    max-width:132px;
+    border-radius:999px;
+    border:1px solid rgba(15,165,120,.18);
+    background:rgba(15,165,120,.10);
+    color:rgba(5,115,88,.95);
+    padding:6px 8px;
+    font-size:10px;
+    font-weight:1000;
+    line-height:1.15;
+    text-align:center;
+  }
+  .fa-recFacts{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:7px;
+  }
+  .fa-recFacts span{
+    border-radius:12px;
+    background:rgba(245,247,252,.92);
+    color:rgba(8,16,35,.64);
+    padding:8px;
+    font-size:11px;
+    font-weight:900;
+    line-height:1.25;
+  }
+  .fa-recReason{
+    margin:0;
+    color:rgba(8,16,35,.70);
+    font-size:12px;
+    font-weight:850;
+    line-height:1.4;
   }
   .fa-useTripBtn{ min-height:42px; margin-top:auto; }
+  .fa-whyDestinations{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    margin-top:12px;
+    border:1px solid rgba(10,20,70,.09);
+    background:rgba(248,250,255,.96);
+    border-radius:18px;
+    padding:12px 14px;
+    color:rgba(8,16,35,.62);
+    font-size:12px;
+    font-weight:850;
+    line-height:1.35;
+  }
+  .fa-whyDestinations strong{
+    flex:0 0 auto;
+    color:rgba(8,16,35,.88);
+    font-weight:1000;
+  }
   .fa-choiceGrid{
     display:grid;
     grid-template-columns:repeat(2, minmax(0, 1fr));
@@ -1871,6 +2018,10 @@ const styles = `
     .fa-plannerInputRow{ grid-template-columns:1fr; }
     .fa-plannerSend{ min-height:46px; }
     .fa-recommendationGrid{ grid-template-columns:1fr; }
+    .fa-recImage{ min-height:132px; }
+    .fa-recTopLine{ flex-direction:column; }
+    .fa-recBadge{ max-width:none; }
+    .fa-whyDestinations{ flex-direction:column; gap:4px; }
   }
   .fa-choiceCard{
     border:1px solid rgba(10,20,70,.10);
@@ -2043,7 +2194,15 @@ const styles = `
     .fa-answerChip{ background:rgba(120,160,255,.14); border-color:rgba(120,160,255,.18); color:rgba(150,180,255,1); }
     .fa-plannerInput{ background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.10); color:rgba(235,240,255,.92); }
     .fa-plannerInput::placeholder{ color:rgba(235,240,255,.48); }
+    .fa-analyzingBox{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.10); }
+    .fa-analyzingStep{ color:rgba(235,240,255,.74); }
+    .fa-plannerInsight{ background:rgba(120,160,255,.12); border-color:rgba(120,160,255,.18); color:rgba(235,240,255,.78); }
     .fa-recommendationCard{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.10); }
+    .fa-recCountry, .fa-recReason{ color:rgba(235,240,255,.62); }
+    .fa-recFacts span{ background:rgba(255,255,255,.07); color:rgba(235,240,255,.68); }
+    .fa-recBadge{ background:rgba(15,165,120,.16); border-color:rgba(15,165,120,.22); color:rgba(150,245,215,.94); }
+    .fa-whyDestinations{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.10); color:rgba(235,240,255,.62); }
+    .fa-whyDestinations strong{ color:rgba(235,240,255,.94); }
     .fa-choiceCard{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.10); }
     .fa-choiceCard:hover{ background:rgba(255,255,255,.10); }
     .fa-choiceTitle{ color:rgba(235,240,255,.95); }

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const INITIAL_MESSAGES = {
   ai: "Tell me what you have in mind. I will ask a few quick questions before preparing a search.",
@@ -25,102 +25,173 @@ const QUICK_OPTIONS = {
   style: ["Beach", "City break", "Family friendly", "Halal friendly", "Non-stop only", "Avoid Ryanair"],
 };
 
+const ANALYSIS_STEPS = ["Analysing destinations...", "Checking budget fit...", "Comparing flexible options..."];
+
+const DESTINATION_ALIASES = [
+  { id: "bosnia", terms: ["bosnia", "sarajevo", "bosnia and herzegovina"] },
+  { id: "paris", terms: ["paris", "france"] },
+  { id: "malaga", terms: ["malaga", "spain", "andalusia"] },
+  { id: "faro", terms: ["faro", "portugal", "algarve"] },
+  { id: "marrakech", terms: ["marrakech", "morocco"] },
+  { id: "antalya", terms: ["antalya", "turkey", "türkiye"] },
+  { id: "jeddah", terms: ["jeddah", "makkah", "mecca"] },
+  { id: "madinah", terms: ["madinah", "medina"] },
+];
+
 const DESTINATIONS = [
+  {
+    id: "bosnia",
+    name: "Bosnia",
+    country: "Bosnia and Herzegovina",
+    code: "SJJ",
+    from: "LON",
+    theme: ["culture", "nature", "halal", "city", "short-break"],
+    priceFrom: 145,
+    priceRange: "£120-£290 flights",
+    flightTime: "2h 40m flight",
+    weatherVibe: "Mountain air, warm summers",
+    tripType: "Culture, nature, halal-friendly",
+    category: "Closest to your request",
+    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=72",
+    reason: "Best option because it matches your original request and works well for a short flexible trip.",
+    budgetConcern: "Bosnia is a good match, but fares can sit near the top of a tight budget. I kept it first and added better-value alternatives.",
+    note: "Check live fares before booking because Bosnia routes can move quickly by date.",
+  },
   {
     id: "paris",
     name: "Paris",
+    country: "France",
     code: "CDG",
     from: "LON",
     theme: ["weekend", "city", "short-break"],
     weakFor: ["warm", "halal"],
-    priceFrom: 125,
-    tripLength: 3,
-    flexMonth: null,
-    reason: "I suggested Paris because it fits a short trip from London, has frequent direct flights, and works well for a city break.",
+    priceFrom: 95,
+    priceRange: "£80-£170 flights",
+    flightTime: "1h 20m flight",
+    weatherVibe: "City break, mild weather",
+    tripType: "City break, food, museums",
+    category: "Cheapest short break",
+    image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=900&q=72",
+    reason: "Good value from London with frequent flights, but less close to your Bosnia preference.",
     note: "Confirm the exact weekend before searching live prices.",
   },
   {
     id: "malaga",
     name: "Malaga",
+    country: "Spain",
     code: "AGP",
     from: "LON",
     theme: ["warm", "beach", "cheapmonth", "halal", "family"],
-    priceFrom: 165,
-    tripLength: 5,
-    flexMonth: null,
-    reason: "I suggested Malaga because it is a stronger warm-weather fit than a city-only option, has good UK flight coverage, and can work for halal-aware beach trips with local checks.",
+    priceFrom: 135,
+    priceRange: "£110-£230 flights",
+    flightTime: "2h 55m flight",
+    weatherVibe: "Sunny, beach-friendly",
+    tripType: "Beach, family, halal-aware",
+    category: "Best weather",
+    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=72",
+    reason: "Strong warm-weather value with good London flight coverage.",
     note: "Weather and fares should be checked live before booking.",
   },
   {
     id: "faro",
     name: "Faro",
+    country: "Portugal",
     code: "FAO",
     from: "LON",
     theme: ["warm", "beach", "family", "cheapmonth"],
-    priceFrom: 155,
-    tripLength: 5,
-    flexMonth: null,
-    reason: "I suggested Faro because it is a simple warm-weather option with beaches and a relaxed trip style.",
+    priceFrom: 125,
+    priceRange: "£100-£220 flights",
+    flightTime: "2h 50m flight",
+    weatherVibe: "Relaxed coast, warm days",
+    tripType: "Beach, relaxed, family",
+    category: "Best value",
+    image: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=72",
+    reason: "Simple beach option with a strong chance of staying within a low budget.",
     note: "Farely will use this as a search starting point, not a booking guarantee.",
   },
   {
     id: "marrakech",
     name: "Marrakech",
+    country: "Morocco",
     code: "RAK",
     from: "LON",
     theme: ["warm", "halal", "city", "culture"],
-    priceFrom: 190,
-    tripLength: 5,
-    flexMonth: null,
-    reason: "I suggested Marrakech because it is warm, culturally strong, and usually a better halal-friendly match than a generic European city break.",
+    priceFrom: 165,
+    priceRange: "£140-£280 flights",
+    flightTime: "3h 40m flight",
+    weatherVibe: "Warm, dry, colourful",
+    tripType: "Culture, halal-friendly, city",
+    category: "Best halal-friendly",
+    image: "https://images.unsplash.com/photo-1597212618440-806262de4f6b?auto=format&fit=crop&w=900&q=72",
+    reason: "Warm, culturally strong, and usually a better halal-friendly match than a generic European city break.",
     note: "Check hotel location, airport transfers, and live fare rules before booking.",
   },
   {
     id: "antalya",
     name: "Antalya",
+    country: "Türkiye",
     code: "AYT",
     from: "LON",
     theme: ["warm", "halal", "beach", "family"],
     priceFrom: 210,
-    tripLength: 7,
-    flexMonth: null,
-    reason: "I suggested Antalya because it is a warm beach destination with many halal-aware resort options and a good fit for longer summer trips.",
-    note: "Farely can start the flight search, but hotel and halal facilities still need checking before booking.",
+    priceRange: "£180-£340 flights",
+    flightTime: "4h 15m flight",
+    weatherVibe: "Hot coast, resort-friendly",
+    tripType: "Beach, family, halal-aware",
+    category: "Best for resorts",
+    image: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=900&q=72",
+    reason: "Warm beach destination with many halal-aware resort options and a good fit for longer summer trips.",
+    note: "Hotel and halal facilities still need checking before booking.",
   },
   {
     id: "jeddah",
     name: "Jeddah",
+    country: "Saudi Arabia",
     code: "JED",
     from: "LON",
     theme: ["umrah", "halal"],
     priceFrom: 420,
-    tripLength: 10,
-    flexMonth: null,
-    reason: "I suggested Jeddah because it is a common entry point for travellers going to Makkah first.",
-    note: "You should still check visa, package, hotel, and pilgrimage requirements before booking.",
+    priceRange: "£390-£620 flights",
+    flightTime: "6h 15m flight",
+    weatherVibe: "Hot, pilgrimage gateway",
+    tripType: "Umrah, halal-friendly",
+    category: "Makkah gateway",
+    image: "https://images.unsplash.com/photo-1580418827493-f2b22c0a76cb?auto=format&fit=crop&w=900&q=72",
+    reason: "Common entry point for travellers going to Makkah first.",
+    note: "Check visa, package, hotel, and pilgrimage requirements before booking.",
   },
   {
     id: "madinah",
     name: "Madinah",
+    country: "Saudi Arabia",
     code: "MED",
     from: "LON",
     theme: ["umrah", "halal"],
     priceFrom: 430,
-    tripLength: 10,
-    flexMonth: null,
-    reason: "I suggested Madinah because it works well if you want to visit Madinah before Makkah.",
-    note: "You should still check visa, package, hotel, and pilgrimage requirements before booking.",
+    priceRange: "£400-£650 flights",
+    flightTime: "6h 25m flight",
+    weatherVibe: "Hot, pilgrimage-focused",
+    tripType: "Umrah, halal-friendly",
+    category: "Madinah first",
+    image: "https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?auto=format&fit=crop&w=900&q=72",
+    reason: "Works well if you want to visit Madinah before Makkah.",
+    note: "Check visa, package, hotel, and pilgrimage requirements before booking.",
   },
   {
     id: "umrah-split",
     name: "Makkah + Madinah split",
+    country: "Saudi Arabia",
     code: "JED",
     from: "LON",
     theme: ["umrah", "halal", "makkah-first", "madinah", "multi-city"],
     priceFrom: 450,
-    tripLength: 9,
-    flexMonth: null,
-    reason: "I suggested a Makkah and Madinah split because your prompt sounds like an Umrah route rather than a generic holiday search.",
+    priceRange: "£420-£700 flights",
+    flightTime: "Multi-city route",
+    weatherVibe: "Hot, pilgrimage-focused",
+    tripType: "Umrah, multi-city",
+    category: "Best overall",
+    image: "https://images.unsplash.com/photo-1586724237569-f3d0c1dee8c6?auto=format&fit=crop&w=900&q=72",
+    reason: "Your prompt sounds like an Umrah route rather than a generic holiday search.",
     note: "Farely will prepare a multi-city planning draft. Live multi-city pricing is still not connected.",
   },
 ];
@@ -172,18 +243,29 @@ function addDaysISO(dateValue, days) {
   return date.toISOString().slice(0, 10);
 }
 
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function detectRequestedDestination(lower) {
+  return DESTINATION_ALIASES.find((entry) => entry.terms.some((term) => lower.includes(term))) || null;
+}
+
 function parsePrompt(prompt, mode) {
   const lower = String(prompt || "").toLowerCase();
   const tags = new Set();
+  const requestedDestination = detectRequestedDestination(lower);
 
   if (mode === "weekend" || lower.includes("weekend")) tags.add("weekend");
   if (mode === "cheapmonth" || /cheap|cheapest|budget|under|flexible/.test(lower)) tags.add("cheapmonth");
   if (mode === "umrah" || /umrah|makkah|madinah|medina|jeddah/.test(lower)) tags.add("umrah");
   if (/warm|sun|sunny|beach|hot/.test(lower)) tags.add("warm");
   if (/beach|coast|sea/.test(lower)) tags.add("beach");
-  if (/city|paris|rome|italy/.test(lower)) tags.add("city");
+  if (/city|paris|rome|italy|sarajevo/.test(lower)) tags.add("city");
+  if (/culture|history|old town|bosnia|sarajevo/.test(lower)) tags.add("culture");
+  if (/nature|mountain|lake|waterfall/.test(lower)) tags.add("nature");
   if (/family|kids|children/.test(lower)) tags.add("family");
-  if (/halal|muslim/.test(lower)) tags.add("halal");
+  if (/halal|muslim|bosnia|sarajevo/.test(lower)) tags.add("halal");
   if (/direct|non-stop|nonstop/.test(lower)) tags.add("non-stop");
   if (/flights?\s*only/.test(lower)) tags.add("flights-only");
   if (/package|hotel/.test(lower)) tags.add("package");
@@ -192,11 +274,7 @@ function parsePrompt(prompt, mode) {
   if (/madinah|medina/.test(lower)) tags.add("madinah");
   if (/split|multi-city|makkah.+madinah|madinah.+makkah/.test(lower)) tags.add("multi-city");
 
-  if (lower.includes("paris")) tags.add("paris");
-  if (lower.includes("malaga") || lower.includes("spain")) tags.add("malaga");
-  if (lower.includes("faro") || lower.includes("portugal")) tags.add("faro");
-  if (lower.includes("marrakech") || lower.includes("morocco")) tags.add("marrakech");
-  if (lower.includes("antalya") || lower.includes("turkey") || lower.includes("türkiye")) tags.add("antalya");
+  if (requestedDestination) tags.add(requestedDestination.id);
 
   const nights = lower.match(/\b(\d{1,2})\s*(?:nights?|days?)\b/)?.[1] || "";
   const budget = lower.match(/\b(?:under|below|max|budget|£)\s*£?\s*(\d{2,5})\b/)?.[1] || "";
@@ -222,10 +300,19 @@ function parsePrompt(prompt, mode) {
     origin,
     umrahStart,
     tripFormat,
+    requestedDestinationId: requestedDestination?.id || "",
+    requestedDestinationName: requestedDestination ? DESTINATIONS.find((destination) => destination.id === requestedDestination.id)?.name || "" : "",
   };
 }
 
-function buildRecommendations(intent, mode) {
+function estimateMatchScore(destination, score, requestedDestinationId, maxBudget) {
+  let match = 78 + score * 3;
+  if (destination.id === requestedDestinationId) match = 94;
+  if (maxBudget && destination.priceFrom > maxBudget) match -= 8;
+  return clamp(match, 62, requestedDestinationId && destination.id !== requestedDestinationId ? 90 : 96);
+}
+
+function buildRecommendationPlan(intent, mode) {
   const extraTags = [
     String(intent.umrahStart || "").toLowerCase().includes("makkah") ? "makkah-first" : "",
     String(intent.umrahStart || "").toLowerCase().includes("madinah") ? "madinah" : "",
@@ -236,6 +323,7 @@ function buildRecommendations(intent, mode) {
   ];
   const promptTags = new Set([mode, ...intent.tags, ...(intent.style || []), ...extraTags].filter(Boolean));
   const maxBudget = Number(String(intent.budget || "").match(/\d+/)?.[0] || 0);
+  const requestedDestinationId = intent.requestedDestinationId || "";
 
   const scored = DESTINATIONS.map((destination) => {
     let score = 0;
@@ -244,24 +332,57 @@ function buildRecommendations(intent, mode) {
       if (promptTags.has(tag)) score += 4;
     });
 
-    if (promptTags.has(destination.id)) score += 4;
+    if (promptTags.has(destination.id)) score += 8;
+    if (destination.id === requestedDestinationId) score += 18;
     if (destination.weakFor?.some((tag) => promptTags.has(tag))) score -= 8;
     if (promptTags.has("warm") && !destination.theme.includes("warm") && !destination.theme.includes("umrah")) score -= 5;
     if (promptTags.has("halal") && !destination.theme.includes("halal")) score -= 5;
     if (maxBudget && destination.priceFrom <= maxBudget) score += 3;
-    if (maxBudget && destination.priceFrom > maxBudget) score -= Math.min(6, Math.ceil((destination.priceFrom - maxBudget) / 60));
+    if (maxBudget && destination.priceFrom > maxBudget) score -= Math.min(8, Math.ceil((destination.priceFrom - maxBudget) / 45));
     if (mode === "weekend" && destination.id === "paris") score += 2;
-    if (mode === "cheapmonth" && destination.id === "malaga") score += 2;
+    if (mode === "cheapmonth" && ["malaga", "faro", "bosnia"].includes(destination.id)) score += 2;
     if ((mode === "umrah" || promptTags.has("umrah")) && ["jeddah", "madinah", "umrah-split"].includes(destination.id)) score += 8;
     if (promptTags.has("makkah-first") && destination.id === "jeddah") score += 4;
     if (promptTags.has("madinah") && destination.id === "madinah") score += 4;
     if (promptTags.has("multi-city") && destination.id === "umrah-split") score += 8;
 
-    return { ...destination, score };
+    return {
+      ...destination,
+      score,
+      matchScore: estimateMatchScore(destination, score, requestedDestinationId, maxBudget),
+      category: destination.id === requestedDestinationId ? "Closest to your request" : destination.category,
+    };
   });
 
-  const ranked = scored.sort((a, b) => b.score - a.score);
-  return ranked.filter((destination) => destination.score > -2).slice(0, mode === "umrah" || promptTags.has("umrah") ? 3 : 4);
+  const limit = mode === "umrah" || promptTags.has("umrah") ? 3 : 4;
+  const requested = requestedDestinationId ? scored.find((destination) => destination.id === requestedDestinationId) : null;
+  const alternatives = scored
+    .filter((destination) => destination.id !== requestedDestinationId)
+    .sort((a, b) => b.score - a.score)
+    .filter((destination) => destination.score > -2)
+    .slice(0, requested ? limit - 1 : limit);
+  const recommendations = requested ? [requested, ...alternatives] : alternatives;
+  const requestedNearBudget = requested && maxBudget && requested.priceFrom >= maxBudget * 0.48;
+  const requestedOverBudget = requested && maxBudget && requested.priceFrom > maxBudget;
+  const contextParts = [
+    intent.budget || "your budget",
+    intent.nights ? `${intent.nights}-night stay` : "your trip length",
+    intent.timing || intent.monthLabel || "flexible dates",
+    `${intent.origin || "London"} departure`,
+    intent.requestedDestinationName ? `your ${intent.requestedDestinationName} preference` : "your trip style",
+  ];
+
+  return {
+    recommendations,
+    whyText: `Farely considered ${contextParts.join(", ")}.`,
+    insightText: requestedOverBudget
+      ? `${requested.name} is a good match, but it may be harder to keep under ${intent.budget}. Here are better-value alternatives.`
+      : requestedNearBudget
+        ? `${requested.name} is a good match, but fares can sit near the top of ${intent.budget}. I kept it first and added better-value alternatives.`
+        : requested
+          ? `${requested.name} is first because it matches your original request. The other cards are alternatives, not replacements.`
+          : "I ranked these by budget fit, trip style, flight practicality, and flexible-date potential.",
+  };
 }
 
 function nextQuestion(intent) {
@@ -337,6 +458,8 @@ export default function PlannerModal({
       madinahNights: parsed.madinahNights,
       umrahStart: parsed.umrahStart,
       tripFormat: parsed.tripFormat,
+      requestedDestinationId: parsed.requestedDestinationId,
+      requestedDestinationName: parsed.requestedDestinationName,
     };
   }, [aiText, effectiveMode]);
   const initialQuestion = useMemo(() => nextQuestion(initialIntent), [initialIntent]);
@@ -351,15 +474,31 @@ export default function PlannerModal({
   const [input, setInput] = useState("");
   const [question, setQuestion] = useState(initialQuestion);
   const [showRecommendations, setShowRecommendations] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const title = MODE_TITLES[effectiveMode] || MODE_TITLES.ai;
-  const recommendations = useMemo(() => buildRecommendations(intent, effectiveMode), [intent, effectiveMode]);
+  const recommendationPlan = useMemo(() => buildRecommendationPlan(intent, effectiveMode), [intent, effectiveMode]);
+
+  useEffect(() => {
+    if (!isAnalyzing) return undefined;
+
+    const timer = window.setTimeout(() => {
+      setIsAnalyzing(false);
+      setShowRecommendations(true);
+      setMessages((prev) => [
+        ...prev,
+        { role: "bot", text: "I found the strongest matches. Pick one and I will prepare the search form so you can review it before live prices." },
+      ]);
+    }, 2800);
+
+    return () => window.clearTimeout(timer);
+  }, [isAnalyzing]);
 
   if (!open) return null;
 
   function addAnswer(value) {
     const clean = String(value || "").trim();
-    if (!clean) return;
+    if (!clean || isAnalyzing) return;
 
     const nextIntent = {
       ...intent,
@@ -384,12 +523,9 @@ export default function PlannerModal({
     }
 
     setQuestion(null);
-    setShowRecommendations(true);
-    setMessages((prev) => [
-      ...prev,
-      { role: "user", text: clean },
-      { role: "bot", text: "Thanks. Based on that, I would start with these options. Choose one and I will prepare the search form for you." },
-    ]);
+    setShowRecommendations(false);
+    setIsAnalyzing(true);
+    setMessages((prev) => [...prev, { role: "user", text: clean }]);
   }
 
   function applyRecommendation(recommendation) {
@@ -439,7 +575,7 @@ export default function PlannerModal({
     });
   }
 
-  const optionList = question ? QUICK_OPTIONS[question.key] || [] : [];
+  const optionList = question && !isAnalyzing ? QUICK_OPTIONS[question.key] || [] : [];
 
   return (
     <div className="fa-modalOverlay" onMouseDown={onClose}>
@@ -472,38 +608,73 @@ export default function PlannerModal({
           </div>
         )}
 
-        <div className="fa-plannerInputRow">
-          <input
-            className="fa-plannerInput"
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") addAnswer(input);
-            }}
-            placeholder="Type naturally, e.g. I want beaches and direct flights"
-          />
-          <button type="button" className="fa-plannerSend" onClick={() => addAnswer(input)}>
-            Send
-          </button>
-        </div>
-
-        {showRecommendations && (
-          <div className="fa-recommendationGrid">
-            {recommendations.map((recommendation) => (
-              <div key={recommendation.id} className="fa-recommendationCard">
-                <div className="fa-choiceTitle">{recommendation.name}</div>
-                <div className="fa-choiceText">{recommendation.reason}</div>
-                <div className="fa-choiceText">{recommendation.note}</div>
-                <button type="button" className="fa-useTripBtn" onClick={() => applyRecommendation(recommendation)}>
-                  Use this trip for search
-                </button>
+        {isAnalyzing && (
+          <div className="fa-analyzingBox" aria-live="polite">
+            {ANALYSIS_STEPS.map((step) => (
+              <div key={step} className="fa-analyzingStep">
+                <span className="fa-analyzingDot" aria-hidden />
+                {step}
               </div>
             ))}
           </div>
         )}
 
+        <div className="fa-plannerInputRow">
+          <input
+            className="fa-plannerInput"
+            value={input}
+            disabled={isAnalyzing}
+            onChange={(event) => setInput(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") addAnswer(input);
+            }}
+            placeholder={isAnalyzing ? "Preparing recommendations..." : "Type naturally, e.g. I want Bosnia for 3 nights under £300"}
+          />
+          <button type="button" className="fa-plannerSend" disabled={isAnalyzing} onClick={() => addAnswer(input)}>
+            Send
+          </button>
+        </div>
+
+        {showRecommendations && (
+          <>
+            <div className="fa-plannerInsight">{recommendationPlan.insightText}</div>
+            <div className="fa-recommendationGrid">
+              {recommendationPlan.recommendations.map((recommendation) => (
+                <article key={recommendation.id} className="fa-recommendationCard">
+                  <div className="fa-recImage" style={{ backgroundImage: `url(${recommendation.image})` }}>
+                    <span>{recommendation.matchScore}% match</span>
+                  </div>
+                  <div className="fa-recBody">
+                    <div className="fa-recTopLine">
+                      <div>
+                        <div className="fa-choiceTitle">{recommendation.name}</div>
+                        <div className="fa-recCountry">{recommendation.country}</div>
+                      </div>
+                      <span className="fa-recBadge">{recommendation.category}</span>
+                    </div>
+                    <div className="fa-recFacts">
+                      <span>{recommendation.priceRange}</span>
+                      <span>{recommendation.flightTime}</span>
+                      <span>{recommendation.weatherVibe}</span>
+                      <span>{recommendation.tripType}</span>
+                    </div>
+                    <p className="fa-recReason">{recommendation.reason}</p>
+                    <button type="button" className="fa-useTripBtn" onClick={() => applyRecommendation(recommendation)}>
+                      Find flights
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <div className="fa-whyDestinations">
+              <strong>Why these destinations?</strong>
+              <span>{recommendationPlan.whyText}</span>
+            </div>
+          </>
+        )}
+
         <div className="fa-plannerNote">
-          Farely AI will ask before it changes your search form. You can review and edit the form before searching live partner prices.
+          Choosing a card fills the search form first. You can still edit the route, dates, nights, and cabin before searching live partner prices.
         </div>
       </div>
     </div>

@@ -4,6 +4,24 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-03
 
+- Commit hash: pending
+- What changed:
+  - Improved the Farely AI planner so requested destinations matter in the recommendation order.
+  - Added Bosnia/Sarajevo as a recognised planner/search destination.
+  - Added a short analysing state with `Analysing destinations...`, `Checking budget fit...`, and `Comparing flexible options...`.
+  - Upgraded planner recommendation cards with destination imagery, match scores, category badges, estimated price ranges, flight time, weather vibe, trip type, and concise fit explanations.
+  - Added a `Why these destinations?` summary.
+  - Changed the recommendation CTA to `Find flights` and preserved the review/edit step before live search.
+- Checks run:
+  - `node --check server.js` passed on 2026-07-03.
+  - `npm run build` passed on 2026-07-03.
+  - `npm run lint` passed with 1 pre-existing warning in `src/components/LegalPage.jsx` on 2026-07-03.
+  - Local Chrome QA passed for a Bosnia under-£300 prompt.
+- Pushed to GitHub:
+  - Pending.
+
+## 2026-07-03
+
 - Commit hash: `a5f251c`
 - What changed:
   - Set `USE_DEMO_FALLBACK=false` in the Render dashboard for the live `farely-web` service.

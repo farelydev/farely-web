@@ -26,7 +26,7 @@ app.use(
         baseUri: ["'self'"],
         objectSrc: ["'none'"],
         frameAncestors: ["'none'"],
-        imgSrc: ["'self'", "data:", "https://images.kiwi.com"],
+        imgSrc: ["'self'", "data:", "https://images.kiwi.com", "https://images.unsplash.com"],
         connectSrc: ["'self'"],
         scriptSrc: ["'self'", "'unsafe-inline'"],
         scriptSrcAttr: ["'none'"],

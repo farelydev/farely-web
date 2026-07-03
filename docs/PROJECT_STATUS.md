@@ -32,6 +32,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 - Richer result cards now show airline branding, outbound/return sections, full airport labels where known, price, cabin, baggage notes, recommendation badges, and clearer partner CTA wording.
 - A mobile-first filters drawer now exists with quick filters and advanced filter controls.
 - Umrah-related AI prompts now route into the Umrah planning mode instead of the generic planner path.
+- The AI planner now respects requested destinations in its recommendation order, shows a short analysing state, presents visual recommendation cards with match scores and scannable trip details, explains why alternatives were suggested, and fills the search form for review before live search.
 - Farely uses a server-controlled affiliate redirect architecture.
 - Production security hardening now disables the public Amadeus debug endpoint, restricts production CORS to the Farely domains, removes URL/localStorage analytics-token handling, adds Helmet security headers, and removes `X-Powered-By`.
 - Legal/affiliate disclosure pages and notices exist.
@@ -46,7 +47,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 - Production affiliate partner approval/configuration is not yet fully confirmed in this repo.
 - Click tracking needs ongoing validation against live traffic and analytics requirements.
 - Founder analytics should move out of the public app into a private dashboard with proper authentication.
-- AI trip-planning experience still needs product decisions and iteration.
+- AI trip-planning experience still needs product decisions and iteration, but the first destination-personalisation pass is implemented.
 - Founder/admin dashboard is not yet built.
 - Production deployment health should be rechecked after each feature milestone.
 - These memory docs are initialized and should be updated after every completed milestone.

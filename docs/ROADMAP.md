@@ -55,14 +55,14 @@ Goal: make Farely's search experience feel trustworthy, clear, and conversion-re
 
 ## Milestone 7: Farely AI Travel Consultant
 
-- Better recommendation quality.
+- Better recommendation quality: first destination-personalisation pass implemented.
 - Trip-type detection.
 - Umrah mode: core launch use case, first-pass prompt routing and questions implemented.
 - Beach planner.
 - City break planner.
 - Ski planner.
 - Better follow-up questions.
-- Better recommendation explanations.
+- Better recommendation explanations: first pass implemented with match scores, category badges, price ranges, flight times, weather vibe, trip type, and a "Why these destinations?" summary.
 - Better conversation memory.
 
 Goal: help users decide where to go rather than simply filling a search form.
