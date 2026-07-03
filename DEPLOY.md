@@ -16,7 +16,7 @@ Use Render for the first public Farely URL because this project serves both:
 AMADEUS_CLIENT_ID=your_amadeus_client_id
 AMADEUS_CLIENT_SECRET=your_amadeus_client_secret
 AMADEUS_HOSTNAME=test
-USE_DEMO_FALLBACK=true
+USE_DEMO_FALLBACK=false
 FLIGHT_DEAL_PARTNER=google-flights-placeholder
 FLIGHT_AFFILIATE_URL=
 ADMIN_ANALYTICS_TOKEN=use_a_long_private_value

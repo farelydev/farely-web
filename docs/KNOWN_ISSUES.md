@@ -4,7 +4,7 @@ Last updated: 2026-07-03
 
 | Priority | Area | Issue | Status |
 | --- | --- | --- | --- |
-| High | API/provider | Demo fallback and Amadeus test/sandbox behavior can make provider health look better than true live readiness. Fallback-off graceful error handling is deployed; `USE_DEMO_FALLBACK=false` still needs Render verification. | In progress |
+| High | API/provider | Demo fallback and Amadeus test/sandbox behavior can make provider health look better than true live readiness. The repo blueprint now sets `USE_DEMO_FALLBACK=false`, but the live Render service still needs verification. | In progress |
 | High | Support/contact | Unverified email aliases must not be published. `info@tryfarely.com` is the only public business email until each alias has a verified receiving route or mailbox. | In progress |
 | High | Affiliate | Production affiliate approval and final partner redirect template need confirmation. | Open |
 | High | Affiliate | `View Deal` click tracking should be validated end to end after each redirect change. | Open |
@@ -35,7 +35,7 @@ Last updated: 2026-07-03
 
 - Amadeus sandbox/test responses may fail or return limited results for some routes and dates.
 - Fallback/demo behavior is useful for development but should not be treated as proof of production provider health.
-- Before `USE_DEMO_FALLBACK=false` is enabled on Render, keep the deployed graceful flexible-search degraded-state handling in place and verify the monitor after the env change.
+- Keep the deployed graceful flexible-search degraded-state handling in place and verify the API health monitor after Render confirms `USE_DEMO_FALLBACK=false`.
 
 ## Production Readiness Concerns
 

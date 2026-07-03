@@ -21,7 +21,7 @@ What was completed:
 What was not completed:
 - Cloudflare dashboard settings still need manual verification: Full (strict), WAF/security level, TLS settings, and relevant security modes.
 - Founder/admin analytics has not yet moved to a separate authenticated dashboard.
-- `USE_DEMO_FALLBACK=false` still needs to be set in Render and verified with the API health monitor.
+- The repo blueprint now sets `USE_DEMO_FALLBACK=false`; the live Render service still needs verification with the API health monitor.
 
 Files changed:
 - `AGENTS.md`
@@ -55,7 +55,7 @@ Commit hash:
 - Verified deployment commit: `0739d9b`
 
 Recommended next product decision:
-- Turn `USE_DEMO_FALLBACK=false` in Render, rerun the API health monitor, and only then move toward Amadeus production credentials.
+- Verify Render has applied `USE_DEMO_FALLBACK=false`, rerun the API health monitor, and only then move toward Amadeus production credentials.
 
 Questions for ChatGPT:
 - After fallback-off live verification passes, should Codex prioritise production Amadeus credentials or private founder dashboard authentication first?

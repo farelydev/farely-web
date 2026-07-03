@@ -16,7 +16,7 @@ services:
       - key: AMADEUS_HOSTNAME
         value: test
       - key: USE_DEMO_FALLBACK
-        value: true
+        value: false
       - key: FLIGHT_DEAL_PARTNER
         value: travelpayouts
       - key: TRAVELPAYOUTS_MARKER

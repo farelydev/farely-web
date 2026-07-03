@@ -53,7 +53,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 
 ## Current Blockers
 
-- Live provider behavior can be hidden by demo fallback settings until `USE_DEMO_FALLBACK=false` is tested and deployed safely.
+- Live provider behavior can be hidden by demo fallback settings until the Render service confirms `USE_DEMO_FALLBACK=false` is active.
 - Cloudflare SSL/TLS mode and WAF/security settings still need live dashboard verification.
 - `support@tryfarely.com`, `privacy@tryfarely.com`, `security@tryfarely.com`, and `noreply@tryfarely.com` should not be advertised until Cloudflare Email Routing or a real mailbox provider is configured for each alias.
 - Real affiliate monetisation depends on partner approval, configured redirect templates, and reliable click metadata.
@@ -61,4 +61,4 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 
 ## Recommended Next Engineering Priority
 
-Next engineering priority: turn `USE_DEMO_FALLBACK=false` in Render, rerun the API health monitor against `https://tryfarely.com`, and only then move toward production Amadeus credentials.
+Next engineering priority: verify Render has applied `USE_DEMO_FALLBACK=false`, rerun the API health monitor against `https://tryfarely.com`, and only then move toward production Amadeus credentials.

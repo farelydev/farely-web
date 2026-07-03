@@ -19,6 +19,18 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-03
 
+- Commit hash: `6659358`
+- What changed:
+  - Changed the Render blueprint default for `USE_DEMO_FALLBACK` from `true` to `false`.
+  - Updated deployment and project docs so fallback-off provider verification is the next required check.
+- Checks run:
+  - `git diff --check` passed on 2026-07-03.
+  - `npm run build` could not run on this Mac because the local `/usr/local/bin/node` binary failed with a macOS `dyld` libc++ symbol error.
+- Pushed to GitHub:
+  - Pending push.
+
+## 2026-07-03
+
 - Commit hash: `0f24a42`
 - What changed:
   - Redesigned the Flexible Search / Cheapest Month results journey as a guided workflow.
