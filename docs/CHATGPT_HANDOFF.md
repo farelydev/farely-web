@@ -4,7 +4,7 @@ Last updated: 2026-07-03
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely Milestone 6 has a founder-requested product wording adjustment implemented locally: the flexible-month feature has been renamed from `Cheapest Month` back to `Flexible dates`, with beta/warning-heavy wording avoided. Dark mode has also been polished for better contrast. Delivery state is currently local `Implemented`; GitHub push and production verification are still pending until the latest commit is pushed/deployed.
+Farely Milestone 6 has a founder-requested product wording adjustment implemented: the flexible-month feature has been renamed from `Cheapest Month` back to `Flexible dates`, with beta/warning-heavy wording avoided. Dark mode has also been polished for better contrast. Delivery state is `Implemented` and pushed; production deployment/verification is still pending until Render serves the latest GitHub commit.
 
 Temporary Render retry note, 2026-07-03 05:50 BST:
 - This temporary retry was requested because Render/Chrome was slow.
@@ -75,13 +75,13 @@ Build/lint/test status:
 - Planner QA passed locally on 2026-07-03: a Bosnia under-£300 prompt showed the analysing state, put Bosnia first with the highest match score, explained alternatives, and populated `London -> Sarajevo` without starting a live search.
 
 GitHub status:
-- Pending for the latest Flexible dates naming and dark mode polish adjustment.
+- Pushed to GitHub `main` after the follow-up docs status update.
 
 Branch:
 - `main`
 
 Commit hash:
-- Latest Flexible dates naming and dark mode polish: pending.
+- Latest Flexible dates naming and dark mode polish implementation: `c882fd3`.
 - Milestone 6 final-sprint polish: `2b1c86e`.
 - Latest pushed handoff/docs commit before live verification: `c10ff5f`.
 - Verified deployment commit: `0739d9b`

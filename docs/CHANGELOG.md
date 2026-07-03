@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-03
 
-- Commit hash: `pending`
+- Commit hash: `c882fd3`
 - What changed:
   - Reverted the flexible-search product name from `Cheapest Month` to `Flexible dates` across the main search tab, menu, AI chip, planner title, summary copy, and results header.
   - Removed old feature-name wording from the visible flexible-date flow and added the clearer explanation: users choose a month and Farely compares the cheapest travel dates within that period.
@@ -14,7 +14,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - `npm run lint` passed on 2026-07-03 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
   - Local Playwright QA passed in forced dark mode on 2026-07-03 using system Chrome after the in-app Browser was unavailable: desktop 1440px and mobile 390px both showed `Flexible dates`, the new explanation copy, no visible `Cheapest Month`/`Cheapest month`/`beta` wording, no console warnings/errors, and no horizontal overflow.
 - Pushed to GitHub:
-  - Pending.
+  - Yes, pushed to GitHub `main` after the follow-up docs status update.
 
 ## 2026-07-03
 
