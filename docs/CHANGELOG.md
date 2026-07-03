@@ -19,7 +19,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-03
 
-- Commit hash: `2390dd3`
+- Commit hash: `0f24a42`
 - What changed:
   - Redesigned the Flexible Search / Cheapest Month results journey as a guided workflow.
   - Added progress copy for choose month, choose travel day, compare flights, and book with partner.
