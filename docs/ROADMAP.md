@@ -20,19 +20,19 @@ Delivery workflow: every milestone must move through `Implemented`, `Deployed`, 
 
 Security gate before further UX/traffic/SEO/affiliate work:
 
-- Disable public production debug diagnostics: completed locally.
-- Restrict production CORS to `https://tryfarely.com` and `https://www.tryfarely.com`: completed locally.
-- Remove URL/localStorage analytics token handling: completed locally.
-- Add Express security headers and remove `X-Powered-By`: completed locally.
-- Current state: `Implemented` locally, not yet `Deployed` or `Verified` because GitHub push is blocked.
+- Disable public production debug diagnostics: verified live.
+- Restrict production CORS to `https://tryfarely.com` and `https://www.tryfarely.com`: verified live.
+- Remove URL/localStorage analytics token handling: deployed; continue validating analytics access during founder-dashboard work.
+- Add Express security headers and remove `X-Powered-By`: verified live.
+- Current state: `Verified` on `https://tryfarely.com` at commit `0739d9b`.
 - Keep founder/admin analytics out of the public app long term; move toward a private authenticated dashboard.
 
 After the security gate, the agreed priority order is search reliability, Amadeus/API robustness, affiliate redirect tracking, revenue analytics, SEO landing pages, then UX polish.
 
 Current API robustness action:
 
-- Prepare graceful flexible-search errors before disabling demo fallback: completed locally.
-- Turn `USE_DEMO_FALLBACK=false` in Render after deployment, then rerun the API health monitor.
+- Prepare graceful flexible-search errors before disabling demo fallback: deployed and verified with current fallback-on live API checks.
+- Turn `USE_DEMO_FALLBACK=false` in Render, then rerun the API health monitor.
 - Move from Amadeus test credentials to production credentials only after fallback-off behavior is verified.
 
 - Rich flight cards: first pass implemented.

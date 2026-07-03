@@ -8,16 +8,16 @@ Milestone 6: Search Experience 2.0.
 
 ## Current Production Readiness Status
 
-Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been completed locally, and flexible-search error handling has been prepared for turning demo fallback off. Production readiness still depends on deployment verification, Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
+Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and flexible-search error handling has been prepared for turning demo fallback off. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
 
-Delivery state rule: work is only complete when it is `Implemented`, `Deployed`, and `Verified` on the live production site. The current security hardening is `Implemented` locally, but not yet `Deployed` or `Verified` because GitHub push is blocked.
+Delivery state rule: work is only complete when it is `Implemented`, `Deployed`, and `Verified` on the live production site. The current security hardening has reached `Verified` on `https://tryfarely.com`.
 
 ## Latest Deployment / Commit
 
 - Branch: `main`
-- Latest local security-hardening commit: pending commit/push on 2026-07-03
+- Latest verified security-hardening commit: `0739d9b`
 - Deployment source: GitHub `farelydev/farely-web` on `main`
-- Note: check Render/GitHub after each future milestone to confirm the newest deployed commit.
+- Live verification: `https://tryfarely.com` served the new frontend bundle, `/api/debug/amadeus` returned `404`, bad-origin CORS was not reflected, Helmet security headers were present, exact-date and flexible searches returned live Amadeus results, and `/api/deals/flight` returned a tracked `302` partner redirect.
 
 ## What Is Working
 
@@ -53,13 +53,12 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 
 ## Current Blockers
 
-- GitHub push is blocked on this host by SSH authentication, so the latest local security commits are not live yet.
 - Live provider behavior can be hidden by demo fallback settings until `USE_DEMO_FALLBACK=false` is tested and deployed safely.
-- Cloudflare SSL/TLS mode, WAF/security settings, and post-deployment headers still need live dashboard/site verification after the security-hardening deployment.
+- Cloudflare SSL/TLS mode and WAF/security settings still need live dashboard verification.
 - `support@tryfarely.com`, `privacy@tryfarely.com`, `security@tryfarely.com`, and `noreply@tryfarely.com` should not be advertised until Cloudflare Email Routing or a real mailbox provider is configured for each alias.
 - Real affiliate monetisation depends on partner approval, configured redirect templates, and reliable click metadata.
 - The founder-to-ChatGPT handoff was previously manual; this docs system now reduces that risk but needs discipline after each milestone.
 
 ## Recommended Next Engineering Priority
 
-Next engineering priority: deploy and verify the security hardening on `https://tryfarely.com`, then deploy the fallback-off graceful error path, turn `USE_DEMO_FALLBACK=false` in Render, rerun the API health monitor, and only then move toward production Amadeus credentials.
+Next engineering priority: turn `USE_DEMO_FALLBACK=false` in Render, rerun the API health monitor against `https://tryfarely.com`, and only then move toward production Amadeus credentials.

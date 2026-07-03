@@ -4,6 +4,21 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-03
 
+- Commit hash: `0739d9b`
+- What changed:
+  - Pushed the security hardening, guided Cheapest Month UX, fallback-off flexible-search handling, and ChatGPT handoff workflow to GitHub `main`.
+  - Verified the deployment on `https://tryfarely.com`.
+  - Confirmed the live site serves the new frontend bundle with `Choose your departure date`, `Tap to compare flights`, and `Book with partner`.
+  - Confirmed `/api/debug/amadeus` returns `404`, bad-origin CORS is not reflected, Helmet security headers are present, exact-date and flexible searches return live Amadeus results, and `/api/deals/flight` still returns a tracked `302` partner redirect.
+- Checks run:
+  - GitHub SSH authentication passed.
+  - `git push origin main` succeeded.
+  - Live production HTTP/API probes passed on 2026-07-03.
+- Pushed to GitHub:
+  - Yes, pushed to `origin/main`.
+
+## 2026-07-03
+
 - Commit hash: `2390dd3`
 - What changed:
   - Redesigned the Flexible Search / Cheapest Month results journey as a guided workflow.
@@ -14,11 +29,11 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 - Checks run:
   - `npm run build` passed on 2026-07-03.
 - Pushed to GitHub:
-  - Pending push after commit.
+  - Yes, included in `origin/main`.
 
 ## 2026-07-03
 
-- Commit hash: pending local commit
+- Commit hash: `7878c7a`
 - What changed:
   - Added a clear fallback-off failure path for `/api/flexible`.
   - When demo fallback is disabled and every scanned flexible date fails, the backend now returns `429` for rate limits or `503` for provider unavailable instead of a normal-looking `200` response with no useful fares.
@@ -31,11 +46,11 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - `npm install` audit output reported 0 vulnerabilities on 2026-07-03.
   - Local fallback-disabled probe passed: with `USE_DEMO_FALLBACK=false` and dummy Amadeus credentials, `/api/flexible` returned `503 Service Unavailable`, `source: "amadeus-unavailable"`, and a user-friendly Exact Dates retry message.
 - Pushed to GitHub:
-  - Pending push attempt.
+  - Yes, pushed to `origin/main`.
 
 ## 2026-07-03
 
-- Commit hash: `638ad58`
+- Commit hash: `8fe39a7`
 - What changed:
   - Added Express security hardening with Helmet, a CSP, referrer policy, content-type hardening, frame protection, permissions policy, and disabled `X-Powered-By`.
   - Restricted production CORS to `https://tryfarely.com` and `https://www.tryfarely.com`.
@@ -49,7 +64,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - `npm audit --omit=dev` passed with 0 vulnerabilities on 2026-07-03.
   - Local production-mode API/header probes passed on 2026-07-03.
 - Pushed to GitHub:
-  - Pending.
+  - Yes, pushed to `origin/main`.
 
 ## 2026-06-29
 
