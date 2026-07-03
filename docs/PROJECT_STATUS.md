@@ -1,6 +1,6 @@
 # Farely Project Status
 
-Last updated: 2026-06-29
+Last updated: 2026-07-03
 
 ## Current Milestone
 
@@ -24,6 +24,7 @@ Farely is live and in MVP hardening. Core flight search flows are present, but p
 - Exact-date flight search is implemented.
 - Cheapest Month search is implemented on top of the existing flexible-month backend.
 - Cheapest-day results render.
+- Cheapest Month results now use a guided workflow: choose month, choose travel day, compare flights, then book with a partner.
 - Flight offer results render.
 - Richer result cards now show airline branding, outbound/return sections, full airport labels where known, price, cabin, baggage notes, recommendation badges, and clearer partner CTA wording.
 - A mobile-first filters drawer now exists with quick filters and advanced filter controls.
@@ -54,4 +55,4 @@ Farely is live and in MVP hardening. Core flight search flows are present, but p
 
 ## Recommended Next Engineering Priority
 
-Continue Milestone 6 with live validation of the Cheapest Month flow and new filters/cards on production data, then tighten accessibility and any remaining AI/search sync issues before moving deeper into Milestone 7.
+Continue Milestone 6 with live validation of the guided Cheapest Month flow and new filters/cards on production data, then tighten accessibility and any remaining AI/search sync issues before moving deeper into Milestone 7.

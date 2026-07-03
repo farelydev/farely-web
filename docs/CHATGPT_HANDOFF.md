@@ -1,53 +1,49 @@
 # ChatGPT Handoff
 
-Last updated: 2026-06-29
+Last updated: 2026-07-03
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely Milestone 6 priority was updated after founder testing: the flexible-search experience is now the highest UX priority. I reviewed the current implementation and kept the backend contract unchanged, then reframed the feature as a benefit-led `Cheapest Month` flow.
+Farely Milestone 6 founder testing found that the Flexible Search / Cheapest Month results page was confusing because users saw date cards, flight ranking tabs, filters, and flight results at the same time. I reviewed the existing architecture and implemented the cleanest low-risk fix: keep the current backend and data flow intact, but present the UI as a guided workflow.
 
 What was completed:
-- Removed `(beta)` from the main date-mode navigation.
-- Renamed the user-facing flexible date mode to `Cheapest Month`.
-- Removed warning-heavy wording such as beta, capped search, limited live beta, and switch-back guidance from the user-facing flow.
-- Added positive guidance: users are now told they can find cheaper travel dates and then check live partner prices.
-- Redesigned the visible flow as: choose month, pick a date, check prices, compare flights.
-- Changed the flexible-mode action button to `Find cheaper dates`.
-- Changed date-card microcopy to `Choose departure`, `Choose date`, and `Month guide`.
-- Kept the existing `/api/flexible` backend contract intact: origin, destination, month, trip type, trip length, and flex window still work as before.
+- Added a progress indicator: choose month, choose travel day, compare flights, book with partner.
+- Added Step 1 copy: `Choose your departure date` with guidance that users should tap a date to compare live flights.
+- Changed flexible date-card action text to `Tap to compare flights`.
+- Kept the selected date highlighted.
+- Moved/hid Cheapest, Fastest, Best, and Filters until after a flexible date is selected.
+- Revealed the flight comparison section only after date selection, with a subtle transition.
+- Kept the existing `/api/flexible` and exact-date search contracts unchanged.
 
 What was not completed:
 - No backend provider changes were made.
-- The underlying flexible-search provider constraints still exist, but the UX now designs around them instead of exposing them.
-- Production validation after deployment is still needed.
+- No new production provider validation was performed beyond local build verification.
+- A browser screenshot was not captured in this session.
 
 Files changed:
-- `src/components/SearchCard.jsx`
 - `src/components/ResultsSection.jsx`
 - `src/App.jsx`
 - `docs/PROJECT_STATUS.md`
 - `docs/ROADMAP.md`
+- `docs/KNOWN_ISSUES.md`
 - `docs/CHANGELOG.md`
 - `docs/CHATGPT_HANDOFF.md`
 
 Build/lint/test status:
-- `git diff --check` passed on 2026-06-29.
-- `npm run build` passed on 2026-06-29.
-- `npm run lint` passed with 2 existing warnings on 2026-06-29.
-- Local Chrome mobile render check passed on 2026-06-29.
+- `npm run build` passed on 2026-07-03.
 
 GitHub status:
-- Pushed to GitHub on `origin/main`.
+- Pending push after commit.
 
 Branch:
 - `main`
 
 Commit hash:
-- Implementation commit: `494c2f0`
+- Pending push after commit.
 
 Recommended next product decision:
-- Decide whether the final public name should remain `Cheapest Month` or become `Date Explorer`.
+- Validate whether users understand `Cheapest Month` after this guided-flow update, then decide whether to keep the label or test `Date Explorer`.
 
 Questions for ChatGPT:
-- Is `Cheapest Month` clear enough for first-time users, or should Farely test `Date Explorer` as a broader label?
-- Should the next UX step be better date-card visuals after the month search returns results?
+- Should the progress steps remain visible after flight results load, or collapse into a smaller journey indicator?
+- Should selected date cards show extra context such as `Cheapest`, `Fastest live option`, or `Best value day` once more provider data is available?

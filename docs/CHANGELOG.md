@@ -2,6 +2,21 @@
 
 This changelog tracks completed Farely milestones and whether they were pushed to GitHub.
 
+
+## 2026-07-03
+
+- Commit hash: `2390dd3`
+- What changed:
+  - Redesigned the Flexible Search / Cheapest Month results journey as a guided workflow.
+  - Added progress copy for choose month, choose travel day, compare flights, and book with partner.
+  - Added a clear `Choose your departure date` step before flight-comparison controls appear.
+  - Changed flexible date-card action text to `Tap to compare flights`.
+  - Hid Cheapest/Fastest/Best tabs and Filters until a flexible date is selected, then revealed the comparison section with a subtle animation.
+- Checks run:
+  - `npm run build` passed on 2026-07-03.
+- Pushed to GitHub:
+  - Pending push after commit.
+
 ## 2026-06-29
 
 - Commit hash: `494c2f0`
