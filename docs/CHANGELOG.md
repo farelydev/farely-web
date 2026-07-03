@@ -2,7 +2,6 @@
 
 This changelog tracks completed Farely milestones and whether they were pushed to GitHub.
 
-
 ## 2026-07-03
 
 - Commit hash: `2390dd3`
@@ -16,6 +15,24 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - `npm run build` passed on 2026-07-03.
 - Pushed to GitHub:
   - Pending push after commit.
+
+## 2026-07-03
+
+- Commit hash: pending
+- What changed:
+  - Added Express security hardening with Helmet, a CSP, referrer policy, content-type hardening, frame protection, permissions policy, and disabled `X-Powered-By`.
+  - Restricted production CORS to `https://tryfarely.com` and `https://www.tryfarely.com`.
+  - Disabled `/api/debug/amadeus` in production so public visitors cannot see Amadeus credential/config status or trigger the diagnostic test call.
+  - Removed analytics admin-token support from URL query parameters.
+  - Stopped storing analytics admin tokens in `localStorage`; analytics unlock now uses in-memory state only.
+  - Added `helmet` and updated vulnerable production dependencies through `npm audit fix`.
+- Checks run:
+  - `npm run build` passed on 2026-07-03.
+  - `npm run lint` passed with 1 pre-existing warning in `src/components/LegalPage.jsx` on 2026-07-03.
+  - `npm audit --omit=dev` passed with 0 vulnerabilities on 2026-07-03.
+  - Local production-mode API/header probes passed on 2026-07-03.
+- Pushed to GitHub:
+  - Pending.
 
 ## 2026-06-29
 

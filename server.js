@@ -2,6 +2,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import helmet from "helmet";
 import Amadeus from "amadeus";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -11,11 +12,49 @@ import { worldAirports, worldCountries } from "./src/data/worldAirports.js";
 dotenv.config();
 
 const app = express();
+app.disable("x-powered-by");
 app.use(express.json());
+
+const PRODUCTION_ORIGINS = new Set(["https://tryfarely.com", "https://www.tryfarely.com"]);
+const isProduction = process.env.NODE_ENV === "production";
+
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        baseUri: ["'self'"],
+        objectSrc: ["'none'"],
+        frameAncestors: ["'none'"],
+        imgSrc: ["'self'", "data:", "https://images.kiwi.com"],
+        connectSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        scriptSrcAttr: ["'none'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        upgradeInsecureRequests: [],
+      },
+    },
+    crossOriginEmbedderPolicy: false,
+    referrerPolicy: { policy: "strict-origin-when-cross-origin" },
+  })
+);
+app.use((req, res, next) => {
+  res.setHeader(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
+  );
+  next();
+});
 
 app.use(
   cors({
-    origin: true,
+    origin(origin, callback) {
+      if (!isProduction || !origin || PRODUCTION_ORIGINS.has(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(null, false);
+    },
     credentials: true,
   })
 );
@@ -513,12 +552,7 @@ function buildFlightAffiliateUrl({
 }
 
 function analyticsAuthToken(req) {
-  return String(
-    req.get("x-farely-admin-token") ||
-      req.query.adminToken ||
-      req.query.token ||
-      ""
-  ).trim();
+  return String(req.get("x-farely-admin-token") || "").trim();
 }
 
 function requireAnalyticsAdmin(req, res) {
@@ -853,6 +887,14 @@ function debugDepartureDate() {
 }
 
 app.get("/api/debug/amadeus", async (req, res) => {
+  if (isProduction) {
+    return res.status(404).json({
+      ok: false,
+      error: "NOT_FOUND",
+      message: "Debug diagnostics are not available in production.",
+    });
+  }
+
   res.setHeader("Content-Type", "application/json; charset=utf-8");
 
   const base = {

@@ -75,12 +75,7 @@ export default function App() {
   const [plannerMode, setPlannerMode] = useState("ai");
   const [menuOpen, setMenuOpen] = useState(false);
   const [showAdminAnalytics, setShowAdminAnalytics] = useState(() => {
-    const params = new URLSearchParams(window.location.search);
-    return (
-      Boolean(localStorage.getItem("farelyAdminToken")) ||
-      Boolean(params.get("admin") || params.get("adminToken")) ||
-      window.location.hash === "#farely-analytics"
-    );
+    return window.location.hash === "#farely-analytics";
   });
 
   const [multiLegs, setMultiLegs] = useState([
@@ -95,12 +90,7 @@ export default function App() {
 
   useEffect(() => {
     function syncAdminAnalyticsVisibility() {
-      const params = new URLSearchParams(window.location.search);
-      setShowAdminAnalytics(
-        Boolean(localStorage.getItem("farelyAdminToken")) ||
-          Boolean(params.get("admin") || params.get("adminToken")) ||
-          window.location.hash === "#farely-analytics"
-      );
+      setShowAdminAnalytics(window.location.hash === "#farely-analytics");
     }
 
     window.addEventListener("hashchange", syncAdminAnalyticsVisibility);

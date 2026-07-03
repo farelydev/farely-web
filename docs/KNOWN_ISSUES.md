@@ -9,6 +9,8 @@ Last updated: 2026-07-03
 | High | Affiliate | Production affiliate approval and final partner redirect template need confirmation. | Open |
 | High | Affiliate | `View Deal` click tracking should be validated end to end after each redirect change. | Open |
 | Medium | UX | Flight results and the guided Cheapest Month journey still need live-production validation against real provider responses after the richer card and workflow updates. | In progress |
+| High | Security | Cloudflare SSL/TLS mode, WAF/security settings, and live post-deployment headers need verification after the security-hardening deploy. | Open |
+| Medium | Security | Founder/admin analytics still exists inside the public app surface and should move to a separate private dashboard with proper authentication. | Open |
 | Medium | UX | Milestone 6 filters drawer and budget/airline/time/stops filters need broader QA against real result sets. | In progress |
 | Medium | UX | Airport selection and return-to-same-airport filter behavior need production-data verification. | In progress |
 | Medium | AI planner | Planner experience needs clearer product scope and stronger structured trip outputs after first-pass Umrah routing. | Open |
@@ -36,6 +38,7 @@ Last updated: 2026-07-03
 
 ## Production Readiness Concerns
 
+- The first small security-hardening pass is complete locally, but live deployment verification is still required.
 - Contact details must only show verified receiving addresses.
 - Affiliate redirect and click tracking are core business infrastructure and need live validation.
 - Secrets must stay out of repo commits.

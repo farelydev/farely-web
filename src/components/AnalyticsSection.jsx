@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 function topEntries(group = {}, limit = 5) {
   return Object.entries(group)
@@ -8,10 +8,10 @@ function topEntries(group = {}, limit = 5) {
 
 export default function AnalyticsSection() {
   const [data, setData] = useState(null);
-  const [status, setStatus] = useState("idle");
+  const [status, setStatus] = useState("locked");
   const [error, setError] = useState("");
-  const [token, setToken] = useState(() => localStorage.getItem("farelyAdminToken") || "");
-  const [draftToken, setDraftToken] = useState(() => localStorage.getItem("farelyAdminToken") || "");
+  const [token, setToken] = useState("");
+  const [draftToken, setDraftToken] = useState("");
 
   async function loadAnalytics(nextToken = token) {
     if (!nextToken) {
@@ -42,21 +42,6 @@ export default function AnalyticsSection() {
     }
   }
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const urlToken = params.get("admin") || params.get("adminToken");
-
-    if (urlToken) {
-      localStorage.setItem("farelyAdminToken", urlToken);
-      setToken(urlToken);
-      setDraftToken(urlToken);
-      loadAnalytics(urlToken);
-      return;
-    }
-
-    loadAnalytics(token);
-  }, [token]);
-
   function unlockAnalytics(event) {
     event.preventDefault();
 
@@ -67,14 +52,12 @@ export default function AnalyticsSection() {
       return;
     }
 
-    localStorage.setItem("farelyAdminToken", nextToken);
     setToken(nextToken);
     window.dispatchEvent(new Event("farely-admin-token-changed"));
     loadAnalytics(nextToken);
   }
 
   function lockAnalytics() {
-    localStorage.removeItem("farelyAdminToken");
     setToken("");
     setDraftToken("");
     setData(null);

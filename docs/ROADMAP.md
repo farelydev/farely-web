@@ -4,7 +4,7 @@ Last updated: 2026-07-03
 
 ## Current Phase
 
-Milestone-led startup buildout. Current active phase: Milestone 6, Search Experience 2.0.
+Milestone-led startup buildout. Current active phase: security hardening before returning to Milestone 6 Search Experience 2.0.
 
 ## Next Product Milestones
 
@@ -15,6 +15,16 @@ Milestone-led startup buildout. Current active phase: Milestone 6, Search Experi
 5. Milestone 10: Travel Platform Expansion.
 
 ## Milestone 6: Search Experience 2.0
+
+Security gate before further UX/traffic/SEO/affiliate work:
+
+- Disable public production debug diagnostics: completed locally.
+- Restrict production CORS to `https://tryfarely.com` and `https://www.tryfarely.com`: completed locally.
+- Remove URL/localStorage analytics token handling: completed locally.
+- Add Express security headers and remove `X-Powered-By`: completed locally.
+- Keep founder/admin analytics out of the public app long term; move toward a private authenticated dashboard.
+
+After the security gate, the agreed priority order is search reliability, Amadeus/API robustness, affiliate redirect tracking, revenue analytics, SEO landing pages, then UX polish.
 
 - Rich flight cards: first pass implemented.
 - Full airline names: first pass implemented.
@@ -117,6 +127,7 @@ Farely should answer "Where should I go?" The AI should become the product, not 
 ## Founder Dashboard Roadmap
 
 - Build toward Milestone 8.
+- Move founder/admin analytics out of the public app and into a private dashboard with proper authentication.
 - Show simple health indicators for searches, provider errors, clicks, and popular routes.
 - Show affiliate click totals and recent redirect issues.
 - Show basic funnel metrics from search to result to `View Deal`.
