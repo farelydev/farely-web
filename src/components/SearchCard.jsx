@@ -115,7 +115,7 @@ export default function SearchCard({
               Exact dates
             </button>
             <button type="button" className={cx("fa-segBtn", flexMode && "isActive")} onClick={() => { setDateMode("flex"); clearSearchState(); }}>
-              Cheapest Month
+              Flexible dates
             </button>
           </div>
       </div>
@@ -340,13 +340,13 @@ export default function SearchCard({
           {tripType !== "multicity" && flexMode && (
             <div className="fa-flexBox">
               <div className="fa-flexIntro">
-                <div className="fa-flexIntroTitle">Find cheaper travel dates</div>
+                <div className="fa-flexIntroTitle">Flexible dates</div>
                 <div className="fa-flexIntroText">
-                  Choose a month, pick a travel day, compare the live flight options, then check the final deal with the partner.
+                  Choose a month and Farely will help you compare the cheapest travel dates within that period.
                 </div>
               </div>
 
-              <div className="fa-flexSteps" aria-label="Cheapest Month flow">
+              <div className="fa-flexSteps" aria-label="Flexible dates flow">
                 <div className="fa-flexStep isActive">
                   <span>1</span>
                   <strong>Choose month</strong>
@@ -430,7 +430,7 @@ export default function SearchCard({
                       <span className="fa-monthYear">{month.year}</span>
                       <span className="fa-monthName">{month.month}</span>
                       <span className="fa-monthPrice">from £{month.price}</span>
-                      {month.isCheapest && <span className="fa-cheapestBadge">Cheapest month</span>}
+                      {month.isCheapest && <span className="fa-cheapestBadge">Lowest guide price</span>}
                     </button>
                   ))}
                 </div>
@@ -468,7 +468,7 @@ export default function SearchCard({
                   </>
                 ) : (
                   <>
-                    Cheapest Month: <span className="fa-miniStrong">{selectedMonthOption.month} {selectedMonthOption.year}</span>
+                    Flexible dates: <span className="fa-miniStrong">{selectedMonthOption.month} {selectedMonthOption.year}</span>
                   </>
                 )}
               </>

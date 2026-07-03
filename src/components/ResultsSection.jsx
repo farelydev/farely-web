@@ -463,7 +463,7 @@ export default function ResultsSection({
         </h2>
 
         {flexMode && !isMultiCity && (
-          <div className="fa-flexWorkflow" aria-label="Cheapest Month progress">
+          <div className="fa-flexWorkflow" aria-label="Flexible dates progress">
             <span className="isDone">Choose month ✓</span>
             <span className={cx(!selectedFlexDate && "isCurrent", selectedFlexDate && "isDone")}>Choose travel day{selectedFlexDate ? " ✓" : " ←"}</span>
             <span className={cx(selectedFlexDate && "isCurrent")}>Compare flights</span>
@@ -710,7 +710,7 @@ export default function ResultsSection({
                 )
               ) : (
                 <>
-                  Cheapest Month in {monthHeaderLabel(flexMonth)} • {selectedFlexDate ? `showing ${shortDateLabel(selectedFlexDate)}` : "choose a date"}
+                  Flexible dates in {monthHeaderLabel(flexMonth)} • {selectedFlexDate ? `showing ${shortDateLabel(selectedFlexDate)}` : "choose a date"}
                 </>
               )}
             </div>

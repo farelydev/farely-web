@@ -8,7 +8,7 @@ Last updated: 2026-07-03
 | High | Support/contact | Unverified email aliases must not be published. `info@tryfarely.com` is the only public business email until each alias has a verified receiving route or mailbox. | In progress |
 | High | Affiliate | Production affiliate approval and final partner redirect template need confirmation. | Open |
 | High | Affiliate | `View Deal` click tracking should be validated end to end after each redirect change. | Open |
-| Medium | UX | Flight results and the guided Cheapest Month journey passed live smoke validation after the final-sprint polish deployment; founder acceptance is still pending. | In progress |
+| Medium | UX | Flight results and the guided Flexible dates journey passed live smoke validation after the final-sprint polish deployment; founder acceptance is still pending. | In progress |
 | High | Security | Cloudflare SSL/TLS mode and WAF/security settings still need dashboard verification. Live post-deployment headers have been verified. | In progress |
 | Medium | Security | Founder/admin analytics still exists inside the public app surface and should move to a separate private dashboard with proper authentication. | Open |
 | Medium | UX | Milestone 6 filters drawer passed local desktop/mobile QA and live mobile render smoke validation; broader route/browser QA remains useful. | In progress |
@@ -25,7 +25,7 @@ Last updated: 2026-07-03
 
 ## UX Issues
 
-- Continue validating result cards and the guided Cheapest Month flow for quick comparison with real provider data as traffic grows.
+- Continue validating result cards and the guided Flexible dates flow for quick comparison with real provider data as traffic grows.
 - QA Milestone 6 search filters and airport-selection behavior on more live routes with multiple offers.
 - CTA wording has been changed to `Check partner deal`; validate click-through tracking after deployment.
 - Keep affiliate disclosure visible without making the UI feel cluttered.

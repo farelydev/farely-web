@@ -47,7 +47,7 @@ Current API robustness action:
 - Airport selection filters: first pass implemented from visible result airports.
 - Return-to-same-airport option: first pass implemented.
 - Better CTA wording: implemented as `Check partner deal`.
-- Cheapest Month / Date Explorer UX: final-sprint polish now guides users through choosing a month, choosing a travel day, comparing flights, and checking the partner deal.
+- Flexible dates UX: product naming has been reverted from `Cheapest Month` to `Flexible dates`; the flow now explains that users choose a month and Farely compares the cheapest travel dates within that period.
 - Mobile date picker clarity: selected departure and return dates stay visible below the native date inputs.
 - Mobile filters drawer: scroll locking, sticky drawer header/actions, quick-filter overflow handling, and no horizontal overflow checks added.
 - Copy audit: overpromising copy softened, including `Umrah packages` changed to `Plan Umrah trip`.
@@ -123,7 +123,7 @@ Farely should answer "Where should I go?" The AI should become the product, not 
 
 - Build toward Milestone 6.
 - Keep exact-date search stable.
-- Keep Cheapest Month search stable.
+- Keep Flexible dates search stable.
 - Treat fallback-off provider failures as a visible degraded state, not a successful empty result.
 - Improve outbound and return flight detail clarity.
 - Continue improving airline logos, layover details, and result ranking.

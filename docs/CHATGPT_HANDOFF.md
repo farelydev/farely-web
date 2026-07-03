@@ -4,7 +4,7 @@ Last updated: 2026-07-03
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely Milestone 6 final-sprint polish is now implemented, pushed, deployed, and live-verified for Search Experience 2.0. The user path is clearer: choose month, choose travel day, compare flights, then check partner deal. Milestone 6 is still not complete until the founder accepts it. The product rule remains: `Implemented`, `Deployed`, then `Verified`; only `Verified` counts as complete before founder approval.
+Farely Milestone 6 has a founder-requested product wording adjustment implemented locally: the flexible-month feature has been renamed from `Cheapest Month` back to `Flexible dates`, with beta/warning-heavy wording avoided. Dark mode has also been polished for better contrast. Delivery state is currently local `Implemented`; GitHub push and production verification are still pending until the latest commit is pushed/deployed.
 
 Temporary Render retry note, 2026-07-03 05:50 BST:
 - This temporary retry was requested because Render/Chrome was slow.
@@ -16,14 +16,18 @@ Temporary Render retry note, 2026-07-03 05:50 BST:
 - Request for ChatGPT: please give Codex the single next plan/task to tick off next, so Codex knows exactly what to work on after this verification.
 
 What was completed:
+- Product naming changed from `Cheapest Month` to `Flexible dates` across the main search tab, menu, AI chip, planner title, search summary, and results header.
+- Flexible Dates copy now explains: choose a month and Farely will help compare the cheapest travel dates within that period.
+- The visible month-card badge now says `Lowest guide price` instead of reusing the old feature name.
+- Dark mode contrast was improved for inactive tabs, section headings, input fields, flexible-date panels, result controls, filter controls, and active states.
 - Milestone 6 final-sprint copy and mobile polish for Search Experience 2.0.
-- Cheapest Month workflow copy now matches: choose month, choose travel day, compare flights, check partner deal.
+- Flexible dates workflow copy now matches: choose month, choose travel day, compare flights, check partner deal.
 - Flexible-search price language now uses safer guide-price and partner-check wording.
 - Exact-date mode now keeps selected departure and return dates visible below the native date inputs.
 - Mobile Filters drawer now locks background scroll, supports Escape to close, keeps header/actions usable, handles quick-filter overflow, and avoids horizontal layout overflow in a 390px viewport.
 - Flight-card mobile spacing was tightened for airline names, badges, airport labels, leg details, signals, price, and CTA layout.
 - Public copy was softened: `Umrah packages` is now `Plan Umrah trip`, and the hero subtitle no longer promises a "perfect trip".
-- Guided Cheapest Month results flow: choose month, choose travel day, compare flights, check partner deal.
+- Guided Flexible dates results flow: choose month, choose travel day, compare flights, check partner deal.
 - Flexible date-card action copy changed to `Tap to compare flights`.
 - Cheapest/Fastest/Best tabs and Filters are hidden until after a flexible date is selected.
 - `/api/debug/amadeus` returns 404 in production instead of exposing credential/config status.
@@ -55,7 +59,11 @@ Files changed:
 Build/lint/test status:
 - `npm run build` passed on 2026-07-03 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
 - `npm run lint` passed on 2026-07-03 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
-- Local browser QA passed on 2026-07-03 for desktop app render, Cheapest Month mode, travel-day selection, result-card display, Filters drawer behavior, and a 390px mobile viewport no-horizontal-overflow check.
+- In-app Browser QA was attempted, but the `iab` browser backend was unavailable; bootstrap troubleshooting showed only a Chrome extension backend, so local Playwright with system Chrome was used as the fallback.
+- Local Playwright QA passed in forced dark mode on 2026-07-03 for desktop 1440px and mobile 390px: `Flexible dates` opened the correct search view, the new explanation appeared, no visible `Cheapest Month`/`Cheapest month`/`beta` wording remained in the current UI, there were no console warnings/errors, and there was no horizontal overflow.
+- `npm run build` passed on 2026-07-03 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
+- `npm run lint` passed on 2026-07-03 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
+- Local browser QA passed on 2026-07-03 for desktop app render, Flexible dates mode, travel-day selection, result-card display, Filters drawer behavior, and a 390px mobile viewport no-horizontal-overflow check.
 - Live verification passed on 2026-07-03: the live bundle contains the new Milestone 6 copy, `/api/health` reports `demoFallbackEnabled:false`, exact-date `/api/flights` returns Amadeus `isDemo:false` offers, `/api/flexible` returns Amadeus cheapest-day results, `/api/deals/flight` returns a tracked `302`, and the 390px live mobile render has no horizontal overflow or console warnings/errors.
 - `npm run build` passed on 2026-07-03 for the security hardening.
 - `npm run lint` passed with 1 existing warning in `src/components/LegalPage.jsx`.
@@ -67,12 +75,13 @@ Build/lint/test status:
 - Planner QA passed locally on 2026-07-03: a Bosnia under-£300 prompt showed the analysing state, put Bosnia first with the highest match score, explained alternatives, and populated `London -> Sarajevo` without starting a live search.
 
 GitHub status:
-- Pushed to GitHub `main`; Render served the new frontend asset and live verification passed.
+- Pending for the latest Flexible dates naming and dark mode polish adjustment.
 
 Branch:
 - `main`
 
 Commit hash:
+- Latest Flexible dates naming and dark mode polish: pending.
 - Milestone 6 final-sprint polish: `2b1c86e`.
 - Latest pushed handoff/docs commit before live verification: `c10ff5f`.
 - Verified deployment commit: `0739d9b`

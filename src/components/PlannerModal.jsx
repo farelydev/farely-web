@@ -3,14 +3,14 @@ import { useEffect, useMemo, useState } from "react";
 const INITIAL_MESSAGES = {
   ai: "Tell me what you have in mind. I will ask a few quick questions before preparing a search.",
   weekend: "Weekend trips need dates first. Which weekend are you thinking of?",
-  cheapmonth: "I can help compare a cheaper month. What kind of trip should I look for?",
+  cheapmonth: "I can help compare cheaper travel dates. What kind of trip should I look for?",
   umrah: "I can help shape an Umrah route. Would you prefer to start with Makkah/Jeddah, Madinah, or stay flexible?",
 };
 
 const MODE_TITLES = {
   ai: "Plan with Farely AI",
   weekend: "Plan a weekend getaway",
-  cheapmonth: "Find a cheaper month",
+  cheapmonth: "Find flexible dates",
   umrah: "Plan an Umrah trip",
 };
 

@@ -4,6 +4,20 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-03
 
+- Commit hash: `pending`
+- What changed:
+  - Reverted the flexible-search product name from `Cheapest Month` to `Flexible dates` across the main search tab, menu, AI chip, planner title, summary copy, and results header.
+  - Removed old feature-name wording from the visible flexible-date flow and added the clearer explanation: users choose a month and Farely compares the cheapest travel dates within that period.
+  - Polished dark mode contrast for inactive tabs, section headings, input fields, flexible-date cards, result controls, filters, and active states without changing search functionality.
+- Checks run:
+  - `npm run build` passed on 2026-07-03 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
+  - `npm run lint` passed on 2026-07-03 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
+  - Local Playwright QA passed in forced dark mode on 2026-07-03 using system Chrome after the in-app Browser was unavailable: desktop 1440px and mobile 390px both showed `Flexible dates`, the new explanation copy, no visible `Cheapest Month`/`Cheapest month`/`beta` wording, no console warnings/errors, and no horizontal overflow.
+- Pushed to GitHub:
+  - Pending.
+
+## 2026-07-03
+
 - Commit hash: `2b1c86e`
 - What changed:
   - Polished the Milestone 6 Cheapest Month flow so the user path is clearly `Choose month -> Choose travel day -> Compare flights -> Check partner deal`.

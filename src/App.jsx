@@ -2116,39 +2116,40 @@ const styles = `
   }
 
   @media (prefers-color-scheme: dark){
-    body{ background:#0b1020; color:#eaf0ff; }
+    body{ background:#070b16; color:#f2f6ff; }
     .fa-app{
-      background: radial-gradient(1000px 600px at 70% 30%, rgba(80,120,255,.14), transparent 60%),
-                  radial-gradient(900px 600px at 20% 10%, rgba(120,80,255,.14), transparent 60%),
-                  #0b1020;
+      background: radial-gradient(1000px 600px at 70% 30%, rgba(80,120,255,.18), transparent 60%),
+                  radial-gradient(900px 600px at 20% 10%, rgba(14,165,120,.12), transparent 60%),
+                  #070b16;
     }
-    .fa-card{ background: rgba(20,28,55,.75); border-color: rgba(255,255,255,.08); }
-    .fa-cardTop{ background: rgba(20,28,55,.55); border-bottom-color: rgba(255,255,255,.08); }
-    .fa-tab{ color: rgba(235,240,255,.55); }
-    .fa-tab.isActive{ color: rgba(120,160,255,1); border-bottom-color: rgba(120,160,255,1); }
-    .fa-seg{ background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.08); }
-    .fa-segBtn{ color: rgba(235,240,255,.65); }
-    .fa-segBtn.isActive{ background: rgba(255,255,255,.10); color: rgba(235,240,255,.92); }
-    .fa-rightCol{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08); }
-    .fa-inputWrap{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.10); box-shadow:none; }
+    .fa-card{ background: rgba(16,24,48,.92); border-color: rgba(180,200,255,.16); box-shadow:0 28px 72px rgba(0,0,0,.38); }
+    .fa-cardTop{ background: rgba(10,17,36,.86); border-bottom-color: rgba(180,200,255,.14); }
+    .fa-tab{ color: rgba(235,240,255,.76); }
+    .fa-tab.isActive{ color: rgba(160,190,255,1); border-bottom-color: rgba(160,190,255,1); }
+    .fa-seg{ background: rgba(5,10,24,.72); border-color: rgba(180,200,255,.18); }
+    .fa-segBtn{ color: rgba(235,240,255,.78); }
+    .fa-segBtn.isActive{ background: linear-gradient(135deg, rgba(70,115,255,.95), rgba(54,72,190,.95)); color: #fff; box-shadow:0 10px 24px rgba(35,95,255,.28); }
+    .fa-rightCol{ background: rgba(9,15,31,.72); border-color: rgba(180,200,255,.15); }
+    .fa-inputWrap{ background: rgba(6,11,24,.86); border-color: rgba(180,200,255,.22); box-shadow:inset 0 0 0 1px rgba(255,255,255,.03), 0 12px 28px rgba(0,0,0,.20); }
     .fa-input, .fa-select, .fa-dateInput{ color: rgba(235,240,255,.92); }
+    .fa-input::placeholder, .fa-dateInput::placeholder{ color:rgba(235,240,255,.56); }
     .fa-dateRangeSummary span{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.09); color:rgba(235,240,255,.58); }
     .fa-dateRangeSummary span.isActive{ background:rgba(120,160,255,.14); border-color:rgba(120,160,255,.20); color:rgba(140,175,255,1); }
-    .fa-label{ color: rgba(235,240,255,.68); }
-    .fa-flexIntro{ background:rgba(255,255,255,.06); border-color:rgba(90,230,190,.16); box-shadow:none; }
-    .fa-flexIntroTitle{ color:rgba(235,240,255,.95); }
-    .fa-flexIntroText{ color:rgba(235,240,255,.66); }
-    .fa-flexStep{ background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.09); color:rgba(235,240,255,.62); }
+    .fa-label{ color: rgba(235,240,255,.84); }
+    .fa-flexIntro{ background:linear-gradient(135deg, rgba(19,34,58,.96), rgba(10,42,39,.86)); border-color:rgba(90,230,190,.22); box-shadow:0 16px 34px rgba(0,0,0,.22); }
+    .fa-flexIntroTitle{ color:rgba(255,255,255,.98); }
+    .fa-flexIntroText{ color:rgba(235,240,255,.78); }
+    .fa-flexStep{ background:rgba(7,12,27,.74); border-color:rgba(180,200,255,.14); color:rgba(235,240,255,.74); }
     .fa-flexStep span{ background:rgba(120,160,255,.14); color:rgba(140,175,255,1); }
-    .fa-flexStep.isActive{ background:rgba(255,255,255,.08); border-color:rgba(120,160,255,.22); color:rgba(235,240,255,.90); box-shadow:none; }
-    .fa-dateExplorerHint{ background:rgba(120,160,255,.12); border-color:rgba(120,160,255,.18); color:rgba(235,240,255,.68); }
-    .fa-monthSummary, .fa-monthCompare{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.09); box-shadow:none; }
+    .fa-flexStep.isActive{ background:rgba(22,38,76,.94); border-color:rgba(140,175,255,.34); color:rgba(255,255,255,.96); box-shadow:0 12px 28px rgba(0,0,0,.24); }
+    .fa-dateExplorerHint{ background:rgba(120,160,255,.14); border-color:rgba(120,160,255,.24); color:rgba(235,240,255,.78); }
+    .fa-monthSummary, .fa-monthCompare{ background:rgba(7,12,27,.78); border-color:rgba(180,200,255,.16); box-shadow:0 12px 28px rgba(0,0,0,.20); }
     .fa-monthSummaryMain, .fa-monthName{ color:rgba(235,240,255,.90); }
     .fa-monthSummarySub, .fa-monthPrice{ color:rgba(90,230,190,.86); }
     .fa-monthSummaryCode, .fa-monthCompareSub, .fa-monthCompareRoute, .fa-monthYear{ color:rgba(235,240,255,.55); }
-    .fa-monthCard{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.09); color:rgba(235,240,255,.76); }
-    .fa-monthCard.isSelected{ background:rgba(255,255,255,.10); border-color:rgba(120,160,255,.38); box-shadow:0 0 0 3px rgba(120,160,255,.12); }
-    .fa-monthCard.isCheapest{ background:rgba(14,165,120,.12); }
+    .fa-monthCard{ background:rgba(8,14,30,.82); border-color:rgba(180,200,255,.14); color:rgba(235,240,255,.82); }
+    .fa-monthCard.isSelected{ background:rgba(28,45,92,.92); border-color:rgba(150,185,255,.58); box-shadow:0 0 0 3px rgba(120,160,255,.18); }
+    .fa-monthCard.isCheapest{ background:rgba(14,110,92,.22); }
     .fa-dropdown{ background: rgba(20,28,55,.95); border-color: rgba(255,255,255,.10); }
     .fa-itemTitle{ color: rgba(235,240,255,.92); }
     .fa-itemCode{ color: rgba(235,240,255,.55); }
@@ -2160,22 +2161,23 @@ const styles = `
     .fa-menuDropdown button:hover,
     .fa-menuDropdown a:hover{ background:rgba(255,255,255,.08); }
     .fa-menuBadge{ background:rgba(120,160,255,.16); color:rgba(150,180,255,1); }
-    .fa-resultsTitle{ color: rgba(235,240,255,.92); }
-    .fa-resultsSubtitle{ color: rgba(235,240,255,.55); }
-    .fa-resultsTabs{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08); }
-    .fa-rTab{ color: rgba(235,240,255,.60); }
-    .fa-rTab.isActive{ background: rgba(120,160,255,.14); color: rgba(120,160,255,1); border-color: rgba(120,160,255,.18); }
-    .fa-filterBtn{ background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.10); color:rgba(235,240,255,.82); }
-    .fa-filterDrawer{ background:rgba(20,28,55,.98); border-color:rgba(255,255,255,.10); }
-    .fa-filterTop{ border-bottom-color:rgba(255,255,255,.10); }
+    .fa-resultsTitle{ color: rgba(250,252,255,.98); }
+    .fa-resultsSubtitle{ color: rgba(235,240,255,.72); }
+    .fa-resultsTabs{ background: rgba(7,12,27,.82); border-color: rgba(180,200,255,.16); box-shadow:0 14px 34px rgba(0,0,0,.24); }
+    .fa-rTab{ color: rgba(235,240,255,.78); }
+    .fa-rTab.isActive{ background: rgba(120,160,255,.22); color: rgba(178,205,255,1); border-color: rgba(150,185,255,.32); }
+    .fa-filterBtn{ background:rgba(9,15,31,.84); border-color:rgba(180,200,255,.18); color:rgba(245,248,255,.92); }
+    .fa-filterDrawer{ background:rgba(14,22,44,.98); border-color:rgba(180,200,255,.16); }
+    .fa-filterTop{ border-bottom-color:rgba(180,200,255,.14); }
     .fa-filterTitle{ color:rgba(235,240,255,.94); }
-    .fa-filterSub, .fa-filterField{ color:rgba(235,240,255,.62); }
+    .fa-filterSub, .fa-filterField{ color:rgba(235,240,255,.76); }
     .fa-filterClose, .fa-filterSecondary{ background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.10); color:rgba(235,240,255,.82); }
-    .fa-quickFilter{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.10); color:rgba(235,240,255,.72); }
+    .fa-quickFilter{ background:rgba(7,12,27,.78); border-color:rgba(180,200,255,.16); color:rgba(235,240,255,.80); }
     .fa-quickFilter.isActive{ background:rgba(120,160,255,.14); border-color:rgba(120,160,255,.22); color:rgba(140,175,255,1); }
     .fa-filterField input,
-    .fa-filterField select{ background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.10); color:rgba(235,240,255,.92); }
-    .fa-filterCheck{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.10); color:rgba(235,240,255,.74); }
+    .fa-filterField select{ background:rgba(6,11,24,.88); border-color:rgba(180,200,255,.22); color:rgba(235,240,255,.94); }
+    .fa-filterField input::placeholder{ color:rgba(235,240,255,.56); }
+    .fa-filterCheck{ background:rgba(7,12,27,.78); border-color:rgba(180,200,255,.16); color:rgba(235,240,255,.82); }
 
   .fa-resultsWarning{ background: rgba(110,75,0,.22); border-color: rgba(255,210,120,.18); color: rgba(255,228,165,1); }
     .fa-resultsWarningSub{ color: rgba(255,228,165,.72); }
@@ -2183,9 +2185,9 @@ const styles = `
     .fa-flexDateIntro{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.08); }
     .fa-flexDateIntro h3{ color:rgba(255,255,255,.92); }
     .fa-flexDateIntro p{ color:rgba(235,240,255,.62); }
-    .fa-pillGrid{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08); }
-    .fa-dayPill{ background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.08); }
-    .fa-dayPill.isClickable{ background:rgba(255,255,255,.08); }
+    .fa-pillGrid{ background: rgba(7,12,27,.78); border-color: rgba(180,200,255,.14); }
+    .fa-dayPill{ background: rgba(9,15,31,.82); border-color: rgba(180,200,255,.14); }
+    .fa-dayPill.isClickable{ background:rgba(12,20,40,.94); }
     .fa-dayPill.isSelected{ outline-color: rgba(120,160,255,.35); background: rgba(120,160,255,.10); }
     .fa-dayPill.isDemo{ background: rgba(110,75,0,.14); border-color: rgba(255,210,120,.16); }
     .fa-day{ color: rgba(235,240,255,.60); }
@@ -2193,12 +2195,12 @@ const styles = `
     .fa-demoDot{ color: rgba(255,218,130,1); }
     .fa-price{ color: rgba(235,240,255,.92); }
     .fa-resultsHelper{ color: rgba(235,240,255,.62); }
-    .fa-resultCard{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08); }
-    .fa-resultHeader{ border-bottom-color: rgba(255,255,255,.08); color: rgba(235,240,255,.72); }
-    .fa-resultHint{ color: rgba(235,240,255,.52); }
-    .fa-affiliateNotice{ background:rgba(255,255,255,.04); border-bottom-color:rgba(255,255,255,.08); color:rgba(235,240,255,.62); }
+    .fa-resultCard{ background: rgba(12,20,40,.90); border-color: rgba(180,200,255,.15); box-shadow:0 20px 56px rgba(0,0,0,.30); }
+    .fa-resultHeader{ border-bottom-color: rgba(180,200,255,.14); color: rgba(235,240,255,.82); }
+    .fa-resultHint{ color: rgba(235,240,255,.68); }
+    .fa-affiliateNotice{ background:rgba(7,12,27,.56); border-bottom-color:rgba(180,200,255,.12); color:rgba(235,240,255,.72); }
     .fa-affiliateNotice a{ color:rgba(120,160,255,1); }
-    .fa-airlineRow{ background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.08); }
+    .fa-airlineRow{ background: rgba(8,14,30,.86); border-color: rgba(180,200,255,.14); }
     .fa-airlineRow.isDemo{ background: rgba(110,75,0,.12); border-color: rgba(255,210,120,.16); }
     .fa-airlineName{ color: rgba(235,240,255,.92); }
     .fa-airlineLogo{ box-shadow:none; border-color:rgba(255,255,255,.16); }
@@ -2246,6 +2248,12 @@ const styles = `
     .fa-rankRow, .fa-clickRow{ border-top-color:rgba(255,255,255,.08); color:rgba(235,240,255,.66); }
     .fa-emptyMini{ color:rgba(235,240,255,.58); }
     .fa-error{ color: rgba(255,190,190,1); background: rgba(120,30,30,.22); border-color: rgba(255,190,190,.18); }
+    .fa-nightInputWrap,
+    .fa-stepInputWrap,
+    .fa-miniInput,
+    .fa-miniDate{ background:rgba(6,11,24,.86); border-color:rgba(180,200,255,.22); color:rgba(235,240,255,.84); box-shadow:inset 0 0 0 1px rgba(255,255,255,.03), 0 12px 28px rgba(0,0,0,.18); }
+    .fa-nightInput,
+    .fa-stepInput{ color:rgba(245,248,255,.96); }
     .fa-multiSummary{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.10); box-shadow:none; }
     .fa-multiSummaryRow{ background: rgba(255,255,255,.06); color: rgba(235,240,255,.68); }
     .fa-providerWarning{ color: rgba(255,228,165,1); background: rgba(110,75,0,.22); border-color: rgba(255,210,120,.18); }

@@ -26,10 +26,10 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 - React/Vite frontend exists.
 - Node/Express backend exists.
 - Exact-date flight search is implemented.
-- Cheapest Month search is implemented on top of the existing flexible-month backend.
-- Cheapest Month now runs with demo fallback disabled in production; fallback-off live checks returned Amadeus results, and the API has a visible rate-limit/provider-unavailable response if every live flexible date fails.
+- Flexible dates search is implemented on top of the existing flexible-month backend.
+- Flexible dates now runs with demo fallback disabled in production; fallback-off live checks returned Amadeus results, and the API has a visible rate-limit/provider-unavailable response if every live flexible date fails.
 - Cheapest-day results render.
-- Cheapest Month results now use a guided workflow: choose month, choose travel day, compare flights, then check partner deal.
+- Flexible dates results now use a guided workflow: choose month, choose travel day, compare flights, then check partner deal.
 - Flight offer results render.
 - Richer result cards now show airline branding, outbound/return sections, full airport labels where known, price, cabin, baggage notes, recommendation badges, and clearer partner CTA wording.
 - A mobile-first filters drawer now exists with quick filters, advanced filter controls, scroll locking, Escape-to-close behavior, and mobile overflow safeguards.

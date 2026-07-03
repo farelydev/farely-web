@@ -6,7 +6,7 @@ const LOGO_SRC = "/brand/B4492AEF-3192-42F5-B006-5D933BE036C2.PNG";
 const MENU_ITEMS = [
   { label: "Search Flights", target: "farely-search" },
   { label: "Plan with Farely AI", action: "ai" },
-  { label: "Cheapest Month", action: "cheapmonth" },
+  { label: "Flexible dates", action: "cheapmonth" },
   { label: "Umrah", action: "umrah" },
   { label: "Saved Trips / Sign in", target: "farely-signin", badge: "Coming soon" },
   { label: "Help Centre", target: "farely-support" },
@@ -143,7 +143,7 @@ export default function Header({
             <span className="fa-chipIcon">📅</span> Weekend getaway
           </button>
           <button className="fa-chip" type="button" onClick={() => openPlanner("cheapmonth")}>
-            <span className="fa-chipIcon">🗓️</span> Cheapest month to fly
+            <span className="fa-chipIcon">🗓️</span> Flexible dates
           </button>
           <button className="fa-chip" type="button" onClick={() => openPlanner("umrah")}>
             <span className="fa-chipIcon">🕋</span> Plan Umrah trip
