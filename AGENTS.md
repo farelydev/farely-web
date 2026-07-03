@@ -34,6 +34,20 @@ ChatGPT responsibilities:
 
 The user is the founder. Before implementing large new features, assume the user may review the idea with ChatGPT first so engineering decisions stay aligned with product, UX, and business priorities. This should not slow down small safe fixes or agreed implementation work.
 
+## Automation Approval Workflow
+
+All Farely automations should stay short, practical, and beginner-friendly.
+
+When an automation finds something that needs founder approval, account access, payment, credentials, product direction, or a manual check:
+
+- Put it clearly in `Needs your approval/check`.
+- Include one short copy-paste note for ChatGPT so ChatGPT can notify the founder through the iOS app.
+- Do not make approval-only changes automatically.
+- If a logged-in Google Chrome ChatGPT planning tab is available in the environment, use it carefully for current Farely product plans.
+- If Chrome/ChatGPT context is not available, use `docs/CHATGPT_HANDOFF.md` and say the Chrome/ChatGPT planning tab was unavailable when that matters.
+
+For SEO/content automation, the current founder-approved focus is `cheap flexible flights` first. Umrah and specific route pages can be considered later if they support the Skyscanner-style comparison product.
+
 ## Company Operating System
 
 ### Team Structure
@@ -149,6 +163,16 @@ That difference should guide every future AI decision.
 - Prefer configurable systems.
 - Design today's code so future partners, travel products, and AI improvements can be added without major refactoring.
 
+### Delivery State Principle
+
+No milestone or feature should be treated as complete until it has moved through all three states:
+
+1. Implemented: code has been written, checked, and committed locally.
+2. Deployed: the relevant commit has been pushed and is live through the production deployment path.
+3. Verified: the live production site has been tested and confirmed to behave as expected.
+
+Only the `Verified` state counts as complete. If GitHub push, Render deployment, Cloudflare settings, credentials, billing, or dashboard access blocks deployment or verification, stop feature work and report the blocker clearly before stacking unrelated local changes.
+
 ## Affiliate Architecture
 
 Farely should keep affiliate links server-controlled and trackable through the custom backend redirect flow:
@@ -181,11 +205,13 @@ After completing any successful milestone or feature change in Farely:
    - `docs/CHANGELOG.md`
    - `docs/CHATGPT_HANDOFF.md`
 6. Keep `docs/CHATGPT_HANDOFF.md` as the short founder-to-ChatGPT handoff. It should include what was completed, what was not completed, files changed, build/lint/test status, GitHub status, branch, commit hash, recommended next product decision, and any questions for ChatGPT.
-7. Report back with:
+7. Record the current delivery state as `Implemented`, `Deployed`, or `Verified`. Only mark the work complete when production verification has passed.
+8. Report back with:
    - what was implemented,
    - files changed,
    - build/test status,
    - GitHub push status,
+   - deployment/verification status,
    - branch name,
    - commit hash,
    - any technical debt or known issues,
