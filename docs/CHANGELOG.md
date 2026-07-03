@@ -13,6 +13,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - `npm run build` passed on 2026-07-03 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
   - `npm run lint` passed on 2026-07-03 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
   - Local Playwright QA passed in forced dark mode on 2026-07-03 using system Chrome after the in-app Browser was unavailable: desktop 1440px and mobile 390px both showed `Flexible dates`, the new explanation copy, no visible `Cheapest Month`/`Cheapest month`/`beta` wording, no console warnings/errors, and no horizontal overflow.
+  - Live verification passed on 2026-07-03: `https://tryfarely.com` served bundle `assets/index-CoO0sF0V.js`, the bundle contained `Flexible dates` and `Lowest guide price`, and a 390px dark-mode rendered smoke check showed the correct Flexible dates copy with no old feature-name/beta wording, no console warnings/errors, and no horizontal overflow.
 - Pushed to GitHub:
   - Yes, pushed to GitHub `main` after the follow-up docs status update.
 

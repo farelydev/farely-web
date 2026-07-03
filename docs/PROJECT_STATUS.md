@@ -8,7 +8,7 @@ Milestone 6: Search Experience 2.0.
 
 ## Current Production Readiness Status
 
-Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. The Milestone 6 final-sprint polish has been pushed, deployed, and live-verified on `https://tryfarely.com`; founder approval is still needed before Milestone 6 can be called complete. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
+Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. The Milestone 6 final-sprint polish and the founder-requested Flexible dates/dark-mode adjustment have been pushed, deployed, and live-verified on `https://tryfarely.com`; founder approval is still needed before Milestone 6 can be called complete. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
 
 Delivery state rule: work is only complete when it is `Implemented`, `Deployed`, and `Verified` on the live production site. The current security hardening has reached `Verified` on `https://tryfarely.com`.
 
@@ -20,7 +20,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 - Latest pushed handoff/docs commit: `c10ff5f`
 - Latest verified security-hardening commit: `0739d9b`
 - Deployment source: GitHub `farelydev/farely-web` on `main`
-- Live verification: `https://tryfarely.com` served the new frontend bundle, `/api/debug/amadeus` returned `404`, bad-origin CORS was not reflected, Helmet security headers were present, exact-date and flexible searches returned live Amadeus results, and `/api/deals/flight` returned a tracked `302` partner redirect.
+- Live verification: `https://tryfarely.com` served the new Flexible dates/dark-mode frontend bundle, the live 390px dark-mode smoke check passed with no old feature-name or beta wording visible, `/api/debug/amadeus` returned `404`, bad-origin CORS was not reflected, Helmet security headers were present, exact-date and flexible searches returned live Amadeus results, and `/api/deals/flight` returned a tracked `302` partner redirect.
 
 ## What Is Working
 

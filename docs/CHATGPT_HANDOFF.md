@@ -4,7 +4,7 @@ Last updated: 2026-07-03
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely Milestone 6 has a founder-requested product wording adjustment implemented: the flexible-month feature has been renamed from `Cheapest Month` back to `Flexible dates`, with beta/warning-heavy wording avoided. Dark mode has also been polished for better contrast. Delivery state is `Implemented` and pushed; production deployment/verification is still pending until Render serves the latest GitHub commit.
+Farely Milestone 6 has a founder-requested product wording adjustment implemented, pushed, deployed, and live-verified: the flexible-month feature has been renamed from `Cheapest Month` back to `Flexible dates`, with beta/warning-heavy wording avoided. Dark mode has also been polished for better contrast.
 
 Temporary Render retry note, 2026-07-03 05:50 BST:
 - This temporary retry was requested because Render/Chrome was slow.
@@ -61,6 +61,7 @@ Build/lint/test status:
 - `npm run lint` passed on 2026-07-03 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
 - In-app Browser QA was attempted, but the `iab` browser backend was unavailable; bootstrap troubleshooting showed only a Chrome extension backend, so local Playwright with system Chrome was used as the fallback.
 - Local Playwright QA passed in forced dark mode on 2026-07-03 for desktop 1440px and mobile 390px: `Flexible dates` opened the correct search view, the new explanation appeared, no visible `Cheapest Month`/`Cheapest month`/`beta` wording remained in the current UI, there were no console warnings/errors, and there was no horizontal overflow.
+- Live verification passed on 2026-07-03: `https://tryfarely.com` served bundle `assets/index-CoO0sF0V.js`, the bundle contained `Flexible dates` and `Lowest guide price`, and a 390px dark-mode rendered smoke check showed the correct Flexible dates copy with no old feature-name/beta wording, no console warnings/errors, and no horizontal overflow.
 - `npm run build` passed on 2026-07-03 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
 - `npm run lint` passed on 2026-07-03 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
 - Local browser QA passed on 2026-07-03 for desktop app render, Flexible dates mode, travel-day selection, result-card display, Filters drawer behavior, and a 390px mobile viewport no-horizontal-overflow check.
@@ -75,7 +76,7 @@ Build/lint/test status:
 - Planner QA passed locally on 2026-07-03: a Bosnia under-£300 prompt showed the analysing state, put Bosnia first with the highest match score, explained alternatives, and populated `London -> Sarajevo` without starting a live search.
 
 GitHub status:
-- Pushed to GitHub `main` after the follow-up docs status update.
+- Pushed to GitHub `main`.
 
 Branch:
 - `main`
