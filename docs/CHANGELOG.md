@@ -17,7 +17,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - Local Chrome QA passed on 2026-07-05: `cheap sunny weekend in Europe in August under £250 flights` asked only for nights, returned 4 destination cards, showed `From London`, `august 2026`, `3 nights`, `Under £250`, and `Find flights` filled London -> Lisbon without starting a live search.
   - Local 390px in-app Browser QA passed on 2026-07-05: `3 nights somewhere romantic under £250 flights` asked only for timing, returned 4 destination cards, showed no horizontal overflow, and logged no console warnings/errors.
 - Pushed to GitHub:
-  - Blocked locally on 2026-07-05: SSH returned `Permission denied (publickey)` and HTTPS had no configured username/credential helper. Local commits are ready on `main`.
+  - Publishing through the GitHub connector because local SSH returned `Permission denied (publickey)` and HTTPS had no configured username/credential helper.
 
 ## 2026-07-03
 
