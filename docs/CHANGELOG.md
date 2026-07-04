@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-05
 
-- Commit hash: pending current commit
+- Commit hash: `783a841`
 - What changed:
   - Sent the withheld Farely handoff to ChatGPT through a fresh `MVP Factory` project chat, avoiding the slow old `Farely Product Strategy` thread.
   - ChatGPT/Product approved Milestone 6 as complete and directed Codex to begin Milestone 7: Farely AI Travel Consultant.
@@ -17,7 +17,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - Local Chrome QA passed on 2026-07-05: `cheap sunny weekend in Europe in August under £250 flights` asked only for nights, returned 4 destination cards, showed `From London`, `august 2026`, `3 nights`, `Under £250`, and `Find flights` filled London -> Lisbon without starting a live search.
   - Local 390px in-app Browser QA passed on 2026-07-05: `3 nights somewhere romantic under £250 flights` asked only for timing, returned 4 destination cards, showed no horizontal overflow, and logged no console warnings/errors.
 - Pushed to GitHub:
-  - Pending current commit.
+  - Yes, pushed to GitHub `main` with the follow-up docs status commit.
 
 ## 2026-07-03
 

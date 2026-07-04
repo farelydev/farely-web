@@ -97,13 +97,13 @@ Build/lint/test status:
 - Planner QA passed locally on 2026-07-03: a Bosnia under-£300 prompt showed the analysing state, put Bosnia first with the highest match score, explained alternatives, and populated `London -> Sarajevo` without starting a live search.
 
 GitHub status:
-- Pending current commit/push.
+- Pushed to GitHub `main` with the follow-up docs status commit.
 
 Branch:
 - `main`
 
 Commit hash:
-- Latest Milestone 7 guided AI planner implementation: pending current commit.
+- Latest Milestone 7 guided AI planner implementation: `783a841`.
 - Latest Flexible dates naming and dark mode polish implementation: `c882fd3`.
 - Milestone 6 final-sprint polish: `2b1c86e`.
 - Latest pushed handoff/docs commit before live verification: `c10ff5f`.
