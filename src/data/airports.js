@@ -30,6 +30,7 @@ export const AIRPORTS = [
 
   { city: "Malaga", country: "Spain", name: "Costa del Sol", iata: "AGP", tags: ["AGP", "south Spain", "sunny"] },
   { city: "Faro", country: "Portugal", name: "Faro", iata: "FAO", tags: ["FAO", "Algarve", "sunny", "beach"] },
+  { city: "Lisbon", country: "Portugal", name: "Humberto Delgado", iata: "LIS", tags: ["LIS", "Portugal", "romantic", "food", "city break"] },
   { city: "Alicante", country: "Spain", name: "Alicante-Elche", iata: "ALC", tags: ["ALC", "sunny"] },
   { city: "Seville", country: "Spain", name: "Seville", iata: "SVQ", tags: ["SVQ", "Andalusia"] },
   { city: "Marrakech", country: "Morocco", name: "Marrakech Menara", iata: "RAK", tags: ["RAK", "Morocco"] },

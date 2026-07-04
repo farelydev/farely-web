@@ -2,6 +2,23 @@
 
 This changelog tracks completed Farely milestones and whether they were pushed to GitHub.
 
+## 2026-07-05
+
+- Commit hash: pending current commit
+- What changed:
+  - Sent the withheld Farely handoff to ChatGPT through a fresh `MVP Factory` project chat, avoiding the slow old `Farely Product Strategy` thread.
+  - ChatGPT/Product approved Milestone 6 as complete and directed Codex to begin Milestone 7: Farely AI Travel Consultant.
+  - Improved the AI planner so natural prompts can infer London as the default origin, parse month/timing, budget, trip length, romantic/food/city/sunny intent, and ask one missing follow-up instead of a long sequence.
+  - Added Lisbon and Rome-style romantic/city recommendations and added Lisbon to the local airport lookup so AI suggestions can fill the real search form.
+  - Added an interpreted trip-intent summary before destination cards and preserved the existing review-before-live-search handoff.
+- Checks run:
+  - `npm run build` passed on 2026-07-05 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
+  - `npm run lint` passed on 2026-07-05 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
+  - Local Chrome QA passed on 2026-07-05: `cheap sunny weekend in Europe in August under £250 flights` asked only for nights, returned 4 destination cards, showed `From London`, `august 2026`, `3 nights`, `Under £250`, and `Find flights` filled London -> Lisbon without starting a live search.
+  - Local 390px in-app Browser QA passed on 2026-07-05: `3 nights somewhere romantic under £250 flights` asked only for timing, returned 4 destination cards, showed no horizontal overflow, and logged no console warnings/errors.
+- Pushed to GitHub:
+  - Pending current commit.
+
 ## 2026-07-03
 
 - Commit hash: `c882fd3`

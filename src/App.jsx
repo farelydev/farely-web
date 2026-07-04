@@ -1946,6 +1946,25 @@ const styles = `
     font-weight:900;
     line-height:1.35;
   }
+  .fa-intentSummary{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:-2px 0 12px;
+  }
+  .fa-intentSummary span{
+    min-height:30px;
+    display:inline-flex;
+    align-items:center;
+    border:1px solid rgba(8,16,35,.10);
+    background:rgba(255,255,255,.72);
+    border-radius:8px;
+    padding:6px 9px;
+    color:rgba(8,16,35,.68);
+    font-size:12px;
+    font-weight:900;
+    line-height:1.15;
+  }
   .fa-recommendationGrid{
     display:grid;
     grid-template-columns:repeat(2, minmax(0, 1fr));
@@ -2079,6 +2098,7 @@ const styles = `
     .fa-plannerTitle{ font-size:24px; }
     .fa-plannerInputRow{ grid-template-columns:1fr; }
     .fa-plannerSend{ min-height:46px; }
+    .fa-intentSummary span{ flex:1 1 calc(50% - 8px); }
     .fa-recommendationGrid{ grid-template-columns:1fr; }
     .fa-recImage{ min-height:132px; }
     .fa-recTopLine{ flex-direction:column; }
@@ -2269,6 +2289,7 @@ const styles = `
     .fa-analyzingBox{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.10); }
     .fa-analyzingStep{ color:rgba(235,240,255,.74); }
     .fa-plannerInsight{ background:rgba(120,160,255,.12); border-color:rgba(120,160,255,.18); color:rgba(235,240,255,.78); }
+    .fa-intentSummary span{ background:rgba(255,255,255,.07); border-color:rgba(255,255,255,.10); color:rgba(235,240,255,.70); }
     .fa-recommendationCard{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.10); }
     .fa-recCountry, .fa-recReason{ color:rgba(235,240,255,.62); }
     .fa-recFacts span{ background:rgba(255,255,255,.07); color:rgba(235,240,255,.68); }

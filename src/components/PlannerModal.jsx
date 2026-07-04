@@ -22,7 +22,7 @@ const QUICK_OPTIONS = {
   umrahNights: ["7 nights", "10 nights", "14 nights", "5 Makkah + 4 Madinah"],
   tripFormat: ["Flights only", "Package", "Direct flights preferred", "Ramadan travel"],
   budget: ["Under £200", "Under £300", "Under £500", "Flexible budget"],
-  style: ["Beach", "City break", "Family friendly", "Halal friendly", "Non-stop only", "Avoid Ryanair"],
+  style: ["Sunny beach", "Romantic", "City break", "Food and culture", "Family friendly", "Halal friendly", "Non-stop only"],
 };
 
 const ANALYSIS_STEPS = ["Analysing destinations...", "Checking budget fit...", "Comparing flexible options..."];
@@ -108,6 +108,40 @@ const DESTINATIONS = [
     image: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=72",
     reason: "Simple beach option with a strong chance of staying within a low budget.",
     note: "Farely will use this as a search starting point, not a booking guarantee.",
+  },
+  {
+    id: "lisbon",
+    name: "Lisbon",
+    country: "Portugal",
+    code: "LIS",
+    from: "LON",
+    theme: ["warm", "city", "culture", "romantic", "food", "weekend"],
+    priceFrom: 120,
+    priceRange: "£95-£230 flights",
+    flightTime: "2h 45m flight",
+    weatherVibe: "Warm city, river views",
+    tripType: "Romantic, food, city break",
+    category: "Best romantic city",
+    image: "https://images.unsplash.com/photo-1548707309-dcebeab9ea9b?auto=format&fit=crop&w=900&q=72",
+    reason: "Strong fit for a romantic short break with warm weather, food, views, and frequent London flights.",
+    note: "Use Flexible dates if you can travel across a month because Lisbon fares move by weekend.",
+  },
+  {
+    id: "rome",
+    name: "Rome",
+    country: "Italy",
+    code: "FCO",
+    from: "LON",
+    theme: ["city", "culture", "romantic", "food", "weekend"],
+    priceFrom: 145,
+    priceRange: "£120-£260 flights",
+    flightTime: "2h 35m flight",
+    weatherVibe: "Historic city, warm summers",
+    tripType: "Romantic, culture, food",
+    category: "Best culture break",
+    image: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=900&q=72",
+    reason: "Good option when the prompt sounds romantic or food-focused and the budget allows a little flexibility.",
+    note: "Rome is usually better for 3-5 nights than a very short weekend.",
   },
   {
     id: "marrakech",
@@ -261,11 +295,15 @@ function parsePrompt(prompt, mode) {
   if (mode === "umrah" || /umrah|makkah|madinah|medina|jeddah/.test(lower)) tags.add("umrah");
   if (/warm|sun|sunny|beach|hot/.test(lower)) tags.add("warm");
   if (/beach|coast|sea/.test(lower)) tags.add("beach");
-  if (/city|paris|rome|italy|sarajevo/.test(lower)) tags.add("city");
+  if (/city|paris|rome|italy|sarajevo|lisbon|europe/.test(lower)) tags.add("city");
   if (/culture|history|old town|bosnia|sarajevo/.test(lower)) tags.add("culture");
   if (/nature|mountain|lake|waterfall/.test(lower)) tags.add("nature");
   if (/family|kids|children/.test(lower)) tags.add("family");
   if (/halal|muslim|bosnia|sarajevo/.test(lower)) tags.add("halal");
+  if (/romantic|romance|anniversary|couple/.test(lower)) tags.add("romantic");
+  if (/food|restaurant|eat|eating/.test(lower)) tags.add("food");
+  if (/ski|snow|skiing/.test(lower)) tags.add("ski");
+  if (/europe|european/.test(lower)) tags.add("europe");
   if (/direct|non-stop|nonstop/.test(lower)) tags.add("non-stop");
   if (/flights?\s*only/.test(lower)) tags.add("flights-only");
   if (/package|hotel/.test(lower)) tags.add("package");
@@ -281,12 +319,31 @@ function parsePrompt(prompt, mode) {
   const monthMatch = MONTHS.find(([name]) => lower.includes(name));
   const explicitYear = lower.match(/\b(20\d{2})\b/)?.[1] || "";
   const flexMonth = monthMatch ? monthToFlexValue(monthMatch[0], explicitYear) : "";
+  const timing = lower.includes("next weekend")
+    ? "Next weekend"
+    : lower.includes("this month")
+      ? "This month"
+      : lower.includes("flexible")
+        ? "Flexible"
+        : flexMonth
+          ? `${monthMatch[0]} ${explicitYear || new Date(flexMonth).getFullYear()}`
+          : "";
   const makkahNights = lower.match(/makkah\s+(\d{1,2})\s*nights?/)?.[1] || "";
   const madinahMatch = lower.match(/madinah\s+(\d{1,2})\s*nights?|medina\s+(\d{1,2})\s*nights?/);
   const madinahNights = madinahMatch?.[1] || madinahMatch?.[2] || "";
-  const origin = lower.includes("manchester") ? "Manchester" : lower.includes("birmingham") ? "Birmingham" : lower.includes("london") ? "London" : "";
+  const explicitOrigin = lower.includes("manchester")
+    ? "Manchester"
+    : lower.includes("birmingham")
+      ? "Birmingham"
+      : lower.includes("london")
+        ? "London"
+        : "";
+  const origin = explicitOrigin || "London";
   const umrahStart = tags.has("madinah") && !tags.has("makkah-first") ? "Madinah first" : tags.has("makkah-first") ? "Makkah first via Jeddah" : "";
-  const tripFormat = tags.has("flights-only") ? "Flights only" : tags.has("package") ? "Package" : tags.has("non-stop") ? "Direct flights preferred" : tags.has("ramadan") ? "Ramadan travel" : "";
+  const tripFormat = tags.has("flights-only") || /\bflights?\b/.test(lower) ? "Flights only" : tags.has("package") ? "Package" : tags.has("non-stop") ? "Direct flights preferred" : tags.has("ramadan") ? "Ramadan travel" : "";
+  const styleTags = Array.from(tags).filter((tag) =>
+    ["warm", "beach", "city", "culture", "nature", "family", "halal", "romantic", "food", "ski", "non-stop"].includes(tag)
+  );
 
   return {
     tags: Array.from(tags),
@@ -294,12 +351,15 @@ function parsePrompt(prompt, mode) {
     budget,
     flexMonth,
     monthLabel: monthMatch?.[0] || "",
+    timing,
     explicitYear,
     makkahNights: makkahNights || "",
     madinahNights: madinahNights || "",
     origin,
+    originInferred: !explicitOrigin,
     umrahStart,
     tripFormat,
+    styleTags,
     requestedDestinationId: requestedDestination?.id || "",
     requestedDestinationName: requestedDestination ? DESTINATIONS.find((destination) => destination.id === requestedDestination.id)?.name || "" : "",
   };
@@ -339,6 +399,10 @@ function buildRecommendationPlan(intent, mode) {
     if (promptTags.has("halal") && !destination.theme.includes("halal")) score -= 5;
     if (maxBudget && destination.priceFrom <= maxBudget) score += 3;
     if (maxBudget && destination.priceFrom > maxBudget) score -= Math.min(8, Math.ceil((destination.priceFrom - maxBudget) / 45));
+    if (promptTags.has("romantic") && destination.theme.includes("romantic")) score += 7;
+    if (promptTags.has("food") && destination.theme.includes("food")) score += 4;
+    if (promptTags.has("europe") && ["paris", "malaga", "faro", "lisbon", "rome", "bosnia"].includes(destination.id)) score += 3;
+    if (promptTags.has("ski") && !destination.theme.includes("ski")) score -= 4;
     if (mode === "weekend" && destination.id === "paris") score += 2;
     if (mode === "cheapmonth" && ["malaga", "faro", "bosnia"].includes(destination.id)) score += 2;
     if ((mode === "umrah" || promptTags.has("umrah")) && ["jeddah", "madinah", "umrah-split"].includes(destination.id)) score += 8;
@@ -393,7 +457,9 @@ function nextQuestion(intent) {
   if (!intent.nights) return { key: isUmrah ? "umrahNights" : "nights", text: isUmrah ? "How should I split the trip?" : "How many nights should I plan for?" };
   if (isUmrah && !intent.tripFormat) return { key: "tripFormat", text: "Are you looking for flights only, a package, direct flights, or Ramadan travel?" };
   if (!intent.budget) return { key: "budget", text: "What budget should I aim for?" };
-  if (!intent.style?.length) return { key: "style", text: "What matters most for this trip?" };
+  if (!intent.style?.length && !intent.tags?.some((tag) => ["warm", "beach", "city", "culture", "nature", "family", "halal", "romantic", "food"].includes(tag))) {
+    return { key: "style", text: "What matters most for this trip?" };
+  }
   return null;
 }
 
@@ -451,13 +517,15 @@ export default function PlannerModal({
       origin: parsed.origin,
       flexMonth: parsed.flexMonth,
       monthLabel: parsed.monthLabel,
+      timing: parsed.timing,
       nights: parsed.nights,
       budget: parsed.budget ? `Under £${parsed.budget}` : "",
-      style: parsed.tripFormat ? [normalizeStyle(parsed.tripFormat)] : [],
+      style: [...parsed.styleTags, ...(parsed.tripFormat ? [normalizeStyle(parsed.tripFormat)] : [])],
       makkahNights: parsed.makkahNights,
       madinahNights: parsed.madinahNights,
       umrahStart: parsed.umrahStart,
       tripFormat: parsed.tripFormat,
+      originInferred: parsed.originInferred,
       requestedDestinationId: parsed.requestedDestinationId,
       requestedDestinationName: parsed.requestedDestinationName,
     };
@@ -466,8 +534,9 @@ export default function PlannerModal({
   const initialMessages = useMemo(() => [
     ...(aiText ? [{ role: "user", text: aiText }] : []),
     { role: "bot", text: INITIAL_MESSAGES[effectiveMode] || INITIAL_MESSAGES.ai },
+    ...(initialIntent.originInferred && aiText ? [{ role: "bot", text: "I will start from London unless you tell me another airport." }] : []),
     ...(initialQuestion ? [{ role: "bot", text: initialQuestion.text }] : []),
-  ], [aiText, effectiveMode, initialQuestion]);
+  ], [aiText, effectiveMode, initialIntent.originInferred, initialQuestion]);
 
   const [messages, setMessages] = useState(initialMessages);
   const [intent, setIntent] = useState(initialIntent);
@@ -494,6 +563,16 @@ export default function PlannerModal({
     return () => window.clearTimeout(timer);
   }, [isAnalyzing]);
 
+  useEffect(() => {
+    if (!open || question || showRecommendations || isAnalyzing || !aiText) return undefined;
+
+    const timer = window.setTimeout(() => {
+      setIsAnalyzing(true);
+    }, 250);
+
+    return () => window.clearTimeout(timer);
+  }, [aiText, isAnalyzing, open, question, showRecommendations]);
+
   if (!open) return null;
 
   function addAnswer(value) {
@@ -510,6 +589,7 @@ export default function PlannerModal({
         nextIntent.flexMonth = parsedTiming.flexMonth;
         nextIntent.monthLabel = parsedTiming.monthLabel;
       }
+      if (parsedTiming.timing) nextIntent.timing = parsedTiming.timing;
     }
     const followingQuestion = nextQuestion(nextIntent);
 
@@ -638,6 +718,12 @@ export default function PlannerModal({
         {showRecommendations && (
           <>
             <div className="fa-plannerInsight">{recommendationPlan.insightText}</div>
+            <div className="fa-intentSummary" aria-label="Interpreted trip intent">
+              <span>From {intent.origin || "London"}</span>
+              <span>{intent.timing || intent.monthLabel || "Flexible dates"}</span>
+              <span>{intent.nights ? `${intent.nights} nights` : "Flexible length"}</span>
+              <span>{intent.budget || "Flexible budget"}</span>
+            </div>
             <div className="fa-recommendationGrid">
               {recommendationPlan.recommendations.map((recommendation) => (
                 <article key={recommendation.id} className="fa-recommendationCard">

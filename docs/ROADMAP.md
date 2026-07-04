@@ -1,20 +1,19 @@
 # Farely Roadmap
 
-Last updated: 2026-07-03
+Last updated: 2026-07-05
 
 ## Current Phase
 
-Milestone-led startup buildout. Current active phase: Milestone 6 final sprint and founder acceptance for Search Experience 2.0.
+Milestone-led startup buildout. Current active phase: Milestone 7, Farely AI Travel Consultant.
 
 Delivery workflow: every milestone must move through `Implemented`, `Deployed`, and `Verified`. Only `Verified` counts as complete.
 
 ## Next Product Milestones
 
-1. Milestone 6: Search Experience 2.0.
-2. Milestone 7: Farely AI Travel Consultant.
-3. Milestone 8: Founder Intelligence Dashboard / Farely Control Centre.
-4. Milestone 9: Production Readiness.
-5. Milestone 10: Travel Platform Expansion.
+1. Milestone 7: Farely AI Travel Consultant.
+2. Milestone 8: Founder Intelligence Dashboard / Farely Control Centre.
+3. Milestone 9: Production Readiness.
+4. Milestone 10: Travel Platform Expansion.
 
 ## Milestone 6: Search Experience 2.0
 
@@ -52,23 +51,24 @@ Current API robustness action:
 - Mobile filters drawer: scroll locking, sticky drawer header/actions, quick-filter overflow handling, and no horizontal overflow checks added.
 - Copy audit: overpromising copy softened, including `Umrah packages` changed to `Plan Umrah trip`.
 - Flexible provider failures: fallback-off path now returns clear rate-limit/provider-unavailable guidance instead of silently looking healthy.
-- Remaining AI/search sync fixes.
+- AI/search sync: first Milestone 7 handoff path now fills the existing search form for review before live search.
 
 Goal: make Farely's search experience feel trustworthy, clear, and conversion-ready.
 
-Milestone 6 completion gate: the final-sprint polish is deployed and live-verified; this milestone is not complete until founder approval is given.
+Milestone 6 completion gate: completed. The final-sprint polish was deployed, live-verified, and founder/Product-approved through a fresh `MVP Factory` ChatGPT project chat on 2026-07-05.
 
 ## Milestone 7: Farely AI Travel Consultant
 
 - Better recommendation quality: first destination-personalisation pass implemented.
-- Trip-type detection.
+- Trip-type detection: first guided pass implemented for sunny, romantic, food, city, Europe, budget, trip length, and flexible-month intent.
 - Umrah mode: core launch use case, first-pass prompt routing and questions implemented.
-- Beach planner.
-- City break planner.
+- Beach planner: first guided pass implemented through warm/beach ranking.
+- City break planner: first guided pass implemented through city/romantic/food ranking.
 - Ski planner.
-- Better follow-up questions.
+- Better follow-up questions: first guided pass asks the single most important missing question, defaulting origin to London when not specified.
 - Better recommendation explanations: first pass implemented with match scores, category badges, price ranges, flight times, weather vibe, trip type, and a "Why these destinations?" summary.
 - Better conversation memory.
+- Search handoff: first guided pass shows an interpreted intent summary, then fills the existing exact/flexible search form without starting a live search.
 
 Goal: help users decide where to go rather than simply filling a search form.
 
@@ -112,11 +112,11 @@ Farely should answer "Where should I go?" The AI should become the product, not 
 
 ## AI Planner Roadmap
 
-- Build toward Milestone 7.
+- Build through Milestone 7.
 - Clarify the planner's main job: inspiration, itinerary planning, or trip refinement.
-- Improve prompt handling around budget, destination style, dates, and constraints.
-- Add better structured outputs for suggested trips.
-- Connect planner suggestions more clearly to flight search results.
+- Improve prompt handling around budget, destination style, dates, and constraints: first guided pass implemented.
+- Add better structured outputs for suggested trips: intent summary and richer cards implemented.
+- Connect planner suggestions more clearly to flight search results: first search-form handoff implemented.
 - Add guardrails so Farely does not overstate booking, payment, or travel-agent responsibilities.
 
 ## Flight Search Roadmap
