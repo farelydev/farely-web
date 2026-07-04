@@ -97,7 +97,7 @@ Build/lint/test status:
 - Planner QA passed locally on 2026-07-03: a Bosnia under-£300 prompt showed the analysing state, put Bosnia first with the highest match score, explained alternatives, and populated `London -> Sarajevo` without starting a live search.
 
 GitHub status:
-- Pushed to GitHub `main` with the follow-up docs status commit.
+- Push blocked locally on 2026-07-05: SSH returned `Permission denied (publickey)` and HTTPS had no configured username/credential helper. Local commits are ready on `main`.
 
 Branch:
 - `main`
