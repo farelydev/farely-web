@@ -13,7 +13,7 @@ Last updated: 2026-07-05
 | Medium | Security | Founder/admin analytics still exists inside the public app surface and should move to a separate private dashboard with proper authentication. | Open |
 | Medium | UX | Milestone 6 filters drawer passed local desktop/mobile QA and live mobile render smoke validation; broader route/browser QA remains useful. | In progress |
 | Medium | UX | Airport selection and return-to-same-airport filter behavior need production-data verification. | In progress |
-| Medium | AI planner | Planner now has a first Milestone 7 guided-consultant pass, but still needs real model-backed reasoning, broader destination coverage, and stronger conversation memory. | In progress |
+| Medium | AI planner | Planner now has a first Milestone 7 guided-consultant pass deployed and live-verified, but still needs real model-backed reasoning, broader destination coverage, and stronger conversation memory. | In progress |
 | Medium | AI planner | Keep validating AI suggestion-to-search handoff so every recommended destination exists in the local airport/search mapping. | In progress |
 | Medium | Analytics | Founder dashboard and business reporting are not yet built. | Open |
 | Medium | Production readiness | Deployment health should be checked after each milestone, not assumed from local build success. | Open |
@@ -45,3 +45,4 @@ Last updated: 2026-07-05
 - Affiliate redirect and click tracking are core business infrastructure and need live validation.
 - Secrets must stay out of repo commits.
 - Deployment state should be confirmed against GitHub/Render after meaningful changes.
+- GitHub `main` now has classic branch protection enabled so force pushes and branch deletion are blocked.

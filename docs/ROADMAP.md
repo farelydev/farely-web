@@ -69,6 +69,7 @@ Milestone 6 completion gate: completed. The final-sprint polish was deployed, li
 - Better recommendation explanations: first pass implemented with match scores, category badges, price ranges, flight times, weather vibe, trip type, and a "Why these destinations?" summary.
 - Better conversation memory.
 - Search handoff: first guided pass shows an interpreted intent summary, then fills the existing exact/flexible search form without starting a live search.
+- Delivery state: first guided pass is `Verified` on `https://tryfarely.com` at deployment commit `8a77e7a`.
 
 Goal: help users decide where to go rather than simply filling a search form.
 
@@ -114,9 +115,9 @@ Farely should answer "Where should I go?" The AI should become the product, not 
 
 - Build through Milestone 7.
 - Clarify the planner's main job: inspiration, itinerary planning, or trip refinement.
-- Improve prompt handling around budget, destination style, dates, and constraints: first guided pass implemented.
-- Add better structured outputs for suggested trips: intent summary and richer cards implemented.
-- Connect planner suggestions more clearly to flight search results: first search-form handoff implemented.
+- Improve prompt handling around budget, destination style, dates, and constraints: first guided pass implemented, deployed, and live-verified.
+- Add better structured outputs for suggested trips: intent summary and richer cards implemented, deployed, and live-verified.
+- Connect planner suggestions more clearly to flight search results: first search-form handoff implemented, deployed, and live-verified.
 - Add guardrails so Farely does not overstate booking, payment, or travel-agent responsibilities.
 
 ## Flight Search Roadmap

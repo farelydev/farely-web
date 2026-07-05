@@ -8,20 +8,22 @@ Milestone 7: Farely AI Travel Consultant.
 
 ## Current Production Readiness Status
 
-Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. The Milestone 6 final-sprint polish and the founder-requested Flexible dates/dark-mode adjustment have been pushed, deployed, live-verified on `https://tryfarely.com`, and founder/Product-approved through a fresh `MVP Factory` ChatGPT project chat on 2026-07-05. Milestone 7 has started locally with the first guided AI Travel Consultant improvement; production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
+Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. The Milestone 6 final-sprint polish and the founder-requested Flexible dates/dark-mode adjustment have been pushed, deployed, live-verified on `https://tryfarely.com`, and founder/Product-approved through a fresh `MVP Factory` ChatGPT project chat on 2026-07-05. Milestone 7 has started with the first guided AI Travel Consultant improvement pushed, deployed, and live-verified on `https://tryfarely.com`; production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
 
-Delivery state rule: work is only complete when it is `Implemented`, `Deployed`, and `Verified` on the live production site. The current security hardening has reached `Verified` on `https://tryfarely.com`.
+Delivery state rule: work is only complete when it is `Implemented`, `Deployed`, and `Verified` on the live production site. The current Milestone 7 guided AI planner pass has reached `Verified` on `https://tryfarely.com`.
 
 ## Latest Deployment / Commit
 
 - Branch: `main`
+- Latest verified Milestone 7 guided AI planner deployment commit: `8a77e7a`
 - Latest Flexible dates naming and dark-mode polish implementation commit: `c882fd3`
 - Latest verified Milestone 6 final-sprint implementation commit: `2b1c86e`
 - Latest Milestone 7 guided AI planner implementation commit: `783a841`
-- Latest pushed handoff/docs commit: `c10ff5f`
+- Latest pushed handoff/docs commit before final status cleanup: `8a77e7a`
 - Latest verified security-hardening commit: `0739d9b`
 - Deployment source: GitHub `farelydev/farely-web` on `main`
-- Live verification: `https://tryfarely.com` served the new Flexible dates/dark-mode frontend bundle, the live 390px dark-mode smoke check passed with no old feature-name or beta wording visible, `/api/debug/amadeus` returned `404`, bad-origin CORS was not reflected, Helmet security headers were present, exact-date and flexible searches returned live Amadeus results, and `/api/deals/flight` returned a tracked `302` partner redirect.
+- Live verification: `https://tryfarely.com` served the Milestone 7 guided planner update at commit `8a77e7a`; `/api/health` reported `demoFallbackEnabled:false`; exact-date `/api/flights` returned live Amadeus return offers; `/api/flexible` returned live Amadeus flexible-day data; `/api/deals/flight` returned a tracked `302` partner redirect; the live planner prompt `3 nights somewhere romantic under £250 flights` asked only for timing, defaulted to London, returned Lisbon/Rome-style recommendation cards, showed the interpreted trip intent, and `Find flights` filled London -> Lisbon without starting a live search.
+- GitHub protection: classic branch protection is enabled for `main`; force pushes and branch deletion are not allowed.
 
 ## What Is Working
 
@@ -53,7 +55,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 - Production affiliate partner approval/configuration is not yet fully confirmed in this repo.
 - Click tracking needs ongoing validation against live traffic and analytics requirements.
 - Founder analytics should move out of the public app into a private dashboard with proper authentication.
-- AI trip-planning experience is now the active Milestone 7 focus; it still needs real model-backed reasoning, broader destination coverage, and more conversation memory after this guided first pass.
+- AI trip-planning experience is now the active Milestone 7 focus; the first guided pass is live-verified, but it still needs real model-backed reasoning, broader destination coverage, and more conversation memory.
 - Founder/admin dashboard is not yet built.
 - Production deployment health should be rechecked after each feature milestone.
 - These memory docs are initialized and should be updated after every completed milestone.
@@ -65,7 +67,8 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 - `support@tryfarely.com`, `privacy@tryfarely.com`, `security@tryfarely.com`, and `noreply@tryfarely.com` should not be advertised until Cloudflare Email Routing or a real mailbox provider is configured for each alias.
 - Real affiliate monetisation depends on partner approval, configured redirect templates, and reliable click metadata.
 - The founder-to-ChatGPT handoff was previously manual; this docs system now reduces that risk but needs discipline after each milestone.
+- GitHub SSH was repaired on this Mac with a dedicated Farely Codex SSH key, and `main` is now protected against force pushes and deletion.
 
 ## Recommended Next Engineering Priority
 
-Next engineering priority: deploy and live-verify the first Milestone 7 AI Travel Consultant pass, then continue improving recommendation quality and conversation memory.
+Next engineering priority: continue Milestone 7 by improving recommendation quality and conversation memory now that the first guided AI Travel Consultant pass is live-verified.

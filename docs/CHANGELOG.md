@@ -17,7 +17,10 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - Local Chrome QA passed on 2026-07-05: `cheap sunny weekend in Europe in August under £250 flights` asked only for nights, returned 4 destination cards, showed `From London`, `august 2026`, `3 nights`, `Under £250`, and `Find flights` filled London -> Lisbon without starting a live search.
   - Local 390px in-app Browser QA passed on 2026-07-05: `3 nights somewhere romantic under £250 flights` asked only for timing, returned 4 destination cards, showed no horizontal overflow, and logged no console warnings/errors.
 - Pushed to GitHub:
-  - Publishing through the GitHub connector because local SSH returned `Permission denied (publickey)` and HTTPS had no configured username/credential helper.
+  - Yes, pushed to GitHub `main` after adding a dedicated Farely Codex SSH key to GitHub.
+  - Render auto-deployed commit `8a77e7a` and marked it live.
+  - Live verification passed on 2026-07-05: `/api/health` reported fallback off, exact-date `/api/flights` returned live Amadeus return offers, `/api/flexible` returned live Amadeus flexible-day data, `/api/deals/flight` returned a tracked `302`, and the live planner prompt `3 nights somewhere romantic under £250 flights` filled London -> Lisbon after returning recommendation cards.
+  - GitHub `main` now has classic branch protection enabled, with force pushes and branch deletion blocked.
 
 ## 2026-07-03
 

@@ -4,7 +4,7 @@ Last updated: 2026-07-05
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely Milestone 6 is now founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05. Codex has started Milestone 7: Farely AI Travel Consultant, with a first guided AI planner pass implemented locally and ready for commit/push/deployment verification.
+Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05. Codex has started Milestone 7: Farely AI Travel Consultant. The first guided AI planner pass is now implemented, pushed, deployed on Render, and live-verified on `https://tryfarely.com`.
 
 New ChatGPT decision, 2026-07-05:
 - Avoid the slow old `Farely Product Strategy` thread.
@@ -31,6 +31,7 @@ What was completed:
 - Recommendation output now shows an interpreted trip-intent summary such as `From London`, `august 2026`, `3 nights`, `Under £250`.
 - Lisbon and Rome-style romantic/city suggestions were added, and Lisbon was added to the local airport lookup so the search-form handoff works.
 - `Find flights` still fills the search form first for review and does not start a live search automatically.
+- GitHub SSH was repaired with a dedicated Farely Codex SSH key, the local commits were pushed to `main`, Render auto-deployed commit `8a77e7a`, and GitHub `main` now has classic branch protection enabled so force pushes and branch deletion are blocked.
 - Product naming changed from `Cheapest Month` to `Flexible dates` across the main search tab, menu, AI chip, planner title, search summary, and results header.
 - Flexible Dates copy now explains: choose a month and Farely will help compare the cheapest travel dates within that period.
 - The visible month-card badge now says `Lowest guide price` instead of reusing the old feature name.
@@ -55,10 +56,10 @@ What was completed:
 - AI planner recommendations now detect requested destinations such as Bosnia/Sarajevo, include the requested destination first where possible, show a 2.8s analysing state, use visual recommendation cards with match scores and trip details, explain why alternatives were suggested, and populate the search form for user review before live search.
 
 What was not completed:
-- The Milestone 7 guided AI planner pass is not deployed or live-verified yet.
 - Cloudflare dashboard settings still need manual verification: Full (strict), WAF/security level, TLS settings, and relevant security modes.
 - Founder/admin analytics has not yet moved to a separate authenticated dashboard.
 - `USE_DEMO_FALLBACK=false` is now active on Render and verified by the live `/api/health` endpoint.
+- Milestone 7 still needs real model-backed reasoning, broader destination coverage, and stronger conversation memory.
 
 Files changed:
 - `src/App.jsx`
@@ -78,6 +79,7 @@ Build/lint/test status:
 - `npm run lint` passed on 2026-07-05 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
 - Local Chrome QA passed on 2026-07-05 for the prompt `cheap sunny weekend in Europe in August under £250 flights`: the planner asked only for nights, returned 4 destination cards, showed the interpreted trip intent, and `Find flights` filled London -> Lisbon without starting a live search.
 - Local 390px in-app Browser QA passed on 2026-07-05 for the prompt `3 nights somewhere romantic under £250 flights`: the planner asked only for timing, returned 4 destination cards, showed no horizontal overflow, and logged no console warnings/errors.
+- Live verification passed on 2026-07-05 at Render deployment commit `8a77e7a`: `https://tryfarely.com/api/health` reported `demoFallbackEnabled:false`; exact-date `/api/flights` returned live Amadeus return offers; `/api/flexible` returned live Amadeus flexible-day data; `/api/deals/flight` returned a tracked `302`; and the live planner prompt `3 nights somewhere romantic under £250 flights` asked only for timing, defaulted to London, returned Lisbon/Rome-style recommendation cards, showed the interpreted trip intent, and `Find flights` filled London -> Lisbon without starting a live search.
 - `npm run build` passed on 2026-07-03 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
 - `npm run lint` passed on 2026-07-03 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
 - In-app Browser QA was attempted, but the `iab` browser backend was unavailable; bootstrap troubleshooting showed only a Chrome extension backend, so local Playwright with system Chrome was used as the fallback.
@@ -97,12 +99,14 @@ Build/lint/test status:
 - Planner QA passed locally on 2026-07-03: a Bosnia under-£300 prompt showed the analysing state, put Bosnia first with the highest match score, explained alternatives, and populated `London -> Sarajevo` without starting a live search.
 
 GitHub status:
-- Publishing through the GitHub connector because local SSH returned `Permission denied (publickey)` and HTTPS had no configured username/credential helper.
+- Pushed to GitHub `main` after repairing SSH with a dedicated Farely Codex key.
+- GitHub `main` has classic branch protection enabled; force pushes and branch deletion are blocked.
 
 Branch:
 - `main`
 
 Commit hash:
+- Verified Milestone 7 deployment commit: `8a77e7a`.
 - Latest Milestone 7 guided AI planner implementation: `783a841`.
 - Latest Flexible dates naming and dark mode polish implementation: `c882fd3`.
 - Milestone 6 final-sprint polish: `2b1c86e`.
@@ -110,7 +114,7 @@ Commit hash:
 - Verified deployment commit: `0739d9b`
 
 Recommended next product decision:
-- After this commit is deployed, verify the live AI planner flow on `https://tryfarely.com`, then continue Milestone 7 recommendation quality and conversation memory work.
+- Continue Milestone 7 recommendation quality and conversation memory work now that the first guided AI planner pass is live-verified.
 
 Questions for ChatGPT:
 - After live verification, should the next Milestone 7 increment be broader destination coverage, conversation memory, or a real model-backed planner endpoint?
