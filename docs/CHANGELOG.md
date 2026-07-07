@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-07
 
-- Commit hash: pending commit from this run
+- Commit hash: `35c47fe`
 - What changed:
   - Improved Milestone 7 conversation memory in the AI planner.
   - The planner now merges natural follow-up corrections after recommendations appear, including origin, timing/month, budget, trip length, trip style, and requested destination.
@@ -15,9 +15,10 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - In-app Browser desktop QA passed on 2026-07-07: `3 nights somewhere romantic under £250 flights` -> `August 2026` -> `Actually from Manchester and I want Bosnia in November under £300` updated the summary to `From Manchester`, `november 2026`, `3 nights`, `Under £300`, moved Bosnia first, and logged no console warnings/errors.
   - In-app Browser 390px mobile QA passed on 2026-07-07 with the same correction flow, no horizontal overflow, and no console warnings/errors.
 - Pushed to GitHub:
-  - Pending.
+  - Yes, pushed to GitHub `main` on 2026-07-07.
 - Deployment/live verification:
-  - Pending Render deployment and `https://tryfarely.com` verification.
+  - Verified on `https://tryfarely.com` on 2026-07-07. The live page served `assets/index-D7hUWsZ2.js`, the correction flow updated the summary to `From Manchester`, `november 2026`, `3 nights`, `Under £300`, Bosnia ranked first, and no console warnings/errors were logged.
+  - Live `/api/health` reported `demoFallbackEnabled:false`; exact-date `/api/flights` returned live Amadeus offers; `/api/flexible` returned live Amadeus cheapest-day data; `/api/deals/flight` returned a tracked `302`.
 
 ## 2026-07-05
 

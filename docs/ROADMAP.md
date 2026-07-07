@@ -67,9 +67,9 @@ Milestone 6 completion gate: completed. The final-sprint polish was deployed, li
 - Ski planner.
 - Better follow-up questions: first guided pass asks the single most important missing question, defaulting origin to London when not specified.
 - Better recommendation explanations: first pass implemented with match scores, category badges, price ranges, flight times, weather vibe, trip type, and a "Why these destinations?" summary.
-- Better conversation memory: first follow-up correction pass implemented locally so users can update origin, timing, budget, or requested destination after recommendations and get re-ranked cards.
+- Better conversation memory: first follow-up correction pass verified live so users can update origin, timing, budget, or requested destination after recommendations and get re-ranked cards.
 - Search handoff: first guided pass shows an interpreted intent summary, then fills the existing exact/flexible search form without starting a live search.
-- Delivery state: first guided pass is `Verified` on `https://tryfarely.com` at deployment commit `8a77e7a`; follow-up correction memory pass is `Implemented` locally and awaiting push/deployment/live verification.
+- Delivery state: first guided pass is `Verified` on `https://tryfarely.com` at deployment commit `8a77e7a`; follow-up correction memory pass is `Verified` on `https://tryfarely.com` at implementation commit `35c47fe`.
 
 Goal: help users decide where to go rather than simply filling a search form.
 

@@ -13,7 +13,7 @@ Last updated: 2026-07-07
 | Medium | Security | Founder/admin analytics still exists inside the public app surface and should move to a separate private dashboard with proper authentication. | Open |
 | Medium | UX | Milestone 6 filters drawer passed local desktop/mobile QA and live mobile render smoke validation; broader route/browser QA remains useful. | In progress |
 | Medium | UX | Airport selection and return-to-same-airport filter behavior need production-data verification. | In progress |
-| Medium | AI planner | Planner now has a first Milestone 7 guided-consultant pass deployed and live-verified, and a local follow-up correction memory pass implemented; it still needs real model-backed reasoning and broader destination coverage. | In progress |
+| Medium | AI planner | Planner now has the first Milestone 7 guided-consultant pass and follow-up correction memory pass deployed and live-verified; it still needs real model-backed reasoning and broader destination coverage. | In progress |
 | Medium | AI planner | Keep validating AI suggestion-to-search handoff so every recommended destination exists in the local airport/search mapping. | In progress |
 | Medium | Analytics | Founder dashboard and business reporting are not yet built. | Open |
 | Medium | Production readiness | Deployment health should be checked after each milestone, not assumed from local build success. | Open |
@@ -30,7 +30,7 @@ Last updated: 2026-07-07
 - CTA wording has been changed to `Check partner deal`; validate click-through tracking after deployment.
 - Keep affiliate disclosure visible without making the UI feel cluttered.
 - Continue validating the AI planner with real user prompts so requested destinations are not silently replaced by unrelated alternatives and new recommendations fill supported search routes.
-- After deployment, live-verify that post-recommendation corrections such as `Actually from Manchester and I want Bosnia in November under £300` update the interpreted intent and keep Bosnia first.
+- Post-recommendation corrections such as `Actually from Manchester and I want Bosnia in November under £300` were live-verified; continue testing more real user prompt variations.
 
 ## API / Provider Limitations
 

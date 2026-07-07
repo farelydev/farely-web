@@ -8,14 +8,14 @@ Milestone 7: Farely AI Travel Consultant.
 
 ## Current Production Readiness Status
 
-Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. The Milestone 6 final-sprint polish and the founder-requested Flexible dates/dark-mode adjustment have been pushed, deployed, live-verified on `https://tryfarely.com`, and founder/Product-approved through a fresh `MVP Factory` ChatGPT project chat on 2026-07-05. Milestone 7 has started with the first guided AI Travel Consultant improvement pushed, deployed, and live-verified on `https://tryfarely.com`; the latest local Milestone 7 conversation-memory increment lets the planner merge natural follow-up corrections into the same trip intent and has passed local build, lint, desktop browser QA, and 390px mobile browser QA. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
+Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. The Milestone 6 final-sprint polish and the founder-requested Flexible dates/dark-mode adjustment have been pushed, deployed, live-verified on `https://tryfarely.com`, and founder/Product-approved through a fresh `MVP Factory` ChatGPT project chat on 2026-07-05. Milestone 7 has started with the first guided AI Travel Consultant improvement pushed, deployed, and live-verified on `https://tryfarely.com`; the latest Milestone 7 conversation-memory increment lets the planner merge natural follow-up corrections into the same trip intent and has now been pushed, deployed, and live-verified. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
 
-Delivery state rule: work is only complete when it is `Implemented`, `Deployed`, and `Verified` on the live production site. The first Milestone 7 guided AI planner pass has reached `Verified` on `https://tryfarely.com`; the latest conversation-memory increment is `Implemented` locally and still needs GitHub push, deployment, and live verification.
+Delivery state rule: work is only complete when it is `Implemented`, `Deployed`, and `Verified` on the live production site. The first Milestone 7 guided AI planner pass has reached `Verified` on `https://tryfarely.com`; the latest conversation-memory increment is also `Verified` on `https://tryfarely.com`.
 
 ## Latest Deployment / Commit
 
 - Branch: `main`
-- Latest local Milestone 7 conversation-memory implementation: pending commit from 2026-07-07 run
+- Latest verified Milestone 7 conversation-memory implementation commit: `35c47fe`
 - Latest verified Milestone 7 guided AI planner deployment commit: `8a77e7a`
 - Latest Flexible dates naming and dark-mode polish implementation commit: `c882fd3`
 - Latest verified Milestone 6 final-sprint implementation commit: `2b1c86e`
@@ -23,7 +23,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 - Latest pushed handoff/docs commit before final status cleanup: `8a77e7a`
 - Latest verified security-hardening commit: `0739d9b`
 - Deployment source: GitHub `farelydev/farely-web` on `main`
-- Live verification: `https://tryfarely.com` served the Milestone 7 guided planner update at commit `8a77e7a`; `/api/health` reported `demoFallbackEnabled:false`; exact-date `/api/flights` returned live Amadeus return offers; `/api/flexible` returned live Amadeus flexible-day data; `/api/deals/flight` returned a tracked `302` partner redirect; the live planner prompt `3 nights somewhere romantic under £250 flights` asked only for timing, defaulted to London, returned Lisbon/Rome-style recommendation cards, showed the interpreted trip intent, and `Find flights` filled London -> Lisbon without starting a live search.
+- Live verification: `https://tryfarely.com` served the Milestone 7 conversation-memory bundle `assets/index-D7hUWsZ2.js`; `/api/health` reported `demoFallbackEnabled:false`; exact-date `/api/flights` returned live Amadeus return offers; `/api/flexible` returned live Amadeus flexible-day data; `/api/deals/flight` returned a tracked `302` partner redirect; and the live planner correction flow `3 nights somewhere romantic under £250 flights` -> `August 2026` -> `Actually from Manchester and I want Bosnia in November under £300` updated the summary to Manchester/November/Under £300 and ranked Bosnia first.
 - GitHub protection: classic branch protection is enabled for `main`; force pushes and branch deletion are not allowed.
 
 ## What Is Working
@@ -57,7 +57,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 - Production affiliate partner approval/configuration is not yet fully confirmed in this repo.
 - Click tracking needs ongoing validation against live traffic and analytics requirements.
 - Founder analytics should move out of the public app into a private dashboard with proper authentication.
-- AI trip-planning experience is now the active Milestone 7 focus; the first guided pass is live-verified and the latest local follow-up correction memory pass is implemented, but it still needs real model-backed reasoning and broader destination coverage.
+- AI trip-planning experience is now the active Milestone 7 focus; the first guided pass and follow-up correction memory pass are live-verified, but it still needs real model-backed reasoning and broader destination coverage.
 - Founder/admin dashboard is not yet built.
 - Production deployment health should be rechecked after each feature milestone.
 - These memory docs are initialized and should be updated after every completed milestone.
@@ -73,4 +73,4 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 
 ## Recommended Next Engineering Priority
 
-Next engineering priority: push and live-verify the Milestone 7 conversation-memory increment, then continue broader destination coverage and real model-backed planner reasoning.
+Next engineering priority: continue Milestone 7 with broader destination coverage or real model-backed planner reasoning.
