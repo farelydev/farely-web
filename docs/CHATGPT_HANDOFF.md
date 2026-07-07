@@ -1,10 +1,10 @@
 # ChatGPT Handoff
 
-Last updated: 2026-07-05
+Last updated: 2026-07-07
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05. Codex has started Milestone 7: Farely AI Travel Consultant. The first guided AI planner pass is now implemented, pushed, deployed on Render, and live-verified on `https://tryfarely.com`.
+Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05. Codex has started Milestone 7: Farely AI Travel Consultant. The first guided AI planner pass is implemented, pushed, deployed on Render, and live-verified on `https://tryfarely.com`. The latest Milestone 7 increment improves conversation memory locally: after recommendation cards appear, a user can type a natural correction such as `Actually from Manchester and I want Bosnia in November under £300`, and the planner updates the intent summary and re-ranks Bosnia first.
 
 New ChatGPT decision, 2026-07-05:
 - Avoid the slow old `Farely Product Strategy` thread.
@@ -22,6 +22,9 @@ Temporary Render retry note, 2026-07-03 05:50 BST:
 - Request for ChatGPT: please give Codex the single next plan/task to tick off next, so Codex knows exactly what to work on after this verification.
 
 What was completed:
+- Milestone 7 conversation-memory increment implemented locally: post-recommendation corrections now merge into the same planner intent instead of being ignored.
+- The planner now updates origin, timing/month, budget, trip length, style, and requested destination from natural follow-up messages after recommendation cards are already visible.
+- Local browser QA confirmed the correction flow updates the summary to `From Manchester`, `november 2026`, `3 nights`, `Under £300`, keeps Bosnia first, and does not start a live search automatically.
 - The withheld ChatGPT handoff was sent successfully in a new `MVP Factory` project chat.
 - Milestone 6 has been founder/Product-approved as complete.
 - Milestone 7 has started with the first guided AI Travel Consultant pass.
@@ -56,12 +59,19 @@ What was completed:
 - AI planner recommendations now detect requested destinations such as Bosnia/Sarajevo, include the requested destination first where possible, show a 2.8s analysing state, use visual recommendation cards with match scores and trip details, explain why alternatives were suggested, and populate the search form for user review before live search.
 
 What was not completed:
+- The 2026-07-07 conversation-memory increment has not yet been pushed, deployed, or live-verified on `https://tryfarely.com` at the time of this handoff update.
 - Cloudflare dashboard settings still need manual verification: Full (strict), WAF/security level, TLS settings, and relevant security modes.
 - Founder/admin analytics has not yet moved to a separate authenticated dashboard.
 - `USE_DEMO_FALLBACK=false` is now active on Render and verified by the live `/api/health` endpoint.
 - Milestone 7 still needs real model-backed reasoning, broader destination coverage, and stronger conversation memory.
 
 Files changed:
+- `src/components/PlannerModal.jsx`
+- `docs/PROJECT_STATUS.md`
+- `docs/ROADMAP.md`
+- `docs/KNOWN_ISSUES.md`
+- `docs/CHANGELOG.md`
+- `docs/CHATGPT_HANDOFF.md`
 - `src/App.jsx`
 - `src/data/airports.js`
 - `src/components/Header.jsx`
@@ -75,6 +85,10 @@ Files changed:
 - `docs/CHATGPT_HANDOFF.md`
 
 Build/lint/test status:
+- `npm run build` passed on 2026-07-07 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
+- `npm run lint` passed on 2026-07-07 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
+- In-app Browser desktop QA passed on 2026-07-07 for the correction flow: `3 nights somewhere romantic under £250 flights` -> `August 2026` -> `Actually from Manchester and I want Bosnia in November under £300`; summary updated to Manchester/November/Under £300, Bosnia ranked first, and no console warnings/errors were logged.
+- In-app Browser 390px mobile QA passed on 2026-07-07 for the same correction flow with no horizontal overflow and no console warnings/errors.
 - `npm run build` passed on 2026-07-05 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
 - `npm run lint` passed on 2026-07-05 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
 - Local Chrome QA passed on 2026-07-05 for the prompt `cheap sunny weekend in Europe in August under £250 flights`: the planner asked only for nights, returned 4 destination cards, showed the interpreted trip intent, and `Find flights` filled London -> Lisbon without starting a live search.
@@ -99,6 +113,7 @@ Build/lint/test status:
 - Planner QA passed locally on 2026-07-03: a Bosnia under-£300 prompt showed the analysing state, put Bosnia first with the highest match score, explained alternatives, and populated `London -> Sarajevo` without starting a live search.
 
 GitHub status:
+- 2026-07-07 conversation-memory increment: pending commit/push.
 - Pushed to GitHub `main` after repairing SSH with a dedicated Farely Codex key.
 - GitHub `main` has classic branch protection enabled; force pushes and branch deletion are blocked.
 
@@ -106,6 +121,7 @@ Branch:
 - `main`
 
 Commit hash:
+- 2026-07-07 conversation-memory increment: pending commit from this run.
 - Verified Milestone 7 deployment commit: `8a77e7a`.
 - Latest Milestone 7 guided AI planner implementation: `783a841`.
 - Latest Flexible dates naming and dark mode polish implementation: `c882fd3`.
@@ -114,7 +130,7 @@ Commit hash:
 - Verified deployment commit: `0739d9b`
 
 Recommended next product decision:
-- Continue Milestone 7 recommendation quality and conversation memory work now that the first guided AI planner pass is live-verified.
+- After the conversation-memory increment is pushed and live-verified, choose whether the next Milestone 7 increment should be broader destination coverage or a real model-backed planner endpoint.
 
 Questions for ChatGPT:
-- After live verification, should the next Milestone 7 increment be broader destination coverage, conversation memory, or a real model-backed planner endpoint?
+- After live verification of the correction-memory increment, should Codex prioritise broader destination coverage or a real model-backed planner endpoint?

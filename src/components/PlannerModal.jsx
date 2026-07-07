@@ -493,6 +493,47 @@ function responseToIntent(questionKey, value) {
   return {};
 }
 
+function mergeIntentAnswer(currentIntent, value, questionKey, mode) {
+  const clean = String(value || "").trim();
+  const parsed = parsePrompt(clean, mode);
+  const answerIntent = responseToIntent(questionKey, clean);
+  const merged = {
+    ...currentIntent,
+    ...answerIntent,
+  };
+
+  if (!questionKey || questionKey === "timing") {
+    if (!parsed.originInferred) {
+      merged.origin = parsed.origin;
+      merged.originInferred = false;
+    }
+    if (parsed.timing) merged.timing = parsed.timing;
+    if (parsed.flexMonth) {
+      merged.flexMonth = parsed.flexMonth;
+      merged.monthLabel = parsed.monthLabel;
+    }
+    if (parsed.nights) merged.nights = parsed.nights;
+    if (parsed.budget) merged.budget = `Under £${parsed.budget}`;
+    if (parsed.umrahStart) merged.umrahStart = parsed.umrahStart;
+    if (parsed.tripFormat) merged.tripFormat = parsed.tripFormat;
+    if (parsed.requestedDestinationId) {
+      merged.requestedDestinationId = parsed.requestedDestinationId;
+      merged.requestedDestinationName = parsed.requestedDestinationName;
+    }
+  }
+
+  const styleUpdates = [...(parsed.styleTags || []), ...(parsed.tripFormat ? [normalizeStyle(parsed.tripFormat)] : [])];
+  if (questionKey === "style") styleUpdates.push(normalizeStyle(clean));
+  if (questionKey === "tripFormat") styleUpdates.push(normalizeStyle(clean));
+  if (styleUpdates.length > 0) {
+    merged.style = [...new Set([...(merged.style || []), ...styleUpdates].filter(Boolean))];
+  }
+
+  merged.tags = [...new Set([...(merged.tags || []), ...(parsed.tags || [])].filter(Boolean))];
+
+  return merged;
+}
+
 function originCodeFromIntent(origin) {
   const value = String(origin || "").toLowerCase();
   if (value.includes("manchester")) return "MAN";
@@ -579,18 +620,7 @@ export default function PlannerModal({
     const clean = String(value || "").trim();
     if (!clean || isAnalyzing) return;
 
-    const nextIntent = {
-      ...intent,
-      ...responseToIntent(question?.key, clean),
-    };
-    if (question?.key === "timing") {
-      const parsedTiming = parsePrompt(clean, effectiveMode);
-      if (parsedTiming.flexMonth) {
-        nextIntent.flexMonth = parsedTiming.flexMonth;
-        nextIntent.monthLabel = parsedTiming.monthLabel;
-      }
-      if (parsedTiming.timing) nextIntent.timing = parsedTiming.timing;
-    }
+    const nextIntent = mergeIntentAnswer(intent, clean, question?.key, effectiveMode);
     const followingQuestion = nextQuestion(nextIntent);
 
     setIntent(nextIntent);

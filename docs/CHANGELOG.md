@@ -2,6 +2,23 @@
 
 This changelog tracks completed Farely milestones and whether they were pushed to GitHub.
 
+## 2026-07-07
+
+- Commit hash: pending commit from this run
+- What changed:
+  - Improved Milestone 7 conversation memory in the AI planner.
+  - The planner now merges natural follow-up corrections after recommendations appear, including origin, timing/month, budget, trip length, trip style, and requested destination.
+  - A correction such as `Actually from Manchester and I want Bosnia in November under £300` now updates the interpreted trip summary and re-ranks Bosnia first instead of keeping the old recommendation context.
+- Checks run:
+  - `npm run build` passed on 2026-07-07 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
+  - `npm run lint` passed on 2026-07-07 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
+  - In-app Browser desktop QA passed on 2026-07-07: `3 nights somewhere romantic under £250 flights` -> `August 2026` -> `Actually from Manchester and I want Bosnia in November under £300` updated the summary to `From Manchester`, `november 2026`, `3 nights`, `Under £300`, moved Bosnia first, and logged no console warnings/errors.
+  - In-app Browser 390px mobile QA passed on 2026-07-07 with the same correction flow, no horizontal overflow, and no console warnings/errors.
+- Pushed to GitHub:
+  - Pending.
+- Deployment/live verification:
+  - Pending Render deployment and `https://tryfarely.com` verification.
+
 ## 2026-07-05
 
 - Commit hash: `783a841`
