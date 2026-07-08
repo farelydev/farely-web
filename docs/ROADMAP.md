@@ -86,7 +86,7 @@ Turn the current analytics page into Farely Control Centre.
 ## Milestone 9: Production Readiness
 
 - Production provider.
-- SEO.
+- SEO: first foundations patch implemented locally on 2026-07-08 with homepage metadata, canonical/social tags, `robots.txt`, and `sitemap.xml`; deploy and live-verify before adding route or destination pages.
 - Security.
 - Performance.
 - Accessibility.

@@ -4,6 +4,22 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-08
 
+- Commit hash: pending until commit.
+- What changed:
+  - Added the approved SEO foundations patch.
+  - Replaced the default Vite title/favicon reference with Farely-specific title, description, canonical, social preview, and brand favicon metadata.
+  - Added a real `robots.txt` and `sitemap.xml` so search engines do not receive the app shell for those SEO files.
+  - Added lightweight dynamic metadata for legal and support pages after the React app loads.
+- Checks run:
+  - `npm run build` passed on 2026-07-08 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
+  - `npm run lint` passed on 2026-07-08 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
+- Pushed to GitHub:
+  - Pending.
+- Deployment/live verification:
+  - Pending.
+
+## 2026-07-08
+
 - Commit hash: `ad5664c`
 - What changed:
   - Improved the Milestone 7 ski planner path.

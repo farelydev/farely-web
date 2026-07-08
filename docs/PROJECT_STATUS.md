@@ -8,7 +8,7 @@ Milestone 7: Farely AI Travel Consultant.
 
 ## Current Production Readiness Status
 
-Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. The Milestone 6 final-sprint polish and the founder-requested Flexible dates/dark-mode adjustment have been pushed, deployed, live-verified on `https://tryfarely.com`, and founder/Product-approved through a fresh `MVP Factory` ChatGPT project chat on 2026-07-05. Milestone 7 has started with the first guided AI Travel Consultant improvement pushed, deployed, and live-verified on `https://tryfarely.com`; the conversation-memory increment lets the planner merge natural follow-up corrections into the same trip intent and has also been pushed, deployed, and live-verified. The latest Milestone 7 ski-planner increment adds first-pass ski trip recommendations for Sofia, Geneva, and Innsbruck, and has been pushed, deployed, and live-verified on `https://tryfarely.com`. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
+Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. The Milestone 6 final-sprint polish and the founder-requested Flexible dates/dark-mode adjustment have been pushed, deployed, live-verified on `https://tryfarely.com`, and founder/Product-approved through a fresh `MVP Factory` ChatGPT project chat on 2026-07-05. Milestone 7 has started with the first guided AI Travel Consultant improvement pushed, deployed, and live-verified on `https://tryfarely.com`; the conversation-memory increment lets the planner merge natural follow-up corrections into the same trip intent and has also been pushed, deployed, and live-verified. The latest Milestone 7 ski-planner increment adds first-pass ski trip recommendations for Sofia, Geneva, and Innsbruck, and has been pushed, deployed, and live-verified on `https://tryfarely.com`. The first SEO foundations patch has been implemented locally with proper page metadata, a real `robots.txt`, and a real `sitemap.xml`; deployment and live verification are pending until the commit is pushed and Render serves the new build. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
 
 Delivery state rule: work is only complete when it is `Implemented`, `Deployed`, and `Verified` on the live production site. The first Milestone 7 guided AI planner pass has reached `Verified` on `https://tryfarely.com`; the conversation-memory increment is also `Verified` on `https://tryfarely.com`; the ski-planner increment is also `Verified` on `https://tryfarely.com`.
 
@@ -26,6 +26,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 - Deployment source: GitHub `farelydev/farely-web` on `main`
 - Live verification: `https://tryfarely.com` served the Milestone 7 ski-planner bundle `assets/index-B3-SoQkm.js`; `/api/health` reported `demoFallbackEnabled:false`; exact-date `/api/flights` returned live Amadeus London-to-Sofia offers; `/api/flexible` returned live Amadeus London-to-Sofia flexible-day data; `/api/deals/flight` returned a tracked `302` partner redirect; and the live planner prompt `4 nights ski trip in January under £300` returned Sofia, Geneva, and Innsbruck, then selecting Sofia filled London -> Sofia in Flexible dates for January 2027 without starting live search.
 - GitHub protection: classic branch protection is enabled for `main`; force pushes and branch deletion are not allowed.
+- Pending SEO foundations patch: implemented locally on 2026-07-08; GitHub push, Render deployment, and live verification still need to complete.
 
 ## What Is Working
 
@@ -47,6 +48,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 - The AI planner can now merge natural follow-up corrections after recommendations appear, such as changing origin, timing, budget, or requested destination, then re-rank the destination cards without starting a live search.
 - The AI planner now has a first-pass ski planner path: ski prompts can recommend Sofia, Geneva, and Innsbruck, then fill the existing Flexible dates search form for review before live search.
 - Farely uses a server-controlled affiliate redirect architecture.
+- Basic SEO foundations now exist locally: descriptive homepage metadata, canonical/social tags, dynamic legal/support page metadata, `robots.txt`, and `sitemap.xml`.
 - Production security hardening now disables the public Amadeus debug endpoint, restricts production CORS to the Farely domains, removes URL/localStorage analytics-token handling, adds Helmet security headers, and removes `X-Powered-By`.
 - Legal/affiliate disclosure pages and notices exist.
 - `info@tryfarely.com` is the only public business email that should be shown until more aliases are verified.
@@ -61,6 +63,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 - Founder analytics should move out of the public app into a private dashboard with proper authentication.
 - AI trip-planning experience is now the active Milestone 7 focus; the first guided pass, follow-up correction memory pass, and first ski-planner increment are live-verified, but it still needs real model-backed reasoning and broader destination coverage.
 - Founder/admin dashboard is not yet built.
+- SEO route/destination pages and the first cheap flexible flights explainer are not built yet; the approved next SEO step is to verify foundations first.
 - Production deployment health should be rechecked after each feature milestone.
 - These memory docs are initialized and should be updated after every completed milestone.
 
@@ -75,4 +78,4 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 
 ## Recommended Next Engineering Priority
 
-Next engineering priority: continue Milestone 7 with broader destination coverage or real model-backed planner reasoning.
+Next engineering priority: after SEO foundations are deployed and live-verified, continue Milestone 7 with broader destination coverage or real model-backed planner reasoning.

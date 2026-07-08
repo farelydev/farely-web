@@ -31,6 +31,52 @@ import {
 const HERO_BG =
   "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2200&q=70";
 
+const DEFAULT_SEO = {
+  title: "Farely | AI flight search and cheap flexible flights",
+  description:
+    "Farely helps travellers compare flight ideas, exact dates, and cheap flexible flights with AI-guided trip planning.",
+  path: "/",
+};
+
+function setMetaTag(selector, attributes) {
+  let el = document.head.querySelector(selector);
+  if (!el) {
+    el = document.createElement("meta");
+    document.head.appendChild(el);
+  }
+
+  Object.entries(attributes).forEach(([name, value]) => {
+    el.setAttribute(name, value);
+  });
+}
+
+function syncPageSeo(page, pathname) {
+  const seo = page
+    ? {
+        title: `${page.title} | Farely`,
+        description: page.intro,
+        path: pathname,
+      }
+    : DEFAULT_SEO;
+  const url = `https://tryfarely.com${seo.path === "/" ? "/" : seo.path}`;
+
+  document.title = seo.title;
+  setMetaTag('meta[name="description"]', { name: "description", content: seo.description });
+  setMetaTag('meta[property="og:title"]', { property: "og:title", content: seo.title });
+  setMetaTag('meta[property="og:description"]', { property: "og:description", content: seo.description });
+  setMetaTag('meta[property="og:url"]', { property: "og:url", content: url });
+  setMetaTag('meta[name="twitter:title"]', { name: "twitter:title", content: seo.title });
+  setMetaTag('meta[name="twitter:description"]', { name: "twitter:description", content: seo.description });
+
+  let canonical = document.head.querySelector('link[rel="canonical"]');
+  if (!canonical) {
+    canonical = document.createElement("link");
+    canonical.setAttribute("rel", "canonical");
+    document.head.appendChild(canonical);
+  }
+  canonical.setAttribute("href", url);
+}
+
 export default function App() {
   const legalPage = getLegalPage(window.location.pathname);
 
@@ -82,6 +128,10 @@ export default function App() {
     { from: "London", to: "Paris", date: todayPlus(20) },
     { from: "Paris", to: "Istanbul", date: todayPlus(24) },
   ]);
+
+  useEffect(() => {
+    syncPageSeo(legalPage, window.location.pathname);
+  }, [legalPage]);
 
   const showReturn = tripType === "return";
   const showMulti = tripType === "multicity";
