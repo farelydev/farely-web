@@ -64,12 +64,12 @@ Milestone 6 completion gate: completed. The final-sprint polish was deployed, li
 - Umrah mode: core launch use case, first-pass prompt routing and questions implemented.
 - Beach planner: first guided pass implemented through warm/beach ranking.
 - City break planner: first guided pass implemented through city/romantic/food ranking.
-- Ski planner: first pass implemented locally with Sofia, Geneva, and Innsbruck recommendation cards and existing Flexible dates handoff; deployment/live verification pending.
+- Ski planner: first pass implemented, pushed, deployed, and live-verified with Sofia, Geneva, and Innsbruck recommendation cards and existing Flexible dates handoff.
 - Better follow-up questions: first guided pass asks the single most important missing question, defaulting origin to London when not specified.
 - Better recommendation explanations: first pass implemented with match scores, category badges, price ranges, flight times, weather vibe, trip type, and a "Why these destinations?" summary.
 - Better conversation memory: first follow-up correction pass verified live so users can update origin, timing, budget, or requested destination after recommendations and get re-ranked cards.
 - Search handoff: first guided pass shows an interpreted intent summary, then fills the existing exact/flexible search form without starting a live search.
-- Delivery state: first guided pass is `Verified` on `https://tryfarely.com` at deployment commit `8a77e7a`; follow-up correction memory pass is `Verified` on `https://tryfarely.com` at implementation commit `35c47fe`; ski-planner first pass is `Implemented` locally and awaiting GitHub push/deployment/live verification.
+- Delivery state: first guided pass is `Verified` on `https://tryfarely.com` at deployment commit `8a77e7a`; follow-up correction memory pass is `Verified` on `https://tryfarely.com` at implementation commit `35c47fe`; ski-planner first pass is `Verified` on `https://tryfarely.com` at implementation commit `ad5664c`.
 
 Goal: help users decide where to go rather than simply filling a search form.
 
@@ -118,7 +118,7 @@ Farely should answer "Where should I go?" The AI should become the product, not 
 - Improve prompt handling around budget, destination style, dates, and constraints: first guided pass implemented, deployed, and live-verified.
 - Add better structured outputs for suggested trips: intent summary and richer cards implemented, deployed, and live-verified.
 - Connect planner suggestions more clearly to flight search results: first search-form handoff implemented, deployed, and live-verified.
-- Add trip-type-specific destination coverage: ski first pass implemented locally for Sofia, Geneva, and Innsbruck; continue with broader coverage after live verification.
+- Add trip-type-specific destination coverage: ski first pass implemented and live-verified for Sofia, Geneva, and Innsbruck; continue with broader coverage.
 - Add guardrails so Farely does not overstate booking, payment, or travel-agent responsibilities.
 
 ## Flight Search Roadmap

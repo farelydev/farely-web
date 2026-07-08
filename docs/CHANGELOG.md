@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-08
 
-- Commit hash: pending
+- Commit hash: `ad5664c`
 - What changed:
   - Improved the Milestone 7 ski planner path.
   - Added Sofia, Geneva, and Innsbruck as ski-relevant AI recommendation cards.
@@ -15,9 +15,9 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - `npm run lint` passed on 2026-07-08 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
   - In-app Browser local QA passed on 2026-07-08: `4 nights ski trip in January under £300` returned Sofia, Geneva, and Innsbruck recommendation cards, logged no console warnings/errors, and selecting Sofia filled London -> Sofia in Flexible dates for January 2027 without starting live search.
 - Pushed to GitHub:
-  - Pending.
+  - Yes, pushed to GitHub `main` on 2026-07-08.
 - Deployment/live verification:
-  - Pending.
+  - Verified on `https://tryfarely.com` on 2026-07-08. The live page served `assets/index-B3-SoQkm.js`; `4 nights ski trip in January under £300` returned Sofia, Geneva, and Innsbruck recommendation cards; selecting Sofia filled London -> Sofia in Flexible dates for January 2027 without starting live search; `/api/health` reported fallback off; exact-date `/api/flights` and `/api/flexible` returned live Amadeus Sofia data; and `/api/deals/flight` returned a tracked `302`.
 
 ## 2026-07-07
 
