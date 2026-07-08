@@ -4,7 +4,7 @@ Last updated: 2026-07-08
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05. Codex is continuing Milestone 7: Farely AI Travel Consultant. The first guided AI planner pass, conversation-memory increment, and latest ski-planner increment are implemented, pushed, deployed on Render, and live-verified on `https://tryfarely.com`. Founder approved the first SEO foundations patch on 2026-07-08: Codex added Farely-specific title/meta/canonical/social tags, `robots.txt`, and `sitemap.xml` locally. GitHub push, Render deployment, and live verification are still pending for this SEO patch until checks pass.
+Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05. Codex is continuing Milestone 7: Farely AI Travel Consultant. The first guided AI planner pass, conversation-memory increment, and latest ski-planner increment are implemented, pushed, deployed on Render, and live-verified on `https://tryfarely.com`. Founder approved the first SEO foundations patch on 2026-07-08: Codex added Farely-specific title/meta/canonical/social tags, `robots.txt`, and `sitemap.xml`; the patch was pushed, deployed, and live-verified on `https://tryfarely.com`.
 
 New ChatGPT decision, 2026-07-05:
 - Avoid the slow old `Farely Product Strategy` thread.
@@ -22,7 +22,7 @@ Temporary Render retry note, 2026-07-03 05:50 BST:
 - Request for ChatGPT: please give Codex the single next plan/task to tick off next, so Codex knows exactly what to work on after this verification.
 
 What was completed:
-- SEO foundations patch implemented locally: Farely-specific homepage metadata, brand favicon reference, canonical/social preview tags, real `robots.txt`, real `sitemap.xml`, and dynamic metadata for legal/support pages after React loads.
+- SEO foundations patch implemented, pushed, deployed, and live-verified: Farely-specific homepage metadata, brand favicon reference, canonical/social preview tags, real `robots.txt`, real `sitemap.xml`, and dynamic metadata for legal/support pages after React loads.
 - Milestone 7 ski-planner increment implemented, pushed, deployed, and live-verified: ski prompts now produce Sofia, Geneva, and Innsbruck recommendation cards instead of beach alternatives.
 - `Find flights` for the ski planner now fills supported airport mappings for `SOF`, `GVA`, and `INN`.
 - Local and live browser QA confirmed `4 nights ski trip in January under £300` returned ski cards and selecting Sofia filled London -> Sofia in Flexible dates for January 2027 without starting live search.
@@ -63,8 +63,7 @@ What was completed:
 - AI planner recommendations now detect requested destinations such as Bosnia/Sarajevo, include the requested destination first where possible, show a 2.8s analysing state, use visual recommendation cards with match scores and trip details, explain why alternatives were suggested, and populate the search form for user review before live search.
 
 What was not completed:
-- SEO foundations patch has not yet been pushed, deployed, or live-verified.
-- Route pages, destination pages, Umrah SEO pages, and the first cheap flexible flights explainer are not built yet; SEO content should wait until the foundations patch is live.
+- Route pages, destination pages, Umrah SEO pages, and the first cheap flexible flights explainer are not built yet; SEO content should stay small and product-led.
 - Cloudflare dashboard settings still need manual verification: Full (strict), WAF/security level, TLS settings, and relevant security modes.
 - Founder/admin analytics has not yet moved to a separate authenticated dashboard.
 - `USE_DEMO_FALLBACK=false` is now active on Render and verified by the live `/api/health` endpoint.
@@ -102,6 +101,7 @@ Files changed:
 Build/lint/test status:
 - `npm run build` passed for the SEO foundations patch on 2026-07-08 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
 - `npm run lint` passed for the SEO foundations patch on 2026-07-08 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
+- Live SEO verification passed on 2026-07-08: homepage title and bundle updated, `/robots.txt` returned `text/plain`, and `/sitemap.xml` returned `application/xml`.
 - `npm run build` passed on 2026-07-07 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
 - `npm run lint` passed on 2026-07-07 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
 - In-app Browser desktop QA passed on 2026-07-07 for the correction flow: `3 nights somewhere romantic under £250 flights` -> `August 2026` -> `Actually from Manchester and I want Bosnia in November under £300`; summary updated to Manchester/November/Under £300, Bosnia ranked first, and no console warnings/errors were logged.
@@ -132,7 +132,7 @@ Build/lint/test status:
 - Planner QA passed locally on 2026-07-03: a Bosnia under-£300 prompt showed the analysing state, put Bosnia first with the highest match score, explained alternatives, and populated `London -> Sarajevo` without starting a live search.
 
 GitHub status:
-- SEO foundations patch pending commit/push.
+- SEO foundations patch pushed to GitHub `main` on 2026-07-08.
 - 2026-07-07 conversation-memory increment: pushed to GitHub `main`.
 - Pushed to GitHub `main` after repairing SSH with a dedicated Farely Codex key.
 - GitHub `main` has classic branch protection enabled; force pushes and branch deletion are blocked.
@@ -141,7 +141,7 @@ Branch:
 - `main`
 
 Commit hash:
-- SEO foundations patch: pending.
+- SEO foundations patch: `266890a`.
 - 2026-07-07 conversation-memory increment: `35c47fe`.
 - Verified Milestone 7 deployment commit: `8a77e7a`.
 - Latest Milestone 7 guided AI planner implementation: `783a841`.
@@ -151,7 +151,7 @@ Commit hash:
 - Verified deployment commit: `0739d9b`
 
 Recommended next product decision:
-- After SEO foundations are live-verified, choose whether the next Milestone 7 increment should be broader destination coverage or a real model-backed planner endpoint.
+- Choose whether the next Milestone 7 increment should be broader destination coverage or a real model-backed planner endpoint. For SEO, the next small step is one cheap flexible flights explainer tied to the existing search product.
 
 Questions for ChatGPT:
 - Should Codex prioritise broader destination coverage or a real model-backed planner endpoint next?

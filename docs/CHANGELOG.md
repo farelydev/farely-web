@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-08
 
-- Commit hash: pending until commit.
+- Commit hash: `266890a`
 - What changed:
   - Added the approved SEO foundations patch.
   - Replaced the default Vite title/favicon reference with Farely-specific title, description, canonical, social preview, and brand favicon metadata.
@@ -14,9 +14,9 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - `npm run build` passed on 2026-07-08 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
   - `npm run lint` passed on 2026-07-08 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
 - Pushed to GitHub:
-  - Pending.
+  - Yes, pushed to GitHub `main` on 2026-07-08.
 - Deployment/live verification:
-  - Pending.
+  - Verified on `https://tryfarely.com` on 2026-07-08. The live homepage served the new title `Farely | AI flight search and cheap flexible flights` and bundle `assets/index-D-oTNT_f.js`; `/robots.txt` returned `text/plain` with the sitemap directive; `/sitemap.xml` returned `application/xml` with the expected public URLs.
 
 ## 2026-07-08
 

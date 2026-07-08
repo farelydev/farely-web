@@ -16,7 +16,7 @@ Last updated: 2026-07-08
 | Medium | AI planner | Planner now has the first Milestone 7 guided-consultant pass, follow-up correction memory pass, and first ski-planner destination pass deployed and live-verified; it still needs real model-backed reasoning and broader destination coverage. | In progress |
 | Medium | AI planner | Keep validating AI suggestion-to-search handoff so every recommended destination exists in the local airport/search mapping. | In progress |
 | Medium | Analytics | Founder dashboard and business reporting are not yet built. | Open |
-| Medium | SEO | SEO foundations are implemented locally but still need GitHub push, Render deployment, and live verification before adding route or destination pages. | In progress |
+| Medium | SEO | SEO foundations are live-verified; route/destination pages and the first cheap flexible flights explainer are still not built. | Open |
 | Medium | Production readiness | Deployment health should be checked after each milestone, not assumed from local build success. | Open |
 | Low | Documentation | Project memory docs are new and need to be maintained after each milestone. | In progress |
 
@@ -49,4 +49,4 @@ Last updated: 2026-07-08
 - Secrets must stay out of repo commits.
 - Deployment state should be confirmed against GitHub/Render after meaningful changes.
 - GitHub `main` now has classic branch protection enabled so force pushes and branch deletion are blocked.
-- SEO content growth should stay small and product-led: fix indexability first, then add a focused cheap flexible flights explainer before larger route or niche pages.
+- SEO content growth should stay small and product-led: foundations are verified, so the next SEO step should be one focused cheap flexible flights explainer before larger route or niche pages.
