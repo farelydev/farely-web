@@ -1,6 +1,6 @@
 # Farely Known Issues
 
-Last updated: 2026-07-07
+Last updated: 2026-07-08
 
 | Priority | Area | Issue | Status |
 | --- | --- | --- | --- |
@@ -13,7 +13,7 @@ Last updated: 2026-07-07
 | Medium | Security | Founder/admin analytics still exists inside the public app surface and should move to a separate private dashboard with proper authentication. | Open |
 | Medium | UX | Milestone 6 filters drawer passed local desktop/mobile QA and live mobile render smoke validation; broader route/browser QA remains useful. | In progress |
 | Medium | UX | Airport selection and return-to-same-airport filter behavior need production-data verification. | In progress |
-| Medium | AI planner | Planner now has the first Milestone 7 guided-consultant pass and follow-up correction memory pass deployed and live-verified; it still needs real model-backed reasoning and broader destination coverage. | In progress |
+| Medium | AI planner | Planner now has the first Milestone 7 guided-consultant pass and follow-up correction memory pass deployed and live-verified; the first ski-planner destination pass is implemented locally and awaiting live verification; it still needs real model-backed reasoning and broader destination coverage. | In progress |
 | Medium | AI planner | Keep validating AI suggestion-to-search handoff so every recommended destination exists in the local airport/search mapping. | In progress |
 | Medium | Analytics | Founder dashboard and business reporting are not yet built. | Open |
 | Medium | Production readiness | Deployment health should be checked after each milestone, not assumed from local build success. | Open |
@@ -31,6 +31,7 @@ Last updated: 2026-07-07
 - Keep affiliate disclosure visible without making the UI feel cluttered.
 - Continue validating the AI planner with real user prompts so requested destinations are not silently replaced by unrelated alternatives and new recommendations fill supported search routes.
 - Post-recommendation corrections such as `Actually from Manchester and I want Bosnia in November under £300` were live-verified; continue testing more real user prompt variations.
+- Ski prompts now have a local first pass with Sofia, Geneva, and Innsbruck; live-verify after deployment and continue checking that selected ski destinations fill supported search routes.
 
 ## API / Provider Limitations
 

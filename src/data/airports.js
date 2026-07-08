@@ -16,6 +16,9 @@ export const AIRPORTS = [
   { city: "Nice", country: "France", name: "Côte d'Azur", iata: "NCE", tags: ["NCE", "south France", "French Riviera", "sunny"] },
   { city: "Marseille", country: "France", name: "Provence", iata: "MRS", tags: ["MRS", "south France", "Provence"] },
   { city: "Sarajevo", country: "Bosnia and Herzegovina", name: "Sarajevo International", iata: "SJJ", tags: ["SJJ", "Bosnia", "Bosnia and Herzegovina", "halal friendly"] },
+  { city: "Geneva", country: "Switzerland", name: "Geneva", iata: "GVA", tags: ["GVA", "Switzerland", "ski", "Alps", "Chamonix"] },
+  { city: "Innsbruck", country: "Austria", name: "Innsbruck", iata: "INN", tags: ["INN", "Austria", "ski", "Tyrol"] },
+  { city: "Sofia", country: "Bulgaria", name: "Sofia", iata: "SOF", tags: ["SOF", "Bulgaria", "ski", "Bansko", "Borovets"] },
 
   { city: "New York", country: "United States", name: "All airports", iata: "NYC", tags: ["JFK", "EWR", "LGA"] },
   { city: "New York", country: "United States", name: "JFK", iata: "JFK", tags: ["JFK"] },

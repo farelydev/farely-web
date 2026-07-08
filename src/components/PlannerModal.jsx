@@ -32,6 +32,9 @@ const DESTINATION_ALIASES = [
   { id: "paris", terms: ["paris", "france"] },
   { id: "malaga", terms: ["malaga", "spain", "andalusia"] },
   { id: "faro", terms: ["faro", "portugal", "algarve"] },
+  { id: "geneva", terms: ["geneva", "switzerland", "chamonix", "alps"] },
+  { id: "innsbruck", terms: ["innsbruck", "austria", "tyrol", "tirol"] },
+  { id: "sofia", terms: ["sofia", "bulgaria", "bansko", "borovets"] },
   { id: "marrakech", terms: ["marrakech", "morocco"] },
   { id: "antalya", terms: ["antalya", "turkey", "türkiye"] },
   { id: "jeddah", terms: ["jeddah", "makkah", "mecca"] },
@@ -159,6 +162,57 @@ const DESTINATIONS = [
     image: "https://images.unsplash.com/photo-1597212618440-806262de4f6b?auto=format&fit=crop&w=900&q=72",
     reason: "Warm, culturally strong, and usually a better halal-friendly match than a generic European city break.",
     note: "Check hotel location, airport transfers, and live fare rules before booking.",
+  },
+  {
+    id: "geneva",
+    name: "Geneva",
+    country: "Switzerland",
+    code: "GVA",
+    from: "LON",
+    theme: ["ski", "snow", "winter", "nature", "short-break", "weekend"],
+    priceFrom: 95,
+    priceRange: "£80-£220 flights",
+    flightTime: "1h 40m flight",
+    weatherVibe: "Alpine access, winter snow",
+    tripType: "Ski, mountains, short break",
+    category: "Best ski gateway",
+    image: "https://images.unsplash.com/photo-1488342994276-7c3bc0742042?auto=format&fit=crop&w=900&q=72",
+    reason: "Best first ski option because Geneva has frequent UK flights and easy access to French and Swiss resorts.",
+    note: "Check transfer times, lift-pass costs, baggage rules, and snow conditions before booking.",
+  },
+  {
+    id: "innsbruck",
+    name: "Innsbruck",
+    country: "Austria",
+    code: "INN",
+    from: "LON",
+    theme: ["ski", "snow", "winter", "nature", "city", "short-break"],
+    priceFrom: 145,
+    priceRange: "£120-£290 flights",
+    flightTime: "2h flight",
+    weatherVibe: "Mountain city, ski access",
+    tripType: "Ski, snow, alpine city",
+    category: "Best mountain feel",
+    image: "https://images.unsplash.com/photo-1519659528534-7fd733a832a0?auto=format&fit=crop&w=900&q=72",
+    reason: "Good fit when the trip should feel like a proper ski break rather than only a cheap flight gateway.",
+    note: "Some Innsbruck routes are seasonal, so live date checks matter more than the guide price.",
+  },
+  {
+    id: "sofia",
+    name: "Sofia",
+    country: "Bulgaria",
+    code: "SOF",
+    from: "LON",
+    theme: ["ski", "snow", "winter", "cheapmonth", "city"],
+    priceFrom: 90,
+    priceRange: "£75-£210 flights",
+    flightTime: "3h 10m flight",
+    weatherVibe: "Budget ski access",
+    tripType: "Ski, value, city base",
+    category: "Best budget ski",
+    image: "https://images.unsplash.com/photo-1605540436563-5bca919ae766?auto=format&fit=crop&w=900&q=72",
+    reason: "Good budget ski option because Sofia can work as a low-cost gateway to resorts such as Bansko or Borovets.",
+    note: "Check transfer times and snow conditions carefully because the ski resort is not at the airport.",
   },
   {
     id: "antalya",
@@ -401,6 +455,9 @@ function buildRecommendationPlan(intent, mode) {
     if (maxBudget && destination.priceFrom > maxBudget) score -= Math.min(8, Math.ceil((destination.priceFrom - maxBudget) / 45));
     if (promptTags.has("romantic") && destination.theme.includes("romantic")) score += 7;
     if (promptTags.has("food") && destination.theme.includes("food")) score += 4;
+    if (promptTags.has("ski") && destination.theme.includes("ski")) score += 9;
+    if (promptTags.has("snow") && destination.theme.includes("snow")) score += 4;
+    if (promptTags.has("winter") && destination.theme.includes("winter")) score += 4;
     if (promptTags.has("europe") && ["paris", "malaga", "faro", "lisbon", "rome", "bosnia"].includes(destination.id)) score += 3;
     if (promptTags.has("ski") && !destination.theme.includes("ski")) score -= 4;
     if (mode === "weekend" && destination.id === "paris") score += 2;
@@ -424,6 +481,7 @@ function buildRecommendationPlan(intent, mode) {
     .filter((destination) => destination.id !== requestedDestinationId)
     .sort((a, b) => b.score - a.score)
     .filter((destination) => destination.score > -2)
+    .filter((destination) => !promptTags.has("ski") || destination.theme.includes("ski"))
     .slice(0, requested ? limit - 1 : limit);
   const recommendations = requested ? [requested, ...alternatives] : alternatives;
   const requestedNearBudget = requested && maxBudget && requested.priceFrom >= maxBudget * 0.48;

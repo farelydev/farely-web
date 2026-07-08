@@ -2,6 +2,23 @@
 
 This changelog tracks completed Farely milestones and whether they were pushed to GitHub.
 
+## 2026-07-08
+
+- Commit hash: pending
+- What changed:
+  - Improved the Milestone 7 ski planner path.
+  - Added Sofia, Geneva, and Innsbruck as ski-relevant AI recommendation cards.
+  - Added supported local airport mappings for `SOF`, `GVA`, and `INN` so `Find flights` can fill the existing search form.
+  - Tightened ski prompt ranking so ski prompts show ski-relevant cards instead of beach alternatives.
+- Checks run:
+  - `npm run build` passed on 2026-07-08 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
+  - `npm run lint` passed on 2026-07-08 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
+  - In-app Browser local QA passed on 2026-07-08: `4 nights ski trip in January under £300` returned Sofia, Geneva, and Innsbruck recommendation cards, logged no console warnings/errors, and selecting Sofia filled London -> Sofia in Flexible dates for January 2027 without starting live search.
+- Pushed to GitHub:
+  - Pending.
+- Deployment/live verification:
+  - Pending.
+
 ## 2026-07-07
 
 - Commit hash: `35c47fe`

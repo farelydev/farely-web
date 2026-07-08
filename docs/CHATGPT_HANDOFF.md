@@ -1,10 +1,10 @@
 # ChatGPT Handoff
 
-Last updated: 2026-07-07
+Last updated: 2026-07-08
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05. Codex has started Milestone 7: Farely AI Travel Consultant. The first guided AI planner pass is implemented, pushed, deployed on Render, and live-verified on `https://tryfarely.com`. The latest Milestone 7 increment improves conversation memory and is also pushed, deployed, and live-verified: after recommendation cards appear, a user can type a natural correction such as `Actually from Manchester and I want Bosnia in November under £300`, and the planner updates the intent summary and re-ranks Bosnia first.
+Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05. Codex is continuing Milestone 7: Farely AI Travel Consultant. The first guided AI planner pass and the conversation-memory increment are implemented, pushed, deployed on Render, and live-verified on `https://tryfarely.com`. The latest local Milestone 7 increment improves the ski planner path: `4 nights ski trip in January under £300` now returns Sofia, Geneva, and Innsbruck, then selecting Sofia fills the existing Flexible dates search form for review before live search. This ski-planner increment has passed local build/lint/browser QA and is awaiting GitHub push plus live verification.
 
 New ChatGPT decision, 2026-07-05:
 - Avoid the slow old `Farely Product Strategy` thread.
@@ -22,6 +22,9 @@ Temporary Render retry note, 2026-07-03 05:50 BST:
 - Request for ChatGPT: please give Codex the single next plan/task to tick off next, so Codex knows exactly what to work on after this verification.
 
 What was completed:
+- Local Milestone 7 ski-planner increment implemented: ski prompts now produce Sofia, Geneva, and Innsbruck recommendation cards instead of beach alternatives.
+- `Find flights` for the ski planner now fills supported airport mappings for `SOF`, `GVA`, and `INN`.
+- Local browser QA confirmed `4 nights ski trip in January under £300` returned ski cards and selecting Sofia filled London -> Sofia in Flexible dates for January 2027 without starting live search.
 - Milestone 7 conversation-memory increment implemented, pushed, deployed, and live-verified: post-recommendation corrections now merge into the same planner intent instead of being ignored.
 - The planner now updates origin, timing/month, budget, trip length, style, and requested destination from natural follow-up messages after recommendation cards are already visible.
 - Local browser QA confirmed the correction flow updates the summary to `From Manchester`, `november 2026`, `3 nights`, `Under £300`, keeps Bosnia first, and does not start a live search automatically.
@@ -59,6 +62,7 @@ What was completed:
 - AI planner recommendations now detect requested destinations such as Bosnia/Sarajevo, include the requested destination first where possible, show a 2.8s analysing state, use visual recommendation cards with match scores and trip details, explain why alternatives were suggested, and populate the search form for user review before live search.
 
 What was not completed:
+- The ski-planner increment has not yet been pushed, deployed, or live-verified on `https://tryfarely.com`.
 - Cloudflare dashboard settings still need manual verification: Full (strict), WAF/security level, TLS settings, and relevant security modes.
 - Founder/admin analytics has not yet moved to a separate authenticated dashboard.
 - `USE_DEMO_FALLBACK=false` is now active on Render and verified by the live `/api/health` endpoint.
@@ -66,6 +70,7 @@ What was not completed:
 
 Files changed:
 - `src/components/PlannerModal.jsx`
+- `src/data/airports.js`
 - `docs/PROJECT_STATUS.md`
 - `docs/ROADMAP.md`
 - `docs/KNOWN_ISSUES.md`
