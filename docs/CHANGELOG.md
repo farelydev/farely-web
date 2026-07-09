@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-09
 
-- Commit hash: `1c9e3a7`.
+- Commit hash: `426b16d`.
 - What changed:
   - Fixed urgent result-card price clarity for multi-passenger searches.
   - Result cards now lead with the per-person fare and show the total immediately underneath, for example `£216 per person / £649 total for 3 passengers`.

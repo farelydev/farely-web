@@ -15,7 +15,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 ## Latest Deployment / Commit
 
 - Branch: `main`
-- Latest implemented Milestone 6 price clarity / partner-label fix: `1c9e3a7`.
+- Latest implemented Milestone 6 price clarity / partner-label fix: `426b16d`.
 - Latest verified Milestone 6 booking-option implementation: `96c8248`.
 - Latest verified SEO foundations commit: `266890a`
 - Latest verified Milestone 7 ski-planner implementation commit: `ad5664c`
