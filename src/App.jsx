@@ -1623,6 +1623,29 @@ const styles = `
   .fa-legEmptyText{ font-size:13px; font-weight:1000; color:rgba(8,16,35,.58); }
   .fa-offerSignals{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
   .fa-signalChip{ border-radius:999px; padding:6px 10px; background:rgba(255,255,255,.82); border:1px solid rgba(10,20,70,.08); color:rgba(8,16,35,.58); font-size:11px; font-weight:1000; }
+  .fa-bookingOption{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    margin-top:13px;
+    padding:12px;
+    border-radius:14px;
+    border:1px solid rgba(35,95,255,.13);
+    background:linear-gradient(135deg, rgba(35,95,255,.06), rgba(255,255,255,.88));
+  }
+  .fa-bookingOptionKicker{
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:rgba(35,95,255,1);
+    font-weight:1000;
+  }
+  .fa-bookingOptionTitle{ margin-top:3px; font-size:14px; line-height:1.2; color:rgba(8,16,35,.86); font-weight:1000; }
+  .fa-bookingOptionMeta{ margin-top:4px; font-size:11px; line-height:1.35; color:rgba(8,16,35,.56); font-weight:900; }
+  .fa-bookingOptionPrice{ display:flex; flex-direction:column; align-items:flex-end; gap:2px; text-align:right; }
+  .fa-bookingOptionPrice span{ font-size:18px; color:rgba(8,16,35,.92); font-weight:1000; white-space:nowrap; }
+  .fa-bookingOptionPrice small{ max-width:150px; font-size:10px; line-height:1.25; color:rgba(8,16,35,.48); font-weight:900; }
   .fa-offerActions{ display:flex; align-items:center; justify-content:space-between; gap:14px; margin-top:14px; padding-top:12px; border-top:1px solid rgba(10,20,70,.07); }
   .fa-offerTrust{ max-width:470px; font-size:12px; line-height:1.4; font-weight:900; color:rgba(8,16,35,.54); }
   .fa-tip{ padding:12px 14px 14px; font-size:12px; color: rgba(8,16,35,.58); }
@@ -1664,6 +1687,8 @@ const styles = `
     .fa-airlinePrice{ font-size:28px; }
     .fa-offerSignals{ gap:6px; }
     .fa-signalChip{ border-radius:10px; }
+    .fa-bookingOption{ align-items:flex-start; flex-direction:column; }
+    .fa-bookingOptionPrice{ align-items:flex-start; text-align:left; }
   }
 
   .fa-infoSections{ padding: 0 18px 62px; }
@@ -2288,6 +2313,11 @@ const styles = `
     .fa-legAirport{ color:rgba(235,240,255,.74); }
     .fa-legDate{ color:rgba(235,240,255,.48); }
     .fa-signalChip{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.08); color:rgba(235,240,255,.64); }
+    .fa-bookingOption{ background:rgba(120,160,255,.08); border-color:rgba(120,160,255,.16); }
+    .fa-bookingOptionTitle,
+    .fa-bookingOptionPrice span{ color:rgba(235,240,255,.92); }
+    .fa-bookingOptionMeta,
+    .fa-bookingOptionPrice small{ color:rgba(235,240,255,.56); }
     .fa-offerActions{ border-top-color:rgba(255,255,255,.08); }
     .fa-offerTrust{ color:rgba(235,240,255,.58); }
     .fa-tip{ color: rgba(235,240,255,.62); }

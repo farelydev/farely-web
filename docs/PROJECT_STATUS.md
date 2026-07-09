@@ -1,20 +1,21 @@
 # Farely Project Status
 
-Last updated: 2026-07-08
+Last updated: 2026-07-09
 
 ## Current Milestone
 
-Milestone 7: Farely AI Travel Consultant.
+Milestone 6: Search Experience 2.0 provider-comparison polish.
 
 ## Current Production Readiness Status
 
-Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. The Milestone 6 final-sprint polish and the founder-requested Flexible dates/dark-mode adjustment have been pushed, deployed, live-verified on `https://tryfarely.com`, and founder/Product-approved through a fresh `MVP Factory` ChatGPT project chat on 2026-07-05. Milestone 7 has started with the first guided AI Travel Consultant improvement pushed, deployed, and live-verified on `https://tryfarely.com`; the conversation-memory increment lets the planner merge natural follow-up corrections into the same trip intent and has also been pushed, deployed, and live-verified. The latest Milestone 7 ski-planner increment adds first-pass ski trip recommendations for Sofia, Geneva, and Innsbruck, and has been pushed, deployed, and live-verified on `https://tryfarely.com`. The first SEO foundations patch has been pushed, deployed, and live-verified with proper page metadata, a real `robots.txt`, and a real `sitemap.xml`. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
+Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. The Milestone 6 final-sprint polish and the founder-requested Flexible dates/dark-mode adjustment have been pushed, deployed, live-verified on `https://tryfarely.com`, and founder/Product-approved through a fresh `MVP Factory` ChatGPT project chat on 2026-07-05. The current engineering focus has moved back to Milestone 6 provider comparison and booking-path trust, so non-essential AI planner work is paused unless the founder changes direction again. The latest local Milestone 6 increment adds an honest booking-option row to each result card so the current tracked partner redirect looks like a comparison step without pretending multiple live providers are approved. Milestone 7 has already started with a guided AI Travel Consultant pass, conversation-memory increment, and first ski-planner increment pushed, deployed, and live-verified on `https://tryfarely.com`. The first SEO foundations patch has been pushed, deployed, and live-verified with proper page metadata, a real `robots.txt`, and a real `sitemap.xml`. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
 
-Delivery state rule: work is only complete when it is `Implemented`, `Deployed`, and `Verified` on the live production site. The first Milestone 7 guided AI planner pass has reached `Verified` on `https://tryfarely.com`; the conversation-memory increment is also `Verified` on `https://tryfarely.com`; the ski-planner increment is also `Verified` on `https://tryfarely.com`; the first SEO foundations patch is also `Verified` on `https://tryfarely.com`.
+Delivery state rule: work is only complete when it is `Implemented`, `Deployed`, and `Verified` on the live production site. The Milestone 6 booking-option row is currently `Implemented` locally and awaiting push/deployment/live verification. The first Milestone 7 guided AI planner pass has reached `Verified` on `https://tryfarely.com`; the conversation-memory increment is also `Verified` on `https://tryfarely.com`; the ski-planner increment is also `Verified` on `https://tryfarely.com`; the first SEO foundations patch is also `Verified` on `https://tryfarely.com`.
 
 ## Latest Deployment / Commit
 
 - Branch: `main`
+- Latest local Milestone 6 provider-comparison implementation: `01081c2`.
 - Latest verified SEO foundations commit: `266890a`
 - Latest verified Milestone 7 ski-planner implementation commit: `ad5664c`
 - Latest verified Milestone 7 conversation-memory implementation commit: `35c47fe`
@@ -40,6 +41,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 - Flexible dates results now use a guided workflow: choose month, choose travel day, compare flights, then check partner deal.
 - Flight offer results render.
 - Richer result cards now show airline branding, outbound/return sections, full airport labels where known, price, cabin, baggage notes, recommendation badges, and clearer partner CTA wording.
+- Result cards now show a single honest booking-option row for the current tracked partner redirect, with final-fare reminder copy and room for future approved provider choices.
 - A mobile-first filters drawer now exists with quick filters, advanced filter controls, scroll locking, Escape-to-close behavior, and mobile overflow safeguards.
 - Exact-date date selection now keeps the selected departure and return dates visible below the native date inputs.
 - Public copy has been softened where needed, including replacing `Umrah packages` with `Plan Umrah trip`.
@@ -79,4 +81,4 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 
 ## Recommended Next Engineering Priority
 
-Next engineering priority: continue Milestone 7 with broader destination coverage or real model-backed planner reasoning; the next SEO task should stay small, starting with one cheap flexible flights explainer.
+Next engineering priority: finish deploying and live-verifying the Milestone 6 booking-option row, then continue provider-comparison improvements only where the data can be supported honestly.

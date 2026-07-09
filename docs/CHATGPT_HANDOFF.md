@@ -1,10 +1,10 @@
 # ChatGPT Handoff
 
-Last updated: 2026-07-08
+Last updated: 2026-07-09
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05. Codex is continuing Milestone 7: Farely AI Travel Consultant. The first guided AI planner pass, conversation-memory increment, and latest ski-planner increment are implemented, pushed, deployed on Render, and live-verified on `https://tryfarely.com`. Founder approved the first SEO foundations patch on 2026-07-08: Codex added Farely-specific title/meta/canonical/social tags, `robots.txt`, and `sitemap.xml`; the patch was pushed, deployed, and live-verified on `https://tryfarely.com`.
+Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05, but the newest founder direction has moved the active engineering focus back to Milestone 6 provider comparison and booking-path trust. Codex has implemented a small result-card polish: each fare now shows one honest `Booking option` row for the current tracked partner redirect, with source/price/final-fare reminder copy and no claim that multiple live providers are approved yet. Local build, lint, desktop browser QA, and 390px mobile browser QA passed; the change still needs push, deployment, and live verification. Non-essential AI planner work should stay paused unless the founder changes direction again.
 
 New ChatGPT decision, 2026-07-05:
 - Avoid the slow old `Farely Product Strategy` thread.
@@ -22,6 +22,8 @@ Temporary Render retry note, 2026-07-03 05:50 BST:
 - Request for ChatGPT: please give Codex the single next plan/task to tick off next, so Codex knows exactly what to work on after this verification.
 
 What was completed:
+- Milestone 6 provider-comparison polish was implemented locally: result cards now show an honest booking-option row for the current tracked partner redirect.
+- The new copy explains that more provider choices can appear later after additional partners are approved.
 - SEO foundations patch implemented, pushed, deployed, and live-verified: Farely-specific homepage metadata, brand favicon reference, canonical/social preview tags, real `robots.txt`, real `sitemap.xml`, and dynamic metadata for legal/support pages after React loads.
 - Milestone 7 ski-planner increment implemented, pushed, deployed, and live-verified: ski prompts now produce Sofia, Geneva, and Innsbruck recommendation cards instead of beach alternatives.
 - `Find flights` for the ski planner now fills supported airport mappings for `SOF`, `GVA`, and `INN`.
@@ -63,6 +65,8 @@ What was completed:
 - AI planner recommendations now detect requested destinations such as Bosnia/Sarajevo, include the requested destination first where possible, show a 2.8s analysing state, use visual recommendation cards with match scores and trip details, explain why alternatives were suggested, and populate the search form for user review before live search.
 
 What was not completed:
+- The booking-option row has not yet been pushed, deployed, or live-verified.
+- True Skyscanner-style multi-provider price comparison is not built yet because Farely still needs approved providers and reliable partner price data.
 - Route pages, destination pages, Umrah SEO pages, and the first cheap flexible flights explainer are not built yet; SEO content should stay small and product-led.
 - Cloudflare dashboard settings still need manual verification: Full (strict), WAF/security level, TLS settings, and relevant security modes.
 - Founder/admin analytics has not yet moved to a separate authenticated dashboard.
@@ -70,6 +74,13 @@ What was not completed:
 - Milestone 7 still needs real model-backed reasoning, broader destination coverage, and stronger conversation memory.
 
 Files changed:
+- `src/components/ResultsSection.jsx`
+- `src/App.jsx`
+- `docs/PROJECT_STATUS.md`
+- `docs/ROADMAP.md`
+- `docs/KNOWN_ISSUES.md`
+- `docs/CHANGELOG.md`
+- `docs/CHATGPT_HANDOFF.md`
 - `index.html`
 - `src/App.jsx`
 - `public/robots.txt`
@@ -99,6 +110,10 @@ Files changed:
 - `docs/CHATGPT_HANDOFF.md`
 
 Build/lint/test status:
+- `npm run build` passed for the 2026-07-09 booking-option row using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
+- `npm run lint` passed for the 2026-07-09 booking-option row with 1 pre-existing warning in `src/components/LegalPage.jsx`.
+- Local in-app Browser desktop QA passed on `http://127.0.0.1:4173/`: LHR -> IST exact-date search rendered 12 result cards, 12 `Check partner deal` CTAs, and 12 booking-option rows with no console warnings/errors.
+- Local in-app Browser 390px mobile QA passed: the booking-option row and partner CTA stacked cleanly with no horizontal overflow.
 - `npm run build` passed for the SEO foundations patch on 2026-07-08 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
 - `npm run lint` passed for the SEO foundations patch on 2026-07-08 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
 - Live SEO verification passed on 2026-07-08: homepage title and bundle updated, `/robots.txt` returned `text/plain`, and `/sitemap.xml` returned `application/xml`.
@@ -132,6 +147,7 @@ Build/lint/test status:
 - Planner QA passed locally on 2026-07-03: a Bosnia under-£300 prompt showed the analysing state, put Bosnia first with the highest match score, explained alternatives, and populated `London -> Sarajevo` without starting a live search.
 
 GitHub status:
+- 2026-07-09 booking-option row: not pushed yet.
 - SEO foundations patch pushed to GitHub `main` on 2026-07-08.
 - 2026-07-07 conversation-memory increment: pushed to GitHub `main`.
 - Pushed to GitHub `main` after repairing SSH with a dedicated Farely Codex key.
@@ -141,6 +157,7 @@ Branch:
 - `main`
 
 Commit hash:
+- 2026-07-09 booking-option row: `01081c2`.
 - SEO foundations patch: `266890a`.
 - 2026-07-07 conversation-memory increment: `35c47fe`.
 - Verified Milestone 7 deployment commit: `8a77e7a`.
@@ -151,7 +168,7 @@ Commit hash:
 - Verified deployment commit: `0739d9b`
 
 Recommended next product decision:
-- Choose whether the next Milestone 7 increment should be broader destination coverage or a real model-backed planner endpoint. For SEO, the next small step is one cheap flexible flights explainer tied to the existing search product.
+- Keep improving Milestone 6 provider comparison only where Farely has honest data. The next product decision is which real provider/affiliate source should become the second booking option after the current tracked partner route.
 
 Questions for ChatGPT:
-- Should Codex prioritise broader destination coverage or a real model-backed planner endpoint next?
+- Which second provider or affiliate partner should Farely support first for true side-by-side booking choice?

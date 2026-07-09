@@ -215,6 +215,14 @@ function formatPrice(price, currency) {
   return `${symbol}${amount}`;
 }
 
+function providerSourceLabel(source) {
+  const normalized = String(source || "").toLowerCase();
+  if (normalized.includes("amadeus")) return "Live Amadeus fare";
+  if (normalized.includes("demo")) return "Demo fare";
+  if (normalized) return `${source} fare`;
+  return "Partner fare";
+}
+
 function dealUrlWithMetadata(dealUrl, metadata) {
   if (!dealUrl) return "";
 
@@ -815,9 +823,23 @@ export default function ResultsSection({
                         <span className="fa-signalChip">Transparent affiliate links</span>
                       </div>
 
+                      <div className="fa-bookingOption">
+                        <div>
+                          <div className="fa-bookingOptionKicker">Booking option</div>
+                          <div className="fa-bookingOptionTitle">Partner site via Farely</div>
+                          <div className="fa-bookingOptionMeta">
+                            {providerSourceLabel(o?.source || apiSource)} • Redirect tracked by Farely
+                          </div>
+                        </div>
+                        <div className="fa-bookingOptionPrice">
+                          <span>{formatPrice(price, cur)}</span>
+                          <small>check final fare on partner</small>
+                        </div>
+                      </div>
+
                       <div className="fa-offerActions">
                         <div className="fa-offerTrust">
-                          Check baggage, seat rules, and the final live fare before paying.
+                          More provider choices will appear here once additional partners are approved. For now, use this tracked partner route and confirm baggage, seat rules, and final fare before paying.
                         </div>
                         {dealUrl ? (
                           <a className="fa-viewDeal isActive" href={dealUrl} target="_blank" rel="noreferrer">

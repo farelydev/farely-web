@@ -1,19 +1,20 @@
 # Farely Roadmap
 
-Last updated: 2026-07-08
+Last updated: 2026-07-09
 
 ## Current Phase
 
-Milestone-led startup buildout. Current active phase: Milestone 7, Farely AI Travel Consultant.
+Milestone-led startup buildout. Current active phase: Milestone 6, Search Experience 2.0 provider-comparison polish.
 
 Delivery workflow: every milestone must move through `Implemented`, `Deployed`, and `Verified`. Only `Verified` counts as complete.
 
 ## Next Product Milestones
 
-1. Milestone 7: Farely AI Travel Consultant.
-2. Milestone 8: Founder Intelligence Dashboard / Farely Control Centre.
-3. Milestone 9: Production Readiness.
-4. Milestone 10: Travel Platform Expansion.
+1. Milestone 6: Search Experience 2.0 provider-comparison polish.
+2. Milestone 7: Farely AI Travel Consultant.
+3. Milestone 8: Founder Intelligence Dashboard / Farely Control Centre.
+4. Milestone 9: Production Readiness.
+5. Milestone 10: Travel Platform Expansion.
 
 ## Milestone 6: Search Experience 2.0
 
@@ -46,6 +47,7 @@ Current API robustness action:
 - Airport selection filters: first pass implemented from visible result airports.
 - Return-to-same-airport option: first pass implemented.
 - Better CTA wording: implemented as `Check partner deal`.
+- Booking-option comparison row: implemented locally so each fare shows the current tracked partner redirect as a clear booking option, without claiming unapproved multi-provider coverage.
 - Flexible dates UX: product naming has been reverted from `Cheapest Month` to `Flexible dates`; the flow now explains that users choose a month and Farely compares the cheapest travel dates within that period.
 - Mobile date picker clarity: selected departure and return dates stay visible below the native date inputs.
 - Mobile filters drawer: scroll locking, sticky drawer header/actions, quick-filter overflow handling, and no horizontal overflow checks added.

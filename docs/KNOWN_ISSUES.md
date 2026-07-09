@@ -1,6 +1,6 @@
 # Farely Known Issues
 
-Last updated: 2026-07-08
+Last updated: 2026-07-09
 
 | Priority | Area | Issue | Status |
 | --- | --- | --- | --- |
@@ -8,6 +8,7 @@ Last updated: 2026-07-08
 | High | Support/contact | Unverified email aliases must not be published. `info@tryfarely.com` is the only public business email until each alias has a verified receiving route or mailbox. | In progress |
 | High | Affiliate | Production affiliate approval and final partner redirect template need confirmation. | Open |
 | High | Affiliate | `View Deal` click tracking should be validated end to end after each redirect change. | Open |
+| Medium | Affiliate/UX | Result cards now show one honest booking option, but true Skyscanner-style multi-provider comparison still needs approved providers and reliable price data. | In progress |
 | Medium | UX | Flight results and the guided Flexible dates journey passed live smoke validation after the final-sprint polish deployment, and Milestone 6 is founder/Product-approved. Broader route/browser QA remains useful. | In progress |
 | High | Security | Cloudflare SSL/TLS mode and WAF/security settings still need dashboard verification. Live post-deployment headers have been verified. | In progress |
 | Medium | Security | Founder/admin analytics still exists inside the public app surface and should move to a separate private dashboard with proper authentication. | Open |
@@ -29,6 +30,7 @@ Last updated: 2026-07-08
 - Continue validating result cards and the guided Flexible dates flow for quick comparison with real provider data as traffic grows.
 - QA Milestone 6 search filters and airport-selection behavior on more live routes with multiple offers.
 - CTA wording has been changed to `Check partner deal`; validate click-through tracking after deployment.
+- The booking-option row should be live-verified after deployment on a real exact-date search and a Flexible dates selected-day result.
 - Keep affiliate disclosure visible without making the UI feel cluttered.
 - Continue validating the AI planner with real user prompts so requested destinations are not silently replaced by unrelated alternatives and new recommendations fill supported search routes.
 - Post-recommendation corrections such as `Actually from Manchester and I want Bosnia in November under £300` were live-verified; continue testing more real user prompt variations.

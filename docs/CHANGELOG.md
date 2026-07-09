@@ -2,6 +2,23 @@
 
 This changelog tracks completed Farely milestones and whether they were pushed to GitHub.
 
+## 2026-07-09
+
+- Commit hash: `01081c2`.
+- What changed:
+  - Added a small Milestone 6 provider-comparison polish pass to result cards.
+  - Each flight offer now shows a `Booking option` row for the current tracked partner redirect, including source, price, and a reminder to confirm the final fare on the partner site.
+  - The copy stays honest: it makes room for future provider choices but does not claim multiple approved live partners yet.
+- Checks run:
+  - `npm run build` passed on 2026-07-09 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
+  - `npm run lint` passed on 2026-07-09 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
+  - Local in-app Browser QA passed on 2026-07-09 against `http://127.0.0.1:4173/`: LHR -> IST exact-date search rendered 12 result cards, 12 `Check partner deal` CTAs, and 12 booking-option rows with no console warnings/errors.
+  - Local 390px mobile QA passed on 2026-07-09: the booking-option row and partner CTA stacked cleanly with no horizontal overflow.
+- Pushed to GitHub:
+  - Pending.
+- Deployment/live verification:
+  - Pending.
+
 ## 2026-07-08
 
 - Commit hash: `266890a`
