@@ -4,7 +4,7 @@ Last updated: 2026-07-09
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05, but the newest founder direction has moved the active engineering focus back to Milestone 6 provider comparison and booking-path trust. Codex has implemented a small result-card polish: each fare now shows one honest `Booking option` row for the current tracked partner redirect, with source/price/final-fare reminder copy and no claim that multiple live providers are approved yet. Local build, lint, desktop browser QA, and 390px mobile browser QA passed; the change still needs push, deployment, and live verification. Non-essential AI planner work should stay paused unless the founder changes direction again.
+Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05, but the newest founder direction has moved the active engineering focus back to Milestone 6 provider comparison and booking-path trust. Codex implemented, pushed, deployed, and live-verified a small result-card polish: each fare now shows one honest `Booking option` row for the current tracked partner redirect, with source/price/final-fare reminder copy and no claim that multiple live providers are approved yet. Non-essential AI planner work should stay paused unless the founder changes direction again.
 
 New ChatGPT decision, 2026-07-05:
 - Avoid the slow old `Farely Product Strategy` thread.
@@ -22,7 +22,8 @@ Temporary Render retry note, 2026-07-03 05:50 BST:
 - Request for ChatGPT: please give Codex the single next plan/task to tick off next, so Codex knows exactly what to work on after this verification.
 
 What was completed:
-- Milestone 6 provider-comparison polish was implemented locally: result cards now show an honest booking-option row for the current tracked partner redirect.
+- The booking-option row reached `Verified` on `https://tryfarely.com` on 2026-07-09.
+- Milestone 6 provider-comparison polish was implemented, pushed, deployed, and live-verified: result cards now show an honest booking-option row for the current tracked partner redirect.
 - The new copy explains that more provider choices can appear later after additional partners are approved.
 - SEO foundations patch implemented, pushed, deployed, and live-verified: Farely-specific homepage metadata, brand favicon reference, canonical/social preview tags, real `robots.txt`, real `sitemap.xml`, and dynamic metadata for legal/support pages after React loads.
 - Milestone 7 ski-planner increment implemented, pushed, deployed, and live-verified: ski prompts now produce Sofia, Geneva, and Innsbruck recommendation cards instead of beach alternatives.
@@ -65,7 +66,6 @@ What was completed:
 - AI planner recommendations now detect requested destinations such as Bosnia/Sarajevo, include the requested destination first where possible, show a 2.8s analysing state, use visual recommendation cards with match scores and trip details, explain why alternatives were suggested, and populate the search form for user review before live search.
 
 What was not completed:
-- The booking-option row has not yet been pushed, deployed, or live-verified.
 - True Skyscanner-style multi-provider price comparison is not built yet because Farely still needs approved providers and reliable partner price data.
 - Route pages, destination pages, Umrah SEO pages, and the first cheap flexible flights explainer are not built yet; SEO content should stay small and product-led.
 - Cloudflare dashboard settings still need manual verification: Full (strict), WAF/security level, TLS settings, and relevant security modes.
@@ -114,6 +114,7 @@ Build/lint/test status:
 - `npm run lint` passed for the 2026-07-09 booking-option row with 1 pre-existing warning in `src/components/LegalPage.jsx`.
 - Local in-app Browser desktop QA passed on `http://127.0.0.1:4173/`: LHR -> IST exact-date search rendered 12 result cards, 12 `Check partner deal` CTAs, and 12 booking-option rows with no console warnings/errors.
 - Local in-app Browser 390px mobile QA passed: the booking-option row and partner CTA stacked cleanly with no horizontal overflow.
+- Live verification passed on 2026-07-09: `https://tryfarely.com` served `assets/index-DhQawLBs.js`; LHR -> IST exact-date UI rendered 12 result cards, 12 `Check partner deal` CTAs, and 12 booking-option rows with no console warnings/errors; `/api/health` reported fallback off; exact-date `/api/flights` and `/api/flexible` returned Amadeus data; and `/api/deals/flight` returned a tracked `302`.
 - `npm run build` passed for the SEO foundations patch on 2026-07-08 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
 - `npm run lint` passed for the SEO foundations patch on 2026-07-08 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
 - Live SEO verification passed on 2026-07-08: homepage title and bundle updated, `/robots.txt` returned `text/plain`, and `/sitemap.xml` returned `application/xml`.
@@ -147,7 +148,7 @@ Build/lint/test status:
 - Planner QA passed locally on 2026-07-03: a Bosnia under-£300 prompt showed the analysing state, put Bosnia first with the highest match score, explained alternatives, and populated `London -> Sarajevo` without starting a live search.
 
 GitHub status:
-- 2026-07-09 booking-option row: not pushed yet.
+- 2026-07-09 booking-option row pushed to GitHub `main`.
 - SEO foundations patch pushed to GitHub `main` on 2026-07-08.
 - 2026-07-07 conversation-memory increment: pushed to GitHub `main`.
 - Pushed to GitHub `main` after repairing SSH with a dedicated Farely Codex key.
@@ -157,7 +158,7 @@ Branch:
 - `main`
 
 Commit hash:
-- 2026-07-09 booking-option row: `01081c2`.
+- 2026-07-09 booking-option row: `96c8248`.
 - SEO foundations patch: `266890a`.
 - 2026-07-07 conversation-memory increment: `35c47fe`.
 - Verified Milestone 7 deployment commit: `8a77e7a`.

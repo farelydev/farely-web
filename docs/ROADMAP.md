@@ -47,7 +47,7 @@ Current API robustness action:
 - Airport selection filters: first pass implemented from visible result airports.
 - Return-to-same-airport option: first pass implemented.
 - Better CTA wording: implemented as `Check partner deal`.
-- Booking-option comparison row: implemented locally so each fare shows the current tracked partner redirect as a clear booking option, without claiming unapproved multi-provider coverage.
+- Booking-option comparison row: implemented, pushed, deployed, and live-verified so each fare shows the current tracked partner redirect as a clear booking option, without claiming unapproved multi-provider coverage.
 - Flexible dates UX: product naming has been reverted from `Cheapest Month` to `Flexible dates`; the flow now explains that users choose a month and Farely compares the cheapest travel dates within that period.
 - Mobile date picker clarity: selected departure and return dates stay visible below the native date inputs.
 - Mobile filters drawer: scroll locking, sticky drawer header/actions, quick-filter overflow handling, and no horizontal overflow checks added.

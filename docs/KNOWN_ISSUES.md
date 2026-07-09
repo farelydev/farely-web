@@ -30,7 +30,7 @@ Last updated: 2026-07-09
 - Continue validating result cards and the guided Flexible dates flow for quick comparison with real provider data as traffic grows.
 - QA Milestone 6 search filters and airport-selection behavior on more live routes with multiple offers.
 - CTA wording has been changed to `Check partner deal`; validate click-through tracking after deployment.
-- The booking-option row should be live-verified after deployment on a real exact-date search and a Flexible dates selected-day result.
+- The booking-option row was live-verified after deployment on an exact-date result card; continue checking it on more routes and Flexible dates selected-day results.
 - Keep affiliate disclosure visible without making the UI feel cluttered.
 - Continue validating the AI planner with real user prompts so requested destinations are not silently replaced by unrelated alternatives and new recommendations fill supported search routes.
 - Post-recommendation corrections such as `Actually from Manchester and I want Bosnia in November under £300` were live-verified; continue testing more real user prompt variations.
