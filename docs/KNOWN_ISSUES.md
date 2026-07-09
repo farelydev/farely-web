@@ -28,7 +28,7 @@ Last updated: 2026-07-09
 ## UX Issues
 
 - Continue validating result cards and the guided Flexible dates flow for quick comparison with real provider data as traffic grows.
-- Live-verify the multi-passenger price clarity fix after deployment so examples like a 3-passenger fare show `per person` first and total price second.
+- Continue checking multi-passenger result cards across more routes so `per person` and total-price copy stays clear with varied fare amounts.
 - QA Milestone 6 search filters and airport-selection behavior on more live routes with multiple offers.
 - CTA wording has been changed to `Check partner deal`; validate click-through tracking after deployment.
 - The booking-option row was live-verified after deployment on an exact-date result card; continue checking it on more routes and Flexible dates selected-day results.

@@ -19,7 +19,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 - Pushed to GitHub:
   - Yes, pushed to GitHub `main` on 2026-07-09.
 - Deployment/live verification:
-  - Pending deployment and live verification on `https://tryfarely.com`.
+  - Verified on `https://tryfarely.com` on 2026-07-09. The live page served `assets/index-Oq1Z0OPr.js`; the bundle contained `Price per person`, final-fare trust copy, and commission disclosure copy; live `/api/flights` returned `dealPartnerName:"Aviasales"` for a 3-passenger LHR -> IST return search; `/api/deals/flight` returned a tracked `302` to Aviasales; and live in-app Browser QA rendered a 3-passenger exact-date card with `Price per person`, total price for 3 passengers, `Book via Aviasales`, and no console warnings/errors.
 
 - Commit hash: `96c8248`.
 - What changed:
