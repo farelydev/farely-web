@@ -4,6 +4,23 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-09
 
+- Commit hash: `1c9e3a7`.
+- What changed:
+  - Fixed urgent result-card price clarity for multi-passenger searches.
+  - Result cards now lead with the per-person fare and show the total immediately underneath, for example `£216 per person / £649 total for 3 passengers`.
+  - Booking rows and CTAs now use the configured partner name, so the current route says `Book via Aviasales` instead of implying a generic multi-partner booking path.
+  - Added clear trust copy: prices are estimated live fares, final fare is confirmed on the partner site, and Farely may earn commission at no extra cost to the user.
+  - Kept future partner expansion honest: Kiwi, Trip.com, WayAway, Expedia, and additional Travelpayouts partners are mentioned only as future approved/configured partners, not live price options.
+- Checks run:
+  - `npm run build` passed on 2026-07-09 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
+  - `npm run lint` passed on 2026-07-09 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
+  - Local API smoke passed on 2026-07-09 against `http://localhost:4010/api/flights` for a 3-passenger LHR -> IST return search: response included total GBP price and `dealPartnerName:"Aviasales"`.
+  - Local in-app Browser QA passed on 2026-07-09 against `http://127.0.0.1:4010/`: a 3-passenger exact-date search rendered result cards showing `Price per person`, total price for 3 passengers, `Book via Aviasales`, and the new trust/commission copy.
+- Pushed to GitHub:
+  - Yes, pushed to GitHub `main` on 2026-07-09.
+- Deployment/live verification:
+  - Pending deployment and live verification on `https://tryfarely.com`.
+
 - Commit hash: `96c8248`.
 - What changed:
   - Added a small Milestone 6 provider-comparison polish pass to result cards.

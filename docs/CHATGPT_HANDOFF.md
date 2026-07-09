@@ -4,7 +4,7 @@ Last updated: 2026-07-09
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05, but the newest founder direction has moved the active engineering focus back to Milestone 6 provider comparison and booking-path trust. Codex implemented, pushed, deployed, and live-verified a small result-card polish: each fare now shows one honest `Booking option` row for the current tracked partner redirect, with source/price/final-fare reminder copy and no claim that multiple live providers are approved yet. Non-essential AI planner work should stay paused unless the founder changes direction again.
+Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05, but the newest founder direction has moved the active engineering focus back to Milestone 6 provider comparison and booking-path trust. Codex implemented and pushed an urgent fix for misleading multi-passenger pricing and redirect labelling: result cards now show per-person price first, total price directly underneath, `Book via Aviasales` for the current configured redirect, and clear final-fare/commission trust copy. It still needs deployment and live verification. True multi-provider comparison is still not built because Farely needs approved providers and reliable partner price data before showing Kiwi, Trip.com, WayAway, Expedia, or other partner rows. Non-essential AI planner work should stay paused unless the founder changes direction again.
 
 New ChatGPT decision, 2026-07-05:
 - Avoid the slow old `Farely Product Strategy` thread.
@@ -22,6 +22,10 @@ Temporary Render retry note, 2026-07-03 05:50 BST:
 - Request for ChatGPT: please give Codex the single next plan/task to tick off next, so Codex knows exactly what to work on after this verification.
 
 What was completed:
+- Urgent Milestone 6 price/partner-label fix is implemented and pushed: multi-passenger results show per-person price first and total price second.
+- The current booking CTA and booking-option row now use the configured partner name, so the current path says `Book via Aviasales` instead of looking like a generic booking partner.
+- Result cards now include the trust text: prices are estimated live fares, final fare is confirmed on the partner site, and Farely may earn commission at no extra cost.
+- The UI mentions possible future partners such as Kiwi, Trip.com, WayAway, Expedia, or additional Travelpayouts partners only as future approved/configured options, not as live comparative prices.
 - The booking-option row reached `Verified` on `https://tryfarely.com` on 2026-07-09.
 - Milestone 6 provider-comparison polish was implemented, pushed, deployed, and live-verified: result cards now show an honest booking-option row for the current tracked partner redirect.
 - The new copy explains that more provider choices can appear later after additional partners are approved.
@@ -67,6 +71,7 @@ What was completed:
 
 What was not completed:
 - True Skyscanner-style multi-provider price comparison is not built yet because Farely still needs approved providers and reliable partner price data.
+- The new price/partner-label fix has not yet been deployed or live-verified on `https://tryfarely.com`.
 - Route pages, destination pages, Umrah SEO pages, and the first cheap flexible flights explainer are not built yet; SEO content should stay small and product-led.
 - Cloudflare dashboard settings still need manual verification: Full (strict), WAF/security level, TLS settings, and relevant security modes.
 - Founder/admin analytics has not yet moved to a separate authenticated dashboard.
@@ -74,6 +79,14 @@ What was not completed:
 - Milestone 7 still needs real model-backed reasoning, broader destination coverage, and stronger conversation memory.
 
 Files changed:
+- `server.js`
+- `src/App.jsx`
+- `src/components/ResultsSection.jsx`
+- `docs/PROJECT_STATUS.md`
+- `docs/ROADMAP.md`
+- `docs/KNOWN_ISSUES.md`
+- `docs/CHANGELOG.md`
+- `docs/CHATGPT_HANDOFF.md`
 - `src/components/ResultsSection.jsx`
 - `src/App.jsx`
 - `docs/PROJECT_STATUS.md`
@@ -110,6 +123,10 @@ Files changed:
 - `docs/CHATGPT_HANDOFF.md`
 
 Build/lint/test status:
+- `npm run build` passed for the urgent price/partner-label fix on 2026-07-09 using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
+- `npm run lint` passed for the urgent price/partner-label fix on 2026-07-09 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
+- Local API smoke passed on `http://localhost:4010/api/flights`: a 3-passenger LHR -> IST return search returned total GBP fare data and `dealPartnerName:"Aviasales"`.
+- Local in-app Browser QA passed on `http://127.0.0.1:4010/`: a 3-passenger exact-date search rendered `Price per person`, total price for 3 passengers, `Book via Aviasales`, and the final-fare/commission trust copy.
 - `npm run build` passed for the 2026-07-09 booking-option row using `PATH=/Users/inspectorcalls/.nvm/versions/node/v20.20.0/bin:$PATH`.
 - `npm run lint` passed for the 2026-07-09 booking-option row with 1 pre-existing warning in `src/components/LegalPage.jsx`.
 - Local in-app Browser desktop QA passed on `http://127.0.0.1:4173/`: LHR -> IST exact-date search rendered 12 result cards, 12 `Check partner deal` CTAs, and 12 booking-option rows with no console warnings/errors.

@@ -215,6 +215,18 @@ function formatPrice(price, currency) {
   return `${symbol}${amount}`;
 }
 
+function formatPerPersonPrice(price, currency, passengers) {
+  const value = parseMoneyToNumber(price);
+  const passengerCount = Math.max(1, Number(passengers) || 1);
+  if (!Number.isFinite(value)) return "";
+  return formatPrice(value / passengerCount, currency);
+}
+
+function passengerLabel(passengers) {
+  const passengerCount = Math.max(1, Number(passengers) || 1);
+  return `${passengerCount} ${passengerCount === 1 ? "passenger" : "passengers"}`;
+}
+
 function providerSourceLabel(source) {
   const normalized = String(source || "").toLowerCase();
   if (normalized.includes("amadeus")) return "Live Amadeus fare";
@@ -389,7 +401,7 @@ function ItineraryDetail({ label, itinerary }) {
 export default function ResultsSection({
   didSearch, routeTitle, resultsTab, setResultsTab, apiWarning, shownOffers, apiSource,
   pricePills, flexMode, selectedFlexDate, onPickFlexDay, isSearching, exactMode,
-  routeFromCode, routeToCode, departDate, tripType, returnDate, flexMonth, cabin,
+  routeFromCode, routeToCode, departDate, tripType, returnDate, flexMonth, cabin, passengers,
 }) {
   const isMultiCity = tripType === "multicity";
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -756,6 +768,10 @@ export default function ResultsSection({
                 const carrierCode = carrierLabel(o);
                 const carrier = airlineBrand(carrierCode);
                 const displayedCabin = o?.cabin || cabin || "Economy";
+                const totalPrice = formatPrice(price, cur);
+                const perPersonPrice = formatPerPersonPrice(price, cur, passengers);
+                const showPerPerson = Boolean(perPersonPrice);
+                const currentPartnerName = o?.dealPartnerName || "current partner";
                 const outbound = o?.itineraries?.[0] || null;
                 const inbound = o?.itineraries?.[1] || null;
                 const first = firstSegment(o);
@@ -796,9 +812,11 @@ export default function ResultsSection({
                         </div>
 
                         <div className="fa-pricePanel">
-                          <div className="fa-priceLabel">Total price</div>
-                          <div className="fa-airlinePrice">{formatPrice(price, cur)}</div>
-                          <div className="fa-priceSub">{cur} • {displayedCabin}</div>
+                          <div className="fa-priceLabel">Price per person</div>
+                          <div className="fa-airlinePrice">{showPerPerson ? perPersonPrice : totalPrice}</div>
+                          <div className="fa-priceSub">
+                            {showPerPerson ? `${totalPrice} total for ${passengerLabel(passengers)}` : `${cur} • ${displayedCabin}`}
+                          </div>
                         </div>
                       </div>
 
@@ -826,24 +844,28 @@ export default function ResultsSection({
                       <div className="fa-bookingOption">
                         <div>
                           <div className="fa-bookingOptionKicker">Booking option</div>
-                          <div className="fa-bookingOptionTitle">Partner site via Farely</div>
+                          <div className="fa-bookingOptionTitle">Book via {currentPartnerName}</div>
                           <div className="fa-bookingOptionMeta">
                             {providerSourceLabel(o?.source || apiSource)} • Redirect tracked by Farely
                           </div>
                         </div>
                         <div className="fa-bookingOptionPrice">
-                          <span>{formatPrice(price, cur)}</span>
-                          <small>check final fare on partner</small>
+                          <span>
+                            {showPerPerson ? `${perPersonPrice} pp` : totalPrice}
+                          </span>
+                          <small>
+                            {showPerPerson ? `${totalPrice} total` : "check final fare on partner"}
+                          </small>
                         </div>
                       </div>
 
                       <div className="fa-offerActions">
                         <div className="fa-offerTrust">
-                          More provider choices will appear here once additional partners are approved. For now, use this tracked partner route and confirm baggage, seat rules, and final fare before paying.
+                          Prices shown are estimated live fares. Final fare is confirmed on the partner site. Farely may earn commission at no extra cost to you. More partners such as Kiwi, Trip.com, WayAway, Expedia, or additional Travelpayouts partners can be added once approved and configured.
                         </div>
                         {dealUrl ? (
                           <a className="fa-viewDeal isActive" href={dealUrl} target="_blank" rel="noreferrer">
-                            Check partner deal
+                            Book via {currentPartnerName}
                           </a>
                         ) : (
                           <button type="button" className="fa-viewDeal" disabled>

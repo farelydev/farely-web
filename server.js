@@ -66,6 +66,27 @@ const FLIGHT_AFFILIATE_URL = String(process.env.FLIGHT_AFFILIATE_URL || "").trim
 const TRAVELPAYOUTS_MARKER = String(process.env.TRAVELPAYOUTS_MARKER || "").trim();
 const TRAVELPAYOUTS_HOST = String(process.env.TRAVELPAYOUTS_HOST || "www.aviasales.com").trim();
 const TRAVELPAYOUTS_SUB_ID = String(process.env.TRAVELPAYOUTS_SUB_ID || "").trim();
+
+function configuredFlightDealPartnerName() {
+  const host = TRAVELPAYOUTS_HOST.toLowerCase();
+  const partner = FLIGHT_DEAL_PARTNER.toLowerCase();
+
+  if (host.includes("aviasales")) return "Aviasales";
+  if (host.includes("wayaway")) return "WayAway";
+  if (host.includes("kiwi")) return "Kiwi";
+  if (host.includes("trip.com")) return "Trip.com";
+  if (host.includes("expedia")) return "Expedia";
+  if (partner.includes("aviasales")) return "Aviasales";
+  if (partner.includes("wayaway")) return "WayAway";
+  if (partner.includes("kiwi")) return "Kiwi";
+  if (partner.includes("trip")) return "Trip.com";
+  if (partner.includes("expedia")) return "Expedia";
+  if (partner.includes("travelpayouts")) return "Travelpayouts partner";
+  if (FLIGHT_AFFILIATE_URL) return "Configured partner";
+  return "Google Flights";
+}
+
+const FLIGHT_DEAL_PARTNER_NAME = configuredFlightDealPartnerName();
 const ADMIN_ANALYTICS_TOKEN = String(process.env.ADMIN_ANALYTICS_TOKEN || "").trim();
 const SUPPORT_TO_EMAIL = String(process.env.SUPPORT_TO_EMAIL || process.env.VITE_SUPPORT_EMAIL || process.env.VITE_CONTACT_EMAIL || "info@tryfarely.com").trim();
 const SUPPORT_FROM_EMAIL = String(process.env.SUPPORT_FROM_EMAIL || "Farely Support <info@tryfarely.com>").trim();
@@ -750,6 +771,7 @@ function simplifyOffers(offers) {
       cabin: cabinClass ? CABIN_LABELS[cabinClass] || cabinClass : null,
       travelClass: cabinClass,
       isDemo: false,
+      dealPartnerName: FLIGHT_DEAL_PARTNER_NAME,
       dealUrl: buildDealUrl({
         origin: outboundFirst?.from,
         destination: outboundLast?.to,
@@ -1352,6 +1374,7 @@ function makeDemoOffers({
       travelClass: normalizeCabinClass(cabin).travelClass,
       isDemo: true,
       demoReason: reason,
+      dealPartnerName: FLIGHT_DEAL_PARTNER_NAME,
       dealUrl: buildDealUrl({
         origin,
         destination,

@@ -8,7 +8,7 @@ Last updated: 2026-07-09
 | High | Support/contact | Unverified email aliases must not be published. `info@tryfarely.com` is the only public business email until each alias has a verified receiving route or mailbox. | In progress |
 | High | Affiliate | Production affiliate approval and final partner redirect template need confirmation. | Open |
 | High | Affiliate | `View Deal` click tracking should be validated end to end after each redirect change. | Open |
-| Medium | Affiliate/UX | Result cards now show one honest booking option, but true Skyscanner-style multi-provider comparison still needs approved providers and reliable price data. | In progress |
+| Medium | Affiliate/UX | Result cards now show one honest booking option and the implemented price clarity fix labels the current configured route as `Book via Aviasales`; true Skyscanner-style multi-provider comparison still needs approved providers and reliable price data. | In progress |
 | Medium | UX | Flight results and the guided Flexible dates journey passed live smoke validation after the final-sprint polish deployment, and Milestone 6 is founder/Product-approved. Broader route/browser QA remains useful. | In progress |
 | High | Security | Cloudflare SSL/TLS mode and WAF/security settings still need dashboard verification. Live post-deployment headers have been verified. | In progress |
 | Medium | Security | Founder/admin analytics still exists inside the public app surface and should move to a separate private dashboard with proper authentication. | Open |
@@ -28,6 +28,7 @@ Last updated: 2026-07-09
 ## UX Issues
 
 - Continue validating result cards and the guided Flexible dates flow for quick comparison with real provider data as traffic grows.
+- Live-verify the multi-passenger price clarity fix after deployment so examples like a 3-passenger fare show `per person` first and total price second.
 - QA Milestone 6 search filters and airport-selection behavior on more live routes with multiple offers.
 - CTA wording has been changed to `Check partner deal`; validate click-through tracking after deployment.
 - The booking-option row was live-verified after deployment on an exact-date result card; continue checking it on more routes and Flexible dates selected-day results.

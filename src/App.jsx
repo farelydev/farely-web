@@ -556,6 +556,7 @@ export default function App() {
         returnDate={returnDate}
         flexMonth={flexMonth}
         cabin={cabin}
+        passengers={passengers}
       />
 
       <section className="fa-infoSections" aria-label="Farely information">
