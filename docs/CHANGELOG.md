@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-10
 
-- Commit hash: `3bd1987`.
+- Commit hash: `d664231`.
 - What changed:
   - Improved Milestone 6 partner-path wording in the Flexible dates results flow.
   - The final Flexible dates workflow step now uses the configured booking partner name after live offers load, for example `Book via Aviasales`.
@@ -15,9 +15,9 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - Live API pre-check passed on 2026-07-10: `https://tryfarely.com/api/health` reported `demoFallbackEnabled:false`; `/api/flexible` returned live Amadeus LHR -> IST travel days; and `/api/deals/flight` returned a tracked `302` Aviasales redirect for a real `GET` request.
   - Local in-app Browser QA passed on 2026-07-10 against `http://127.0.0.1:5173/`: exact-date London -> Doha rendered 12 result cards with `Book via Aviasales`, and Flexible dates rendered enabled travel-day buttons, 12 result cards, and workflow text `Book via Aviasales` with no console warnings/errors.
 - Pushed to GitHub:
-  - Pending until amended commit is pushed.
+  - Yes, pushed to GitHub `main` on 2026-07-10.
 - Deployment/live verification:
-  - Pending after GitHub push and production deployment.
+  - Verified on `https://tryfarely.com` on 2026-07-10. The live page served `assets/index-45zrJkL9.js`; Flexible dates rendered enabled London -> Doha travel-day buttons, 12 result cards, and workflow text `Book via Aviasales` with no console warnings/errors.
 
 ## 2026-07-09
 

@@ -33,6 +33,7 @@ Last updated: 2026-07-10
 - CTA wording now uses the configured booking partner where available; continue validating click-through tracking after deployment.
 - The booking-option row was live-verified after deployment on an exact-date result card; continue checking it on more routes and Flexible dates selected-day results.
 - Flexible dates can still show the broad reliability warning even when live travel-day results render; this is copy/logic debt unless API probes fail.
+- The pre-search Flexible dates hint still uses generic partner wording; the verified post-result workflow step now uses the configured partner name.
 - Keep affiliate disclosure visible without making the UI feel cluttered.
 - Continue validating the AI planner with real user prompts so requested destinations are not silently replaced by unrelated alternatives and new recommendations fill supported search routes.
 - Post-recommendation corrections such as `Actually from Manchester and I want Bosnia in November under £300` were live-verified; continue testing more real user prompt variations.
