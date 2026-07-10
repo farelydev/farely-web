@@ -1,6 +1,6 @@
 # Farely Project Status
 
-Last updated: 2026-07-09
+Last updated: 2026-07-10
 
 ## Current Milestone
 
@@ -8,13 +8,14 @@ Milestone 6: Search Experience 2.0 provider-comparison polish.
 
 ## Current Production Readiness Status
 
-Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. The Milestone 6 final-sprint polish and the founder-requested Flexible dates/dark-mode adjustment have been pushed, deployed, live-verified on `https://tryfarely.com`, and founder/Product-approved through a fresh `MVP Factory` ChatGPT project chat on 2026-07-05. The current engineering focus has moved back to Milestone 6 provider comparison and booking-path trust, so non-essential AI planner work is paused unless the founder changes direction again. The latest Milestone 6 increment fixes multi-passenger price clarity by showing per-person pricing first, showing the total directly underneath, labelling the current redirect as `Book via Aviasales`, and adding final-fare/commission trust copy. It has been pushed, deployed, and live-verified on `https://tryfarely.com`. The previous Milestone 6 booking-option row was pushed, deployed, and live-verified. Milestone 7 has already started with a guided AI Travel Consultant pass, conversation-memory increment, and first ski-planner increment pushed, deployed, and live-verified on `https://tryfarely.com`. The first SEO foundations patch has been pushed, deployed, and live-verified with proper page metadata, a real `robots.txt`, and a real `sitemap.xml`. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
+Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. The Milestone 6 final-sprint polish and the founder-requested Flexible dates/dark-mode adjustment have been pushed, deployed, live-verified on `https://tryfarely.com`, and founder/Product-approved through a fresh `MVP Factory` ChatGPT project chat on 2026-07-05. The current engineering focus has moved back to Milestone 6 provider comparison and booking-path trust, so non-essential AI planner work is paused unless the founder changes direction again. Recent Milestone 6 increments fixed multi-passenger price clarity, labelled the current redirect as `Book via Aviasales`, added final-fare/commission trust copy, and now align the Flexible dates workflow step with the configured booking partner when live offers are available. The price clarity and booking-option row are pushed, deployed, and live-verified on `https://tryfarely.com`; the latest partner-step wording update is implemented and locally verified, with live deployment verification pending after push. Milestone 7 has already started with a guided AI Travel Consultant pass, conversation-memory increment, and first ski-planner increment pushed, deployed, and live-verified on `https://tryfarely.com`. The first SEO foundations patch has been pushed, deployed, and live-verified with proper page metadata, a real `robots.txt`, and a real `sitemap.xml`. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
 
 Delivery state rule: work is only complete when it is `Implemented`, `Deployed`, and `Verified` on the live production site. The multi-passenger price clarity and Aviasales labelling fix is `Verified` on `https://tryfarely.com`. The previous Milestone 6 booking-option row is `Verified` on `https://tryfarely.com`. The first Milestone 7 guided AI planner pass has reached `Verified` on `https://tryfarely.com`; the conversation-memory increment is also `Verified` on `https://tryfarely.com`; the ski-planner increment is also `Verified` on `https://tryfarely.com`; the first SEO foundations patch is also `Verified` on `https://tryfarely.com`.
 
 ## Latest Deployment / Commit
 
 - Branch: `main`
+- Latest implemented Milestone 6 partner-step wording update: `3bd1987`.
 - Latest implemented Milestone 6 price clarity / partner-label fix: `426b16d`.
 - Latest verified Milestone 6 booking-option implementation: `96c8248`.
 - Latest verified SEO foundations commit: `266890a`
@@ -31,6 +32,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 - Live verification: `https://tryfarely.com` served the Milestone 7 ski-planner bundle `assets/index-B3-SoQkm.js`; `/api/health` reported `demoFallbackEnabled:false`; exact-date `/api/flights` returned live Amadeus London-to-Sofia offers; `/api/flexible` returned live Amadeus London-to-Sofia flexible-day data; `/api/deals/flight` returned a tracked `302` partner redirect; and the live planner prompt `4 nights ski trip in January under £300` returned Sofia, Geneva, and Innsbruck, then selecting Sofia filled London -> Sofia in Flexible dates for January 2027 without starting live search.
 - Latest live verification: `https://tryfarely.com` served booking-option bundle `assets/index-DhQawLBs.js`; live LHR -> IST exact-date UI rendered 12 result cards, 12 `Check partner deal` CTAs, and 12 booking-option rows with no console warnings/errors; `/api/health` reported `demoFallbackEnabled:false`; exact-date `/api/flights` returned Amadeus fares; `/api/flexible` returned Amadeus flexible-day data; and `/api/deals/flight` returned a tracked `302`.
 - Latest price clarity live verification: `https://tryfarely.com` served `assets/index-Oq1Z0OPr.js`; live `/api/flights` returned `dealPartnerName:"Aviasales"` for a 3-passenger LHR -> IST return search; `/api/deals/flight` returned a tracked `302` to Aviasales; and live UI QA rendered `Price per person`, total price for 3 passengers, `Book via Aviasales`, and the final-fare/commission trust copy with no console warnings/errors.
+- Latest local verification: `npm run build` passed; `npm run lint` passed with the existing `LegalPage.jsx` warning; local exact-date browser QA rendered 12 London -> Doha result cards with `Book via Aviasales`; local Flexible dates browser QA rendered enabled travel-day buttons, 12 result cards, and workflow text `Book via Aviasales` after a selected travel day.
 - GitHub protection: classic branch protection is enabled for `main`; force pushes and branch deletion are not allowed.
 
 ## What Is Working
@@ -41,11 +43,12 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 - Flexible dates search is implemented on top of the existing flexible-month backend.
 - Flexible dates now runs with demo fallback disabled in production; fallback-off live checks returned Amadeus results, and the API has a visible rate-limit/provider-unavailable response if every live flexible date fails.
 - Cheapest-day results render.
-- Flexible dates results now use a guided workflow: choose month, choose travel day, compare flights, then check partner deal.
+- Flexible dates results now use a guided workflow: choose month, choose travel day, compare flights, then open the configured partner deal.
 - Flight offer results render.
 - Richer result cards now show airline branding, outbound/return sections, full airport labels where known, price, cabin, baggage notes, recommendation badges, and clearer partner CTA wording.
 - Result cards now show a single honest booking-option row for the current tracked partner redirect, with final-fare reminder copy and room for future approved provider choices.
 - Multi-passenger result cards now show per-person pricing first, total price directly underneath, and the configured booking partner name such as `Book via Aviasales`.
+- The Flexible dates result workflow now uses the configured booking partner name after live offers load, so the final step can read `Book via Aviasales` instead of generic partner wording.
 - A mobile-first filters drawer now exists with quick filters, advanced filter controls, scroll locking, Escape-to-close behavior, and mobile overflow safeguards.
 - Exact-date date selection now keeps the selected departure and return dates visible below the native date inputs.
 - Public copy has been softened where needed, including replacing `Umrah packages` with `Plan Umrah trip`.

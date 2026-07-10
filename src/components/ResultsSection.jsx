@@ -425,6 +425,8 @@ export default function ResultsSection({
   );
   const filteredStats = useMemo(() => rankingStats(filteredOffers), [filteredOffers]);
   const hasChosenFlexDate = !flexMode || Boolean(selectedFlexDate);
+  const bookingPartnerName = shownOffers.find((offer) => offer?.dealPartnerName)?.dealPartnerName || "";
+  const partnerStepLabel = bookingPartnerName ? `Book via ${bookingPartnerName}` : "Open partner deal";
   const activeFilterCount = Object.entries(filters).filter(([key, value]) => {
     if (key === "sameReturnAirport") return Boolean(value);
     if (key === "cabinBagOnly") return Boolean(value);
@@ -487,7 +489,7 @@ export default function ResultsSection({
             <span className="isDone">Choose month ✓</span>
             <span className={cx(!selectedFlexDate && "isCurrent", selectedFlexDate && "isDone")}>Choose travel day{selectedFlexDate ? " ✓" : " ←"}</span>
             <span className={cx(selectedFlexDate && "isCurrent")}>Compare flights</span>
-            <span>Check partner deal</span>
+            <span>{partnerStepLabel}</span>
           </div>
         )}
 
@@ -496,7 +498,7 @@ export default function ResultsSection({
             <div>
               <div className="fa-flexStepEyebrow">{selectedFlexDate ? "Step 3" : "Step 2"}</div>
               <h3>{selectedFlexDate ? "Compare flights for your travel day" : "Choose your travel day"}</h3>
-              <p>{selectedFlexDate ? "These are live partner fares for the date you selected. Check the partner deal before booking." : "Tap a date below to compare live flights for that travel day."}</p>
+              <p>{selectedFlexDate ? `These are live partner fares for the date you selected. ${partnerStepLabel} before booking.` : "Tap a date below to compare live flights for that travel day."}</p>
             </div>
             {selectedFlexDate ? <span className="fa-flexSelectedDate">Selected {shortDateLabel(selectedFlexDate)}</span> : null}
           </div>

@@ -1,6 +1,6 @@
 # Farely Known Issues
 
-Last updated: 2026-07-09
+Last updated: 2026-07-10
 
 | Priority | Area | Issue | Status |
 | --- | --- | --- | --- |
@@ -8,7 +8,7 @@ Last updated: 2026-07-09
 | High | Support/contact | Unverified email aliases must not be published. `info@tryfarely.com` is the only public business email until each alias has a verified receiving route or mailbox. | In progress |
 | High | Affiliate | Production affiliate approval and final partner redirect template need confirmation. | Open |
 | High | Affiliate | `View Deal` click tracking should be validated end to end after each redirect change. | Open |
-| Medium | Affiliate/UX | Result cards now show one honest booking option and the implemented price clarity fix labels the current configured route as `Book via Aviasales`; true Skyscanner-style multi-provider comparison still needs approved providers and reliable price data. | In progress |
+| Medium | Affiliate/UX | Result cards and the Flexible dates workflow now use the configured booking partner name where available, such as `Book via Aviasales`; true Skyscanner-style multi-provider comparison still needs approved providers and reliable price data. | In progress |
 | Medium | UX | Flight results and the guided Flexible dates journey passed live smoke validation after the final-sprint polish deployment, and Milestone 6 is founder/Product-approved. Broader route/browser QA remains useful. | In progress |
 | High | Security | Cloudflare SSL/TLS mode and WAF/security settings still need dashboard verification. Live post-deployment headers have been verified. | In progress |
 | Medium | Security | Founder/admin analytics still exists inside the public app surface and should move to a separate private dashboard with proper authentication. | Open |
@@ -30,8 +30,9 @@ Last updated: 2026-07-09
 - Continue validating result cards and the guided Flexible dates flow for quick comparison with real provider data as traffic grows.
 - Continue checking multi-passenger result cards across more routes so `per person` and total-price copy stays clear with varied fare amounts.
 - QA Milestone 6 search filters and airport-selection behavior on more live routes with multiple offers.
-- CTA wording has been changed to `Check partner deal`; validate click-through tracking after deployment.
+- CTA wording now uses the configured booking partner where available; continue validating click-through tracking after deployment.
 - The booking-option row was live-verified after deployment on an exact-date result card; continue checking it on more routes and Flexible dates selected-day results.
+- Flexible dates can still show the broad reliability warning even when live travel-day results render; this is copy/logic debt unless API probes fail.
 - Keep affiliate disclosure visible without making the UI feel cluttered.
 - Continue validating the AI planner with real user prompts so requested destinations are not silently replaced by unrelated alternatives and new recommendations fill supported search routes.
 - Post-recommendation corrections such as `Actually from Manchester and I want Bosnia in November under £300` were live-verified; continue testing more real user prompt variations.
