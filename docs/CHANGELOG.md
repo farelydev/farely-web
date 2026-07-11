@@ -2,6 +2,24 @@
 
 This changelog tracks completed Farely milestones and whether they were pushed to GitHub.
 
+## 2026-07-11
+
+- Commit hash: `648f843`.
+- What changed:
+  - Tightened Milestone 6 Flexible dates availability copy.
+  - Successful `/api/flexible` responses now return `warning:null` unless fallback data or partial day failures actually occur.
+  - The Flexible dates UI no longer creates a default warning message after successful results load.
+  - The pre-search Flexible dates hint now says to confirm the final fare on the partner site.
+- Checks run:
+  - `npm run build` passed on 2026-07-11.
+  - `npm run lint` passed on 2026-07-11 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
+  - Local API smoke passed on `http://localhost:4000/api/flexible`: LON -> DOH in August 2026 returned `source:"amadeus"`, `warning:null`, 3 travel days, 25 best-day offers, and 0 failed/fallback days.
+  - Local Browser QA passed on `http://127.0.0.1:4000/`: Flexible dates rendered travel-day results, 12 booking options, `Book via Aviasales`, no false default warning, no broad limited-warning copy, and no console warnings/errors.
+- Pushed to GitHub:
+  - Pending in this run.
+- Deployment/live verification:
+  - Pending in this run.
+
 ## 2026-07-10
 
 - Commit hash: `d664231`.
