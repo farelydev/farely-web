@@ -16,9 +16,9 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - Local API smoke passed on `http://localhost:4000/api/flexible`: LON -> DOH in August 2026 returned `source:"amadeus"`, `warning:null`, 3 travel days, 25 best-day offers, and 0 failed/fallback days.
   - Local Browser QA passed on `http://127.0.0.1:4000/`: Flexible dates rendered travel-day results, 12 booking options, `Book via Aviasales`, no false default warning, no broad limited-warning copy, and no console warnings/errors.
 - Pushed to GitHub:
-  - Pending in this run.
+  - Yes, pushed to GitHub `main` on 2026-07-11.
 - Deployment/live verification:
-  - Pending in this run.
+  - Verified on `https://tryfarely.com` on 2026-07-11. The live page served `assets/index-BzhpUOY8.js`; `/api/health` reported `demoFallbackEnabled:false`; live `/api/flexible` returned Amadeus LON -> DOH travel-day data with `warning:null`, 3 successful days, 25 best-day offers, and 0 failed/fallback days; live Browser QA rendered 12 offers, 12 booking options, `Book via Aviasales`, no false default warning, no broad limited-warning copy, and no console warnings/errors; an offer-generated `/api/deals/flight` URL returned a tracked `302` to Aviasales.
 
 ## 2026-07-10
 

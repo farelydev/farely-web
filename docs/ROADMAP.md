@@ -50,7 +50,7 @@ Current API robustness action:
 - Booking-option comparison row: implemented, pushed, deployed, and live-verified so each fare shows the current tracked partner redirect as a clear booking option, without claiming unapproved multi-provider coverage.
 - Multi-passenger price clarity: implemented, pushed, deployed, and live-verified so result cards show per-person pricing first, total price directly underneath, and the current configured partner CTA as `Book via Aviasales`.
 - Flexible partner-step wording: implemented and locally verified so Flexible dates shows the configured partner name after offers load, without claiming extra live providers.
-- Flexible availability copy: implemented and locally verified so successful live travel-day results do not show the broad `limited on the live site` warning; fallback and partial-day failures still show a provider-availability note.
+- Flexible availability copy: implemented, pushed, deployed, and live-verified so successful live travel-day results do not show the broad `limited on the live site` warning; fallback and partial-day failures still show a provider-availability note.
 - Flexible dates UX: product naming has been reverted from `Cheapest Month` to `Flexible dates`; the flow now explains that users choose a month and Farely compares the cheapest travel dates within that period.
 - Mobile date picker clarity: selected departure and return dates stay visible below the native date inputs.
 - Mobile filters drawer: scroll locking, sticky drawer header/actions, quick-filter overflow handling, and no horizontal overflow checks added.

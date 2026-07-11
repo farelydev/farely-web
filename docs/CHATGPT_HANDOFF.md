@@ -4,7 +4,7 @@ Last updated: 2026-07-11
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05, but the newest founder direction has moved the active engineering focus back to Milestone 6 provider comparison and booking-path trust. Codex implemented and locally verified a small Flexible dates trust fix: successful live travel-day results no longer show a broad `limited on the live site` warning, and the pre-search hint now tells users to confirm the final fare on the partner site. Local `/api/flexible` for LON -> DOH in August 2026 returned `warning:null`, 3 successful Amadeus travel days, and 25 best-day offers; local Browser QA rendered results with 12 booking options and `Book via Aviasales`. The earlier urgent price/partner-label fix remains live-verified: result cards show per-person price first, total price directly underneath, `Book via Aviasales` for the current configured redirect, and clear final-fare/commission trust copy. True multi-provider comparison is still not built because Farely needs approved providers and reliable partner price data before showing Kiwi, Trip.com, WayAway, Expedia, or other partner rows. Non-essential AI planner work should stay paused unless the founder changes direction again.
+Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05, but the newest founder direction has moved the active engineering focus back to Milestone 6 provider comparison and booking-path trust. Codex implemented, pushed, deployed, and live-verified a small Flexible dates trust fix: successful live travel-day results no longer show a broad `limited on the live site` warning, and the pre-search hint now tells users to confirm the final fare on the partner site. Live `/api/flexible` for LON -> DOH in August 2026 returned `warning:null`, 3 successful Amadeus travel days, and 25 best-day offers; live Browser QA rendered results with 12 booking options and `Book via Aviasales`. The earlier urgent price/partner-label fix remains live-verified: result cards show per-person price first, total price directly underneath, `Book via Aviasales` for the current configured redirect, and clear final-fare/commission trust copy. True multi-provider comparison is still not built because Farely needs approved providers and reliable partner price data before showing Kiwi, Trip.com, WayAway, Expedia, or other partner rows. Non-essential AI planner work should stay paused unless the founder changes direction again.
 
 New ChatGPT decision, 2026-07-05:
 - Avoid the slow old `Farely Product Strategy` thread.
@@ -23,7 +23,7 @@ Temporary Render retry note, 2026-07-03 05:50 BST:
 
 What was completed:
 - Milestone 6 Flexible dates availability copy was tightened in implementation commit `648f843`: clean successful flexible responses return `warning:null`, fallback/partial failures still show an availability note, and the UI no longer creates a default success warning.
-- Local checks passed on 2026-07-11: `npm run build`, `npm run lint` with the existing `LegalPage.jsx` warning, local `/api/flexible`, and local Browser QA against `http://127.0.0.1:4000/`.
+- Local and live checks passed on 2026-07-11: `npm run build`, `npm run lint` with the existing `LegalPage.jsx` warning, local `/api/flexible`, local Browser QA, live `/api/health`, live `/api/flexible`, live Browser QA, and a live offer-generated Aviasales redirect `302`.
 - Milestone 6 partner-path wording was tightened and live-verified: after Flexible dates loads live offers, the progress workflow can now end with `Book via Aviasales` using the configured partner name.
 - Local QA confirmed exact-date London -> Doha rendered 12 result cards with `Book via Aviasales`, and Flexible dates rendered enabled travel-day buttons, 12 result cards, and workflow text `Book via Aviasales`.
 - Urgent Milestone 6 price/partner-label fix is implemented, pushed, deployed, and live-verified: multi-passenger results show per-person price first and total price second.
@@ -74,7 +74,6 @@ What was completed:
 - AI planner recommendations now detect requested destinations such as Bosnia/Sarajevo, include the requested destination first where possible, show a 2.8s analysing state, use visual recommendation cards with match scores and trip details, explain why alternatives were suggested, and populate the search form for user review before live search.
 
 What was not completed:
-- The 2026-07-11 Flexible dates availability-copy fix still needs GitHub push, deployment, and live production verification before it can be called `Verified`.
 - True Skyscanner-style multi-provider price comparison is not built yet because Farely still needs approved providers and reliable partner price data.
 - Route pages, destination pages, Umrah SEO pages, and the first cheap flexible flights explainer are not built yet; SEO content should stay small and product-led.
 - Cloudflare dashboard settings still need manual verification: Full (strict), WAF/security level, TLS settings, and relevant security modes.
