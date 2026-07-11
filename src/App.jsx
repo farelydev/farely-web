@@ -403,10 +403,7 @@ export default function App() {
 
       const json = await fetchJson(`/api/flexible?${params.toString()}`);
 
-      setApiWarning(
-        json?.warning ||
-          "Choose one of the date options below to compare current partner fares."
-      );
+      setApiWarning(json?.warning || "");
       setApiSource(json?.source || "");
 
       const days = Array.isArray(json?.days) ? json.days : [];

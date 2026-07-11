@@ -437,7 +437,7 @@ export default function SearchCard({
               </div>
 
               <div className="fa-dateExplorerHint">
-                Next: choose a travel day, compare flights, then check the partner deal before booking.
+                Next: choose a travel day, compare flights, then confirm the final fare on the partner site.
               </div>
             </div>
           )}
@@ -477,7 +477,7 @@ export default function SearchCard({
 
           {!!apiWarning && !searchError && (
             <div className="fa-providerWarning">
-              <div className="fa-providerWarningTitle">{exactMode ? "Partner price check" : "Live search status"}</div>
+              <div className="fa-providerWarningTitle">{exactMode ? "Partner price check" : "Provider availability"}</div>
               <div>
                 {exactMode
                   ? "Farely checks current partner fares. Final price and rules are confirmed on the partner site."

@@ -1871,6 +1871,12 @@ app.get("/api/flexible", async (req, res) => {
       return res.status(unavailable.statusCode).json(unavailable.body);
     }
 
+    const flexibleWarning = usedFallback
+      ? `Some flexible-date ${cabin.label} results could not be checked live, so Farely is showing a limited fallback preview. Use exact dates for the most reliable live results.`
+      : dayErrors.length > 0
+        ? `Some flexible-date ${cabin.label} travel days could not be checked live. Farely is showing the days with current partner fares.`
+        : null;
+
     return res.status(200).json({
       origin,
       destination,
@@ -1893,9 +1899,7 @@ app.get("/api/flexible", async (req, res) => {
             source: null,
           },
       source: usedFallback ? "demo-fallback" : "amadeus",
-      warning: usedFallback
-        ? `Some flexible-date ${cabin.label} results could not be checked live, so Farely is showing a limited fallback preview. Use exact dates for the most reliable live results.`
-        : `Flexible ${cabin.label} date search is limited on the live site. Exact dates are the most reliable option right now.`,
+      warning: flexibleWarning,
       debug: {
         successfulDays: successfulDays.length,
         failedOrFallbackDays: dayErrors.length,
