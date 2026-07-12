@@ -15,7 +15,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 ## Latest Deployment / Commit
 
 - Branch: `main`
-- Latest implemented Milestone 6 top booking strip: `d5bff61`.
+- Latest implemented Milestone 6 top booking strip: `a6a7bff`.
 - Latest implemented Milestone 6 Flexible dates availability-copy update: `648f843`.
 - Latest verified Milestone 6 partner-step wording update: `d664231`.
 - Latest implemented Milestone 6 price clarity / partner-label fix: `426b16d`.

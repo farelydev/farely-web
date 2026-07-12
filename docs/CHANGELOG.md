@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-12
 
-- Commit hash: `d5bff61`.
+- Implementation commit hash: `a6a7bff`.
 - What changed:
   - Added a compact top booking strip to each result card.
   - The strip shows the current tracked partner option, for example `Book via Aviasales`, before the long outbound/return itinerary details.
