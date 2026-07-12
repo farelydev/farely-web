@@ -822,6 +822,27 @@ export default function ResultsSection({
                         </div>
                       </div>
 
+                      <div className="fa-topBookingOption">
+                        <div>
+                          <div className="fa-topBookingKicker">Best current booking option</div>
+                          <div className="fa-topBookingTitle">
+                            Book via {currentPartnerName} for {showPerPerson ? `${perPersonPrice} pp` : totalPrice}
+                          </div>
+                          <div className="fa-topBookingMeta">
+                            Final fare, bags, and rules are confirmed on the partner site.
+                          </div>
+                        </div>
+                        {dealUrl ? (
+                          <a className="fa-topBookingCta" href={dealUrl} target="_blank" rel="noreferrer">
+                            Book via {currentPartnerName}
+                          </a>
+                        ) : (
+                          <button type="button" className="fa-topBookingCta" disabled>
+                            Deal coming soon
+                          </button>
+                        )}
+                      </div>
+
                       <div className="fa-legGrid">
                         <ItineraryDetail label="Outbound" itinerary={outbound} />
                         {inbound ? (

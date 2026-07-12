@@ -1587,6 +1587,59 @@ const styles = `
   .fa-airlinePrice{ margin-top:2px; font-weight:1000; font-size:30px; line-height:1; color: rgba(8,16,35,.96); white-space:nowrap; letter-spacing:0; }
   .fa-priceSub{ margin-top:6px; font-size:11px; color:rgba(8,16,35,.55); font-weight:1000; }
   .fa-resultsHelper{ margin:-4px 0 14px; font-size:12px; color:rgba(8,16,35,.58); font-weight:900; }
+  .fa-topBookingOption{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    margin-top:14px;
+    padding:12px;
+    border-radius:14px;
+    border:1px solid rgba(20,150,120,.16);
+    background:linear-gradient(135deg, rgba(222,255,244,.78), rgba(255,255,255,.92));
+  }
+  .fa-topBookingKicker{
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:rgba(0,118,92,1);
+    font-weight:1000;
+  }
+  .fa-topBookingTitle{
+    margin-top:3px;
+    font-size:14px;
+    line-height:1.25;
+    color:rgba(8,16,35,.90);
+    font-weight:1000;
+  }
+  .fa-topBookingMeta{
+    margin-top:4px;
+    font-size:11px;
+    line-height:1.35;
+    color:rgba(8,16,35,.56);
+    font-weight:900;
+  }
+  .fa-topBookingCta{
+    flex:0 0 auto;
+    border:0;
+    cursor:pointer;
+    min-width:142px;
+    min-height:42px;
+    padding:11px 14px;
+    border-radius:12px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    text-decoration:none;
+    color:#fff;
+    background:linear-gradient(135deg, rgba(0,145,108,1), rgba(35,95,255,1));
+    box-shadow:0 12px 24px rgba(0,120,90,.16);
+    font-size:13px;
+    line-height:1.15;
+    font-weight:1000;
+  }
+  .fa-topBookingCta:disabled{ opacity:.6; cursor:not-allowed; }
   .fa-legGrid{ display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:12px; margin-top:14px; }
   @media (max-width:760px){
     .fa-flexDateIntro{ align-items:flex-start; flex-direction:column; }
@@ -1601,6 +1654,8 @@ const styles = `
     .fa-airlineTitleLine{ gap:6px; }
     .fa-airlineMeta{ line-height:1.35; overflow-wrap:anywhere; }
     .fa-pricePanel{ width:100%; text-align:left; display:flex; align-items:flex-end; justify-content:space-between; gap:12px; }
+    .fa-topBookingOption{ align-items:stretch; flex-direction:column; }
+    .fa-topBookingCta{ width:100%; }
     .fa-offerActions{ flex-direction:column; align-items:stretch; }
     .fa-viewDeal{ width:100%; }
   }
@@ -2304,6 +2359,10 @@ const styles = `
     .fa-priceSub{ color:rgba(235,240,255,.56); }
     .fa-airlineMeta{ color: rgba(235,240,255,.60); }
     .fa-airlinePrice{ color: rgba(235,240,255,.92); }
+    .fa-topBookingOption{ background:rgba(20,150,120,.12); border-color:rgba(90,230,190,.18); }
+    .fa-topBookingKicker{ color:rgba(90,230,190,1); }
+    .fa-topBookingTitle{ color:rgba(235,240,255,.94); }
+    .fa-topBookingMeta{ color:rgba(235,240,255,.58); }
     .fa-legDetail{ background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.08); }
     .fa-legMeta, .fa-legFooter, .fa-legEmptyText, .fa-legFlightNo{ color:rgba(235,240,255,.60); }
     .fa-legNote{ color:rgba(235,240,255,.48); }

@@ -1,10 +1,10 @@
 # ChatGPT Handoff
 
-Last updated: 2026-07-11
+Last updated: 2026-07-12
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05, but the newest founder direction has moved the active engineering focus back to Milestone 6 provider comparison and booking-path trust. Codex implemented, pushed, deployed, and live-verified a small Flexible dates trust fix: successful live travel-day results no longer show a broad `limited on the live site` warning, and the pre-search hint now tells users to confirm the final fare on the partner site. Live `/api/flexible` for LON -> DOH in August 2026 returned `warning:null`, 3 successful Amadeus travel days, and 25 best-day offers; live Browser QA rendered results with 12 booking options and `Book via Aviasales`. The earlier urgent price/partner-label fix remains live-verified: result cards show per-person price first, total price directly underneath, `Book via Aviasales` for the current configured redirect, and clear final-fare/commission trust copy. True multi-provider comparison is still not built because Farely needs approved providers and reliable partner price data before showing Kiwi, Trip.com, WayAway, Expedia, or other partner rows. Non-essential AI planner work should stay paused unless the founder changes direction again.
+Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05, but the newest founder direction has moved the active engineering focus back to Milestone 6 provider comparison and booking-path trust. Codex implemented and locally verified a small mobile conversion/trust improvement on 2026-07-12: each result card now shows a compact top booking strip before the long itinerary details, using the existing tracked `/api/deals/flight` URL and real partner label such as `Book via Aviasales`. This is not yet complete because it still needs GitHub push, production deployment, and live verification on `https://tryfarely.com`. The earlier Flexible dates trust fix remains live-verified: successful live travel-day results no longer show a broad `limited on the live site` warning, and the pre-search hint tells users to confirm the final fare on the partner site. True multi-provider comparison is still not built because Farely needs approved providers and reliable partner price data before showing Kiwi, Trip.com, WayAway, Expedia, or other partner rows. Non-essential AI planner work should stay paused unless the founder changes direction again.
 
 New ChatGPT decision, 2026-07-05:
 - Avoid the slow old `Farely Product Strategy` thread.
@@ -22,6 +22,9 @@ Temporary Render retry note, 2026-07-03 05:50 BST:
 - Request for ChatGPT: please give Codex the single next plan/task to tick off next, so Codex knows exactly what to work on after this verification.
 
 What was completed:
+- Milestone 6 top booking strip implemented and locally verified on 2026-07-12: each result card now shows `Best current booking option` with the current tracked partner CTA before the outbound/return details.
+- Local checks passed on 2026-07-12: `npm run build`, `npm run lint` with the existing `LegalPage.jsx` warning, local `/api/flights`, local desktop Browser QA, local 390px mobile Browser QA, tracked `/api/deals/flight` href rendering, and no console warnings/errors.
+- Delivery state for the top booking strip is `Implemented` only until GitHub push, production deploy, and live verification are complete.
 - Milestone 6 Flexible dates availability copy was tightened in implementation commit `648f843`: clean successful flexible responses return `warning:null`, fallback/partial failures still show an availability note, and the UI no longer creates a default success warning.
 - Local and live checks passed on 2026-07-11: `npm run build`, `npm run lint` with the existing `LegalPage.jsx` warning, local `/api/flexible`, local Browser QA, live `/api/health`, live `/api/flexible`, live Browser QA, and a live offer-generated Aviasales redirect `302`.
 - Milestone 6 partner-path wording was tightened and live-verified: after Flexible dates loads live offers, the progress workflow can now end with `Book via Aviasales` using the configured partner name.

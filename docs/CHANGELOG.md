@@ -2,6 +2,23 @@
 
 This changelog tracks completed Farely milestones and whether they were pushed to GitHub.
 
+## 2026-07-12
+
+- Commit hash: `d5bff61`.
+- What changed:
+  - Added a compact top booking strip to each result card.
+  - The strip shows the current tracked partner option, for example `Book via Aviasales`, before the long outbound/return itinerary details.
+  - The new CTA reuses the existing server-controlled `/api/deals/flight` redirect URL and does not add fake provider choices.
+- Checks run:
+  - `npm run build` passed on 2026-07-12.
+  - `npm run lint` passed on 2026-07-12 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
+  - Local API smoke passed on `http://127.0.0.1:4012/api/flights`: LHR -> IST returned 5 live Amadeus offers with `dealPartnerName:"Aviasales"` and deal URLs.
+  - Local in-app Browser QA passed on `http://127.0.0.1:4012/`: exact-date London -> Doha rendered 12 top booking strips, 12 lower `Book via Aviasales` CTAs, tracked `/api/deals/flight` hrefs, no 390px horizontal overflow, and no console warnings/errors.
+- Pushed to GitHub:
+  - Pending.
+- Deployment/live verification:
+  - Pending. This change is only `Implemented` and locally verified until production deploys and `https://tryfarely.com` is checked.
+
 ## 2026-07-11
 
 - Commit hash: `648f843`.
