@@ -32,7 +32,7 @@ Last updated: 2026-07-12
 - QA Milestone 6 search filters and airport-selection behavior on more live routes with multiple offers.
 - CTA wording now uses the configured booking partner where available; continue validating click-through tracking after deployment.
 - The booking-option row was live-verified after deployment on an exact-date result card; continue checking it on more routes and Flexible dates selected-day results.
-- The top booking strip was locally verified on desktop and 390px mobile on 2026-07-12; it still needs production deployment and live verification before it counts as complete.
+- The top booking strip was live-verified on desktop and 390px mobile on 2026-07-12; continue checking it across more routes as traffic grows.
 - Flexible dates availability copy was tightened and live-verified on 2026-07-11 so clean successful results do not show a broad reliability warning.
 - The pre-search Flexible dates hint now tells users to confirm the final fare on the partner site; the verified post-result workflow step uses the configured partner name.
 - Keep affiliate disclosure visible without making the UI feel cluttered.

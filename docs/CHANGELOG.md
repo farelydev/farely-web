@@ -15,9 +15,9 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - Local API smoke passed on `http://127.0.0.1:4012/api/flights`: LHR -> IST returned 5 live Amadeus offers with `dealPartnerName:"Aviasales"` and deal URLs.
   - Local in-app Browser QA passed on `http://127.0.0.1:4012/`: exact-date London -> Doha rendered 12 top booking strips, 12 lower `Book via Aviasales` CTAs, tracked `/api/deals/flight` hrefs, no 390px horizontal overflow, and no console warnings/errors.
 - Pushed to GitHub:
-  - Pending.
+  - Yes, pushed to GitHub `main` on 2026-07-12.
 - Deployment/live verification:
-  - Pending. This change is only `Implemented` and locally verified until production deploys and `https://tryfarely.com` is checked.
+  - Verified on `https://tryfarely.com` on 2026-07-12. The live page served `assets/index-D69txwfL.js`; `/api/health` reported `demoFallbackEnabled:false`; live exact-date Browser QA rendered 12 top booking strips and 12 lower `Book via Aviasales` CTAs with tracked `/api/deals/flight` hrefs; 390px mobile live QA had no horizontal overflow and no console warnings/errors; the live `/api/deals/flight` URL returned a tracked `302` to Aviasales.
 
 ## 2026-07-11
 
