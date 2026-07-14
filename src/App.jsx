@@ -1514,6 +1514,8 @@ const styles = `
   .fa-airlineLeft{ min-width:0; flex:1; }
   .fa-airlineName{ font-weight:1000; color: rgba(8,16,35,.88); display:flex; align-items:center; gap:12px; min-width:0; }
   .fa-airlineTitleLine{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; min-width:0; }
+  .fa-airlineLogos{ display:flex; align-items:center; flex:0 0 auto; min-width:44px; }
+  .fa-airlineLogos .fa-airlineLogo + .fa-airlineLogo{ margin-left:-12px; }
   .fa-airlineLogo{
     display:inline-grid;
     place-items:center;

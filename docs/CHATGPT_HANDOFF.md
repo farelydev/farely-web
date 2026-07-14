@@ -1,10 +1,10 @@
 # ChatGPT Handoff
 
-Last updated: 2026-07-12
+Last updated: 2026-07-14
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05, but the newest founder direction has moved the active engineering focus back to Milestone 6 provider comparison and booking-path trust. Codex implemented, pushed, deployed, and live-verified a small mobile conversion/trust improvement on 2026-07-12: each result card now shows a compact top booking strip before the long itinerary details, using the existing tracked `/api/deals/flight` URL and real partner label such as `Book via Aviasales`. Live verification passed on `https://tryfarely.com` with bundle `assets/index-D69txwfL.js`, 12 top booking strips, 12 lower Aviasales CTAs, 390px mobile no-overflow QA, no console warnings/errors, and a tracked `302` redirect to Aviasales. True multi-provider comparison is still not built because Farely needs approved providers and reliable partner price data before showing Kiwi, Trip.com, WayAway, Expedia, or other partner rows. Non-essential AI planner work should stay paused unless the founder changes direction again.
+Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05, but the newest founder direction has moved the active engineering focus back to Milestone 6 provider comparison and booking-path trust. Codex implemented and locally verified a small Search Experience 2.0 accuracy fix on 2026-07-14: result cards and the airline filter now use all carriers in an offer, not only the first outbound carrier. Local QA on LHR -> DXB showed 12 result cards, visible `AZ / Lufthansa` multi-carrier labels, two airline logo badges on those cards, `Book via Aviasales`, `Lufthansa (LH)` in the airline filter, and filtering by `LH` kept 8 of 12 matching offers visible. `npm run build` passed; `npm run lint` passed with the existing `LegalPage.jsx` warning. GitHub push and live verification are pending for this update. True multi-provider comparison is still not built because Farely needs approved providers and reliable partner price data before showing Kiwi, Trip.com, WayAway, Expedia, or other partner rows. Non-essential AI planner work should stay paused unless the founder changes direction again.
 
 New ChatGPT decision, 2026-07-05:
 - Avoid the slow old `Farely Product Strategy` thread.
@@ -22,6 +22,10 @@ Temporary Render retry note, 2026-07-03 05:50 BST:
 - Request for ChatGPT: please give Codex the single next plan/task to tick off next, so Codex knows exactly what to work on after this verification.
 
 What was completed:
+- Milestone 6 multi-carrier airline display/filtering implemented and locally verified on 2026-07-14.
+- Result cards now collect all carrier codes from each offer's itinerary segments and validating airlines, so mixed-airline offers can show labels such as `AZ / Lufthansa`.
+- The airline filter now lists secondary carriers from visible offers and keeps matching multi-carrier offers visible when filtering.
+- Local checks passed on 2026-07-14: `npm run build`, `npm run lint` with the existing `LegalPage.jsx` warning, local API smoke for LHR -> DXB, and local in-app Browser QA for the multi-carrier airline filter.
 - Milestone 6 top booking strip implemented and locally verified on 2026-07-12: each result card now shows `Best current booking option` with the current tracked partner CTA before the outbound/return details.
 - Local checks passed on 2026-07-12: `npm run build`, `npm run lint` with the existing `LegalPage.jsx` warning, local `/api/flights`, local desktop Browser QA, local 390px mobile Browser QA, tracked `/api/deals/flight` href rendering, and no console warnings/errors.
 - Delivery state for the top booking strip is `Verified` on `https://tryfarely.com`.
@@ -77,6 +81,7 @@ What was completed:
 - AI planner recommendations now detect requested destinations such as Bosnia/Sarajevo, include the requested destination first where possible, show a 2.8s analysing state, use visual recommendation cards with match scores and trip details, explain why alternatives were suggested, and populate the search form for user review before live search.
 
 What was not completed:
+- 2026-07-14 multi-carrier airline filter live deployment and production verification are still pending.
 - True Skyscanner-style multi-provider price comparison is not built yet because Farely still needs approved providers and reliable partner price data.
 - Route pages, destination pages, Umrah SEO pages, and the first cheap flexible flights explainer are not built yet; SEO content should stay small and product-led.
 - Cloudflare dashboard settings still need manual verification: Full (strict), WAF/security level, TLS settings, and relevant security modes.
@@ -85,6 +90,13 @@ What was not completed:
 - Milestone 7 still needs real model-backed reasoning, broader destination coverage, and stronger conversation memory.
 
 Files changed:
+- `src/components/ResultsSection.jsx`
+- `src/App.jsx`
+- `docs/PROJECT_STATUS.md`
+- `docs/ROADMAP.md`
+- `docs/KNOWN_ISSUES.md`
+- `docs/CHANGELOG.md`
+- `docs/CHATGPT_HANDOFF.md`
 - `src/components/ResultsSection.jsx`
 - `docs/PROJECT_STATUS.md`
 - `docs/ROADMAP.md`

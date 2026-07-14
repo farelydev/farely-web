@@ -2,6 +2,23 @@
 
 This changelog tracks completed Farely milestones and whether they were pushed to GitHub.
 
+## 2026-07-14
+
+- Implementation commit hash: `37bd951`.
+- What changed:
+  - Improved Milestone 6 airline display and filtering for multi-carrier offers.
+  - Result cards now collect all carrier codes from every itinerary segment plus validating airlines, so offers can show combinations such as `AZ / Lufthansa` instead of only the first carrier.
+  - The airline filter now includes secondary carriers from visible offers and keeps matching multi-carrier offers visible when filtering, instead of only matching the first outbound carrier.
+- Checks run:
+  - `npm run build` passed on 2026-07-14.
+  - `npm run lint` passed on 2026-07-14 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
+  - Local API smoke on `http://127.0.0.1:4014/api/flights` found LHR -> DXB live Amadeus offers with `AZ` and `LH` carrier segments on the default dates.
+  - Local in-app Browser QA passed on `http://127.0.0.1:4014/`: LHR -> DXB rendered 12 result cards, showed `AZ / Lufthansa`, rendered two airline logo badges on multi-carrier cards, kept `Book via Aviasales`, exposed `Lufthansa (LH)` in the airline filter, and filtering by `LH` showed 8 of 12 offers.
+- Pushed to GitHub:
+  - Pending.
+- Deployment/live verification:
+  - Pending live verification on `https://tryfarely.com`.
+
 ## 2026-07-12
 
 - Implementation commit hash: `a6a7bff`.

@@ -1,6 +1,6 @@
 # Farely Roadmap
 
-Last updated: 2026-07-12
+Last updated: 2026-07-14
 
 ## Current Phase
 
@@ -41,7 +41,7 @@ Current API robustness action:
 - Full airport names: first pass implemented where the airport is known locally.
 - Filters drawer: first pass implemented as a mobile-first bottom sheet.
 - Budget filter: first pass implemented.
-- Airline filter: first pass implemented.
+- Airline filter: first pass implemented; updated on 2026-07-14 so multi-carrier offers can be matched by secondary carriers as well as the first outbound carrier.
 - Morning/afternoon/evening filter: first pass implemented.
 - Stops filter: first pass implemented.
 - Airport selection filters: first pass implemented from visible result airports.
@@ -50,6 +50,7 @@ Current API robustness action:
 - Booking-option comparison row: implemented, pushed, deployed, and live-verified so each fare shows the current tracked partner redirect as a clear booking option, without claiming unapproved multi-provider coverage.
 - Multi-passenger price clarity: implemented, pushed, deployed, and live-verified so result cards show per-person pricing first, total price directly underneath, and the current configured partner CTA as `Book via Aviasales`.
 - Top booking strip: implemented, pushed, deployed, and live-verified so the current tracked partner option appears before long itinerary details, helping mobile users reach `Book via Aviasales` faster without inventing extra providers.
+- Multi-carrier airline display/filtering: implemented and locally verified so visible offers can show combined carrier labels such as `AZ / Lufthansa`, stacked logo badges, and airline filter options for secondary carriers.
 - Flexible partner-step wording: implemented and locally verified so Flexible dates shows the configured partner name after offers load, without claiming extra live providers.
 - Flexible availability copy: implemented, pushed, deployed, and live-verified so successful live travel-day results do not show the broad `limited on the live site` warning; fallback and partial-day failures still show a provider-availability note.
 - Flexible dates UX: product naming has been reverted from `Cheapest Month` to `Flexible dates`; the flow now explains that users choose a month and Farely compares the cheapest travel dates within that period.

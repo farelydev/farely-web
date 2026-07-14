@@ -158,6 +158,26 @@ function itineraryAirlineLabel(itinerary) {
   return carriers.length ? carriers.map((code) => airlineBrand(code).name).join(" / ") : "Airline TBC";
 }
 
+function offerCarrierCodes(offer) {
+  const segmentCarriers = (offer?.itineraries || [])
+    .flatMap((itinerary) => itinerary?.segments || [])
+    .map((seg) => seg?.carrier)
+    .filter(Boolean);
+  const validatingAirlines = Array.isArray(offer?.validatingAirlines) ? offer.validatingAirlines.filter(Boolean) : [];
+
+  return [...new Set([...segmentCarriers, ...validatingAirlines].map((code) => String(code).toUpperCase()))];
+}
+
+function offerCarrierSummary(offer) {
+  const carriers = offerCarrierCodes(offer);
+  if (carriers.length === 0) return { names: "Airline TBC", codes: "—" };
+
+  return {
+    names: carriers.map((code) => airlineBrand(code).name).join(" / "),
+    codes: carriers.join(" / "),
+  };
+}
+
 function itineraryFlightNumbers(itinerary) {
   const segs = itinerary?.segments || [];
   const flights = segs
@@ -311,7 +331,7 @@ function offerMatchesFilters(offer, filters) {
   const durationMinutes = isoDurationToMinutes(outbound?.duration);
 
   if (filters.maxPrice && price > Number(filters.maxPrice)) return false;
-  if (filters.airline !== "any" && carrierLabel(offer) !== filters.airline) return false;
+  if (filters.airline !== "any" && !offerCarrierCodes(offer).includes(filters.airline)) return false;
   if (filters.stops === "direct" && stops !== 0) return false;
   if (filters.stops === "one" && stops !== 1) return false;
   if (filters.departTime !== "any" && timeBucket(first?.departAt) !== filters.departTime) return false;
@@ -408,7 +428,7 @@ export default function ResultsSection({
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
 
   const airlineOptions = useMemo(
-    () => uniqueOptions(shownOffers.map((offer) => carrierLabel(offer))),
+    () => uniqueOptions(shownOffers.flatMap((offer) => offerCarrierCodes(offer))),
     [shownOffers]
   );
   const departAirportOptions = useMemo(
@@ -767,8 +787,9 @@ export default function ResultsSection({
               filteredOffers.map((o, idx) => {
                 const price = o?.price;
                 const cur = o?.currency || "GBP";
-                const carrierCode = carrierLabel(o);
-                const carrier = airlineBrand(carrierCode);
+                const carrierCodes = offerCarrierCodes(o);
+                const primaryCarrierCode = carrierCodes[0] || carrierLabel(o);
+                const carrier = offerCarrierSummary(o);
                 const displayedCabin = o?.cabin || cabin || "Economy";
                 const totalPrice = formatPrice(price, cur);
                 const perPersonPrice = formatPerPersonPrice(price, cur, passengers);
@@ -795,11 +816,16 @@ export default function ResultsSection({
                       <div className="fa-offerTop">
                         <div className="fa-airlineLeft">
                           <div className="fa-airlineName">
-                            <AirlineLogo code={carrierCode} />
+                            <div className="fa-airlineLogos" aria-label={carrier.names}>
+                              {carrierCodes.slice(0, 3).map((code) => (
+                                <AirlineLogo key={code} code={code} />
+                              ))}
+                              {carrierCodes.length === 0 ? <AirlineLogo code={primaryCarrierCode} /> : null}
+                            </div>
                             <div>
                               <div className="fa-airlineTitleLine">
-                                <span>{carrier.name}</span>
-                                <span className="fa-airlineCode">{carrierCode}</span>
+                                <span>{carrier.names}</span>
+                                <span className="fa-airlineCode">{carrier.codes}</span>
                                 {badges.map((badge) => (
                                   <span key={badge} className={cx("fa-recBadge", badge === "Direct" && "isDirect")}>{badge}</span>
                                 ))}
