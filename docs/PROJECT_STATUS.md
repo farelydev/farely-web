@@ -15,7 +15,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 ## Latest Deployment / Commit
 
 - Branch: `main`
-- Latest implemented Milestone 6 multi-carrier airline filter update: `37bd951`.
+- Latest implemented Milestone 6 multi-carrier airline filter update: `49fb620`.
 - Latest implemented Milestone 6 top booking strip: `a6a7bff`.
 - Latest verified Milestone 6 top booking strip: `a6a7bff`.
 - Latest implemented Milestone 6 Flexible dates availability-copy update: `648f843`.

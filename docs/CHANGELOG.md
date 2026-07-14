@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-14
 
-- Implementation commit hash: `37bd951`.
+- Implementation commit hash: `49fb620`.
 - What changed:
   - Improved Milestone 6 airline display and filtering for multi-carrier offers.
   - Result cards now collect all carrier codes from every itinerary segment plus validating airlines, so offers can show combinations such as `AZ / Lufthansa` instead of only the first carrier.
