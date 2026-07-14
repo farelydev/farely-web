@@ -14,7 +14,7 @@ Last updated: 2026-07-14
 | Medium | Security | Founder/admin analytics still exists inside the public app surface and should move to a separate private dashboard with proper authentication. | Open |
 | Medium | UX | Milestone 6 filters drawer passed local desktop/mobile QA and live mobile render smoke validation; broader route/browser QA remains useful. | In progress |
 | Medium | UX | Airport selection and return-to-same-airport filter behavior need production-data verification. | In progress |
-| Low | UX | The 2026-07-14 multi-carrier airline filter fix is locally verified; it still needs live deployment verification across production routes. | In progress |
+| Low | UX | The 2026-07-14 multi-carrier airline filter fix is live-verified on LHR -> DXB; continue checking varied production routes as provider data changes. | In progress |
 | Medium | AI planner | Planner now has the first Milestone 7 guided-consultant pass, follow-up correction memory pass, and first ski-planner destination pass deployed and live-verified; it still needs real model-backed reasoning and broader destination coverage. | In progress |
 | Medium | AI planner | Keep validating AI suggestion-to-search handoff so every recommended destination exists in the local airport/search mapping. | In progress |
 | Medium | Analytics | Founder dashboard and business reporting are not yet built. | Open |
@@ -31,7 +31,7 @@ Last updated: 2026-07-14
 - Continue validating result cards and the guided Flexible dates flow for quick comparison with real provider data as traffic grows.
 - Continue checking multi-passenger result cards across more routes so `per person` and total-price copy stays clear with varied fare amounts.
 - QA Milestone 6 search filters and airport-selection behavior on more live routes with multiple offers.
-- Multi-carrier airline labels and filters were locally verified on LHR -> DXB; repeat on live production after deployment and on more routes as provider data varies.
+- Multi-carrier airline labels and filters were live-verified on LHR -> DXB; repeat on more routes as provider data varies.
 - CTA wording now uses the configured booking partner where available; continue validating click-through tracking after deployment.
 - The booking-option row was live-verified after deployment on an exact-date result card; continue checking it on more routes and Flexible dates selected-day results.
 - The top booking strip was live-verified on desktop and 390px mobile on 2026-07-12; continue checking it across more routes as traffic grows.

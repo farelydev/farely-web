@@ -15,9 +15,9 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - Local API smoke on `http://127.0.0.1:4014/api/flights` found LHR -> DXB live Amadeus offers with `AZ` and `LH` carrier segments on the default dates.
   - Local in-app Browser QA passed on `http://127.0.0.1:4014/`: LHR -> DXB rendered 12 result cards, showed `AZ / Lufthansa`, rendered two airline logo badges on multi-carrier cards, kept `Book via Aviasales`, exposed `Lufthansa (LH)` in the airline filter, and filtering by `LH` showed 8 of 12 offers.
 - Pushed to GitHub:
-  - Pending.
+  - Yes, pushed to GitHub `main` on 2026-07-14.
 - Deployment/live verification:
-  - Pending live verification on `https://tryfarely.com`.
+  - Verified on `https://tryfarely.com` on 2026-07-14. The live page served `assets/index-V_jUzpOJ.js`; `/api/health` reported `demoFallbackEnabled:false`; live `/api/flights` for LHR -> DXB returned Amadeus offers with `AZ` and `LH` carrier segments; live Browser QA rendered 12 result cards with `AZ / Lufthansa`, two airline logo badges on multi-carrier cards, `Book via Aviasales`, `Lufthansa (LH)` in the airline filter, and 8 of 12 offers after filtering by `LH`; `/api/deals/flight` returned a tracked `302` to Aviasales.
 
 ## 2026-07-12
 
