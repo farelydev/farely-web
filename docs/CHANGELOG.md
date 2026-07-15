@@ -15,9 +15,9 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - Local API smoke on `http://127.0.0.1:4015/api/flights` returned 25 Amadeus LON -> DXB offers with `dealPartnerName:"Aviasales"`.
   - Local in-app Browser QA passed on `http://127.0.0.1:4015/`: after filtering LON -> DOH by `London Stansted (STN)`, changing the destination to Dubai reset `Filters (1)` back to `Filters`; the LON -> DXB result set then rendered 12 cards, 12 top booking strips, and no console warnings/errors.
 - Pushed to GitHub:
-  - Pending final docs commit and push.
+  - Yes, pushed to GitHub `main` on 2026-07-15.
 - Deployment/live verification:
-  - Pending production deployment and live verification.
+  - Verified on `https://tryfarely.com` on 2026-07-15. The live page served `assets/index-3otPvE22.js`; `/api/health` reported `demoFallbackEnabled:false`; live `/api/flights` for LON -> DXB returned 25 Amadeus offers with `dealPartnerName:"Aviasales"`; live Browser QA confirmed a stale LON -> DOH `London Stansted (STN)` filter reset from `Filters (1)` to `Filters` after changing destination to Dubai, then rendered 12 LON -> DXB result cards, 12 top booking strips, `Book via Aviasales`, and no page console warnings/errors.
 
 ## 2026-07-14
 

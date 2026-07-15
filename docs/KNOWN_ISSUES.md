@@ -13,7 +13,7 @@ Last updated: 2026-07-15
 | High | Security | Cloudflare SSL/TLS mode and WAF/security settings still need dashboard verification. Live post-deployment headers have been verified. | In progress |
 | Medium | Security | Founder/admin analytics still exists inside the public app surface and should move to a separate private dashboard with proper authentication. | Open |
 | Medium | UX | Milestone 6 filters drawer passed local desktop/mobile QA and live mobile render smoke validation; broader route/browser QA remains useful. | In progress |
-| Medium | UX | Airport selection and return-to-same-airport filter behavior need broader production-data verification; stale filter reset after route/search changes is implemented and locally verified. | In progress |
+| Medium | UX | Airport selection and return-to-same-airport filter behavior need broader production-data verification; stale filter reset after route/search changes is live-verified. | In progress |
 | Low | UX | The 2026-07-14 multi-carrier airline filter fix is live-verified on LHR -> DXB; continue checking varied production routes as provider data changes. | In progress |
 | Medium | AI planner | Planner now has the first Milestone 7 guided-consultant pass, follow-up correction memory pass, and first ski-planner destination pass deployed and live-verified; it still needs real model-backed reasoning and broader destination coverage. | In progress |
 | Medium | AI planner | Keep validating AI suggestion-to-search handoff so every recommended destination exists in the local airport/search mapping. | In progress |
@@ -31,7 +31,7 @@ Last updated: 2026-07-15
 - Continue validating result cards and the guided Flexible dates flow for quick comparison with real provider data as traffic grows.
 - Continue checking multi-passenger result cards across more routes so `per person` and total-price copy stays clear with varied fare amounts.
 - QA Milestone 6 search filters and airport-selection behavior on more live routes with multiple offers.
-- The 2026-07-15 filter-reset update is locally verified: stale airport filters clear after a route/search-context change instead of hiding valid new fares. Production deployment/live verification is still pending.
+- The 2026-07-15 filter-reset update is live-verified: stale airport filters clear after a route/search-context change instead of hiding valid new fares.
 - Multi-carrier airline labels and filters were live-verified on LHR -> DXB; repeat on more routes as provider data varies.
 - CTA wording now uses the configured booking partner where available; continue validating click-through tracking after deployment.
 - The booking-option row was live-verified after deployment on an exact-date result card; continue checking it on more routes and Flexible dates selected-day results.
