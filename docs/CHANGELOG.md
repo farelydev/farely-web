@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-15
 
-- Implementation commit hash: pending.
+- Implementation commit hash: `f6fecd2`.
 - What changed:
   - Improved Milestone 6 filter reliability for route changes.
   - Results now remount the filter state when the actual search context changes, including route, dates, selected Flexible date, trip type, cabin, or passenger count.
@@ -15,7 +15,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - Local API smoke on `http://127.0.0.1:4015/api/flights` returned 25 Amadeus LON -> DXB offers with `dealPartnerName:"Aviasales"`.
   - Local in-app Browser QA passed on `http://127.0.0.1:4015/`: after filtering LON -> DOH by `London Stansted (STN)`, changing the destination to Dubai reset `Filters (1)` back to `Filters`; the LON -> DXB result set then rendered 12 cards, 12 top booking strips, and no console warnings/errors.
 - Pushed to GitHub:
-  - Pending.
+  - Pending final docs commit and push.
 - Deployment/live verification:
   - Pending production deployment and live verification.
 
