@@ -533,6 +533,17 @@ export default function App() {
       </section>
 
       <ResultsSection
+        key={[
+          routeFromCode,
+          routeToCode,
+          departDate,
+          returnDate,
+          selectedFlexDate,
+          tripType,
+          flexMonth,
+          cabin,
+          passengers,
+        ].join("|")}
         didSearch={didSearch}
         routeTitle={routeTitle}
         resultsTab={resultsTab}

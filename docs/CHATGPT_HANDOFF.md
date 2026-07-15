@@ -1,10 +1,10 @@
 # ChatGPT Handoff
 
-Last updated: 2026-07-14
+Last updated: 2026-07-15
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05, but the newest founder direction has moved the active engineering focus back to Milestone 6 provider comparison and booking-path trust. Codex implemented, pushed, deployed, and live-verified a small Search Experience 2.0 accuracy fix on 2026-07-14: result cards and the airline filter now use all carriers in an offer, not only the first outbound carrier. Live QA on LHR -> DXB showed 12 result cards, visible `AZ / Lufthansa` multi-carrier labels, two airline logo badges on those cards, `Book via Aviasales`, `Lufthansa (LH)` in the airline filter, and filtering by `LH` kept 8 of 12 matching offers visible. `npm run build` passed; `npm run lint` passed with the existing `LegalPage.jsx` warning. The live site served `assets/index-V_jUzpOJ.js`, `/api/health` had fallback off, and `/api/deals/flight` returned a tracked `302` to Aviasales. True multi-provider comparison is still not built because Farely needs approved providers and reliable partner price data before showing Kiwi, Trip.com, WayAway, Expedia, or other partner rows. Non-essential AI planner work should stay paused unless the founder changes direction again.
+Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05, but the newest founder direction has moved the active engineering focus back to Milestone 6 provider comparison and booking-path trust. Codex implemented and locally verified a small Search Experience 2.0 reliability fix on 2026-07-15: result filters now reset when the traveller changes the underlying search context, including route, dates, selected Flexible date, trip type, cabin, or passenger count. This prevents an old airport, airline, price, or baggage filter from silently hiding valid fares after a new search. `npm run build` passed; `npm run lint` passed with the existing `LegalPage.jsx` warning. Local API smoke on `http://127.0.0.1:4015/api/flights` returned 25 Amadeus LON -> DXB offers with `Book via Aviasales`; local Browser QA confirmed a stale LON -> DOH `London Stansted (STN)` filter reset from `Filters (1)` to `Filters` after changing destination to Dubai, then rendered 12 LON -> DXB cards with 12 top booking strips and no console warnings/errors. GitHub push, deployment, and live verification are pending for this 2026-07-15 update. True multi-provider comparison is still not built because Farely needs approved providers and reliable partner price data before showing Kiwi, Trip.com, WayAway, Expedia, or other partner rows. Non-essential AI planner work should stay paused unless the founder changes direction again.
 
 New ChatGPT decision, 2026-07-05:
 - Avoid the slow old `Farely Product Strategy` thread.
@@ -22,6 +22,9 @@ Temporary Render retry note, 2026-07-03 05:50 BST:
 - Request for ChatGPT: please give Codex the single next plan/task to tick off next, so Codex knows exactly what to work on after this verification.
 
 What was completed:
+- Milestone 6 stale filter reset implemented and locally verified on 2026-07-15.
+- Result filters now reset when route, dates, selected Flexible date, trip type, cabin, or passengers change, so old filters do not silently hide valid fares after a new search.
+- Local checks passed on 2026-07-15: `npm run build`, `npm run lint` with the existing `LegalPage.jsx` warning, local API smoke for LON -> DXB, and local in-app Browser QA for the stale airport-filter reset.
 - Milestone 6 multi-carrier airline display/filtering implemented and locally verified on 2026-07-14.
 - Result cards now collect all carrier codes from each offer's itinerary segments and validating airlines, so mixed-airline offers can show labels such as `AZ / Lufthansa`.
 - The airline filter now lists secondary carriers from visible offers and keeps matching multi-carrier offers visible when filtering.

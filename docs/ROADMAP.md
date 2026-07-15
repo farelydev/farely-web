@@ -1,6 +1,6 @@
 # Farely Roadmap
 
-Last updated: 2026-07-14
+Last updated: 2026-07-15
 
 ## Current Phase
 
@@ -51,6 +51,7 @@ Current API robustness action:
 - Multi-passenger price clarity: implemented, pushed, deployed, and live-verified so result cards show per-person pricing first, total price directly underneath, and the current configured partner CTA as `Book via Aviasales`.
 - Top booking strip: implemented, pushed, deployed, and live-verified so the current tracked partner option appears before long itinerary details, helping mobile users reach `Book via Aviasales` faster without inventing extra providers.
 - Multi-carrier airline display/filtering: implemented, pushed, deployed, and live-verified so visible offers can show combined carrier labels such as `AZ / Lufthansa`, stacked logo badges, and airline filter options for secondary carriers.
+- Search filter reset on route/search changes: implemented and locally verified so stale airport, airline, price, or baggage filters do not silently hide valid fares after a traveller changes route, date, trip type, cabin, passengers, or selected Flexible date.
 - Flexible partner-step wording: implemented and locally verified so Flexible dates shows the configured partner name after offers load, without claiming extra live providers.
 - Flexible availability copy: implemented, pushed, deployed, and live-verified so successful live travel-day results do not show the broad `limited on the live site` warning; fallback and partial-day failures still show a provider-availability note.
 - Flexible dates UX: product naming has been reverted from `Cheapest Month` to `Flexible dates`; the flow now explains that users choose a month and Farely compares the cheapest travel dates within that period.
