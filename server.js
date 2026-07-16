@@ -66,23 +66,29 @@ const FLIGHT_AFFILIATE_URL = String(process.env.FLIGHT_AFFILIATE_URL || "").trim
 const TRAVELPAYOUTS_MARKER = String(process.env.TRAVELPAYOUTS_MARKER || "").trim();
 const TRAVELPAYOUTS_HOST = String(process.env.TRAVELPAYOUTS_HOST || "www.aviasales.com").trim();
 const TRAVELPAYOUTS_SUB_ID = String(process.env.TRAVELPAYOUTS_SUB_ID || "").trim();
+const KIWI_PROVIDER_ENABLED = String(process.env.KIWI_PROVIDER_ENABLED || "false").toLowerCase() === "true";
+const KIWICOM_AFFILIATE_URL = String(process.env.KIWICOM_AFFILIATE_URL || "").trim();
 
-function configuredFlightDealPartnerName() {
-  const host = TRAVELPAYOUTS_HOST.toLowerCase();
-  const partner = FLIGHT_DEAL_PARTNER.toLowerCase();
+function configuredFlightDealPartnerName({
+  host = TRAVELPAYOUTS_HOST,
+  partner = FLIGHT_DEAL_PARTNER,
+  affiliateUrl = FLIGHT_AFFILIATE_URL,
+} = {}) {
+  const normalizedHost = String(host || "").toLowerCase();
+  const normalizedPartner = String(partner || "").toLowerCase();
 
-  if (host.includes("aviasales")) return "Aviasales";
-  if (host.includes("wayaway")) return "WayAway";
-  if (host.includes("kiwi")) return "Kiwi";
-  if (host.includes("trip.com")) return "Trip.com";
-  if (host.includes("expedia")) return "Expedia";
-  if (partner.includes("aviasales")) return "Aviasales";
-  if (partner.includes("wayaway")) return "WayAway";
-  if (partner.includes("kiwi")) return "Kiwi";
-  if (partner.includes("trip")) return "Trip.com";
-  if (partner.includes("expedia")) return "Expedia";
-  if (partner.includes("travelpayouts")) return "Travelpayouts partner";
-  if (FLIGHT_AFFILIATE_URL) return "Configured partner";
+  if (normalizedHost.includes("aviasales")) return "Aviasales";
+  if (normalizedHost.includes("wayaway")) return "WayAway";
+  if (normalizedHost.includes("kiwi")) return "Kiwi.com";
+  if (normalizedHost.includes("trip.com")) return "Trip.com";
+  if (normalizedHost.includes("expedia")) return "Expedia";
+  if (normalizedPartner.includes("aviasales")) return "Aviasales";
+  if (normalizedPartner.includes("wayaway")) return "WayAway";
+  if (normalizedPartner.includes("kiwi")) return "Kiwi.com";
+  if (normalizedPartner.includes("trip")) return "Trip.com";
+  if (normalizedPartner.includes("expedia")) return "Expedia";
+  if (normalizedPartner.includes("travelpayouts")) return "Travelpayouts partner";
+  if (affiliateUrl) return "Configured partner";
   return "Google Flights";
 }
 
@@ -452,6 +458,7 @@ function buildDealUrl({
   carrier = "",
   offerId = "",
   source = "amadeus",
+  provider = "",
 }) {
   const params = new URLSearchParams();
   params.set("origin", origin || "");
@@ -460,6 +467,7 @@ function buildDealUrl({
   if (returnDate) params.set("returnDate", returnDate);
   if (carrier) params.set("carrier", carrier);
   if (offerId) params.set("offerId", offerId);
+  if (provider) params.set("provider", provider);
   params.set("source", source);
 
   return `/api/deals/flight?${params.toString()}`;
@@ -553,7 +561,7 @@ function buildTravelpayoutsFlightUrl({
   }
 }
 
-function buildFlightAffiliateUrl({
+function affiliateTemplateValues({
   origin,
   destination,
   departureDate,
@@ -561,23 +569,12 @@ function buildFlightAffiliateUrl({
   carrier = "",
   offerId = "",
   source = "unknown",
+  provider = "primary",
 }) {
-  if (!FLIGHT_AFFILIATE_URL) {
-    return buildTravelpayoutsFlightUrl({
-      origin,
-      destination,
-      departureDate,
-      returnDate,
-      carrier,
-      offerId,
-      source,
-    });
-  }
-
   const depart = dateTokenParts(departureDate);
   const ret = dateTokenParts(returnDate);
 
-  const values = {
+  return {
     origin,
     destination,
     departureDate,
@@ -595,11 +592,34 @@ function buildFlightAffiliateUrl({
     carrier,
     offerId,
     source,
+    provider,
     marker: TRAVELPAYOUTS_MARKER,
     subId: TRAVELPAYOUTS_SUB_ID,
   };
+}
 
-  const renderedUrl = FLIGHT_AFFILIATE_URL.replace(/\{([a-zA-Z]+)\}/g, (_, key) =>
+function buildTemplatedAffiliateUrl(template, {
+  origin,
+  destination,
+  departureDate,
+  returnDate = "",
+  carrier = "",
+  offerId = "",
+  source = "unknown",
+  provider = "primary",
+}) {
+  const values = affiliateTemplateValues({
+    origin,
+    destination,
+    departureDate,
+    returnDate,
+    carrier,
+    offerId,
+    source,
+    provider,
+  });
+
+  const renderedUrl = template.replace(/\{([a-zA-Z]+)\}/g, (_, key) =>
     encodeURIComponent(values[key] || "")
   );
 
@@ -617,6 +637,70 @@ function buildFlightAffiliateUrl({
   } catch {
     return null;
   }
+}
+
+function normalizeFlightDealProvider(provider) {
+  const value = String(provider || "").trim().toLowerCase();
+
+  if (["kiwi", "kiwicom", "kiwi.com"].includes(value)) return "kiwi";
+  if (["travelpayouts", "aviasales", "primary", FLIGHT_DEAL_PARTNER.toLowerCase()].includes(value)) return "primary";
+  return "primary";
+}
+
+function resolveFlightDealProvider(provider) {
+  const normalized = normalizeFlightDealProvider(provider);
+
+  if (normalized === "kiwi" && KIWI_PROVIDER_ENABLED && KIWICOM_AFFILIATE_URL) {
+    return {
+      id: "kiwi",
+      target: "kiwi",
+      name: "Kiwi.com",
+      template: KIWICOM_AFFILIATE_URL,
+    };
+  }
+
+  return {
+    id: "primary",
+    target: FLIGHT_AFFILIATE_URL || TRAVELPAYOUTS_MARKER ? FLIGHT_DEAL_PARTNER : "google-flights-placeholder",
+    name: FLIGHT_DEAL_PARTNER_NAME,
+    template: FLIGHT_AFFILIATE_URL,
+  };
+}
+
+function buildFlightAffiliateUrl({
+  origin,
+  destination,
+  departureDate,
+  returnDate = "",
+  carrier = "",
+  offerId = "",
+  source = "unknown",
+  provider = "primary",
+}) {
+  const dealProvider = resolveFlightDealProvider(provider);
+
+  if (dealProvider.template) {
+    return buildTemplatedAffiliateUrl(dealProvider.template, {
+      origin,
+      destination,
+      departureDate,
+      returnDate,
+      carrier,
+      offerId,
+      source,
+      provider: dealProvider.id,
+    });
+  }
+
+  return buildTravelpayoutsFlightUrl({
+    origin,
+    destination,
+    departureDate,
+    returnDate,
+    carrier,
+    offerId,
+    source,
+  });
 }
 
 function analyticsAuthToken(req) {
@@ -1044,6 +1128,8 @@ app.get("/api/deals/flight", async (req, res) => {
   const carrier = String(req.query.carrier || "").trim().toUpperCase();
   const offerId = String(req.query.offerId || "").trim();
   const source = String(req.query.source || "unknown").trim();
+  const requestedProvider = String(req.query.provider || "").trim();
+  const dealProvider = resolveFlightDealProvider(requestedProvider);
   const cabin = String(req.query.cabin || "").trim();
   const currency = String(req.query.currency || "").trim().toUpperCase();
   const price = String(req.query.price || "").trim();
@@ -1069,8 +1155,9 @@ app.get("/api/deals/flight", async (req, res) => {
     carrier,
     offerId,
     source,
+    provider: dealProvider.id,
   });
-  const target = affiliateUrl ? FLIGHT_DEAL_PARTNER : "google-flights-placeholder";
+  const target = affiliateUrl ? dealProvider.target : "google-flights-placeholder";
   const targetUrl =
     affiliateUrl ||
     buildGoogleFlightsUrl({
@@ -1089,6 +1176,9 @@ app.get("/api/deals/flight", async (req, res) => {
     carrier,
     offerId,
     source,
+    provider: dealProvider.id,
+    requestedProvider: requestedProvider || null,
+    partnerName: affiliateUrl ? dealProvider.name : "Google Flights",
     cabin: cabin || null,
     currency: currency || null,
     price: price || null,

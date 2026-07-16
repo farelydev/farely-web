@@ -2,7 +2,8 @@ import { expect, test } from "@playwright/test";
 import { futureDate, futureMonth, rotatedRoute } from "./farely-test-data";
 
 test.describe("Farely production API contract", () => {
-  test.beforeEach(async (_, testInfo) => {
+  test.beforeEach(async ({ request }, testInfo) => {
+    void request;
     test.skip(testInfo.project.name !== "desktop-chromium", "API contract tests run once to protect live API quota.");
   });
 
@@ -32,7 +33,7 @@ test.describe("Farely production API contract", () => {
     const departDate = futureDate(45);
     const returnDate = futureDate(49);
     const redirect = await request.get(
-      `/api/deals/flight?origin=${route.from}&destination=${route.to}&departureDate=${departDate}&returnDate=${returnDate}&price=250&currency=GBP&source=playwright-hourly`,
+      `/api/deals/flight?origin=${route.from}&destination=${route.to}&departureDate=${departDate}&returnDate=${returnDate}&price=250&currency=GBP&provider=travelpayouts&source=playwright-hourly`,
       { maxRedirects: 0 }
     );
     expect(redirect.status()).toBe(302);
