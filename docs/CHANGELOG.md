@@ -4,6 +4,23 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-16
 
+- Commit hash: `06c0d53`.
+- What changed:
+  - Added a hidden provider-aware foundation to `/api/deals/flight`.
+  - The current visible/default booking path remains Aviasales/Travelpayouts.
+  - Future approved providers can be resolved by server config, while disabled or unconfigured provider requests fall back to the primary path.
+  - Click metadata now records the resolved provider and any requested provider, which will help validate future second-provider testing.
+  - Fixed the Playwright API contract hook so the audit suite runs under the current Playwright fixture rules.
+- Checks run:
+  - `npm run build` passed on 2026-07-16.
+  - `npm run lint` passed on 2026-07-16 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
+  - `npm run audit:hourly` passed on 2026-07-16.
+  - Local `/api/deals/flight` smoke checks passed: explicit `provider=travelpayouts` and disabled `provider=kiwi` requests both returned tracked `302` Aviasales redirects.
+- Pushed to GitHub:
+  - Pending docs commit and push.
+- Deployment/live verification:
+  - Pending GitHub push and live deployment verification.
+
 - Commit hash: `0610d45` for the audit-suite implementation commit.
 - What changed:
   - Added the first automated live Farely QA audit suite using Playwright.

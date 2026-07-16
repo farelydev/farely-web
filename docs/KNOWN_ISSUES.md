@@ -8,7 +8,7 @@ Last updated: 2026-07-16
 | Medium | QA/monitoring | Live browser audits must stay rate-limit aware. A first parallel full-audit attempt encountered Amadeus/provider 429 behavior, so production audits now run serially and API checks run only once per full audit. | In progress |
 | Low | UX/autocomplete | When users type exact airport codes such as `LHR` or `JFK`, city/all-airports rows can appear because their tags include those codes. Consider ranking exact IATA airport rows first if traveller testing shows confusion. | Open |
 | High | Support/contact | Unverified email aliases must not be published. `info@tryfarely.com` is the only public business email until each alias has a verified receiving route or mailbox. | In progress |
-| High | Affiliate | Kiwi.com is the first documented second-provider candidate, but approval status and the final redirect/deep-link template still need confirmation before any visible provider row is built. | Open |
+| High | Affiliate | Kiwi.com is the first documented second-provider candidate, and the hidden provider-aware redirect foundation now exists, but approval status and the final redirect/deep-link template still need confirmation before any visible provider row is built. | Open |
 | High | Affiliate | `View Deal` click tracking should be validated end to end after each redirect change. | Open |
 | Medium | Affiliate/UX | Result cards and the Flexible dates workflow now use the configured booking partner name where available, such as `Book via Aviasales`; true Skyscanner-style multi-provider comparison still needs approved providers and reliable price data. | In progress |
 | Medium | UX | Flight results and the guided Flexible dates journey passed live smoke validation after the final-sprint polish deployment, and Milestone 6 is founder/Product-approved. Broader route/browser QA remains useful. | In progress |
@@ -37,7 +37,7 @@ Last updated: 2026-07-16
 - The 2026-07-15 filter-reset update is live-verified: stale airport filters clear after a route/search-context change instead of hiding valid new fares.
 - Multi-carrier airline labels and filters were live-verified on LHR -> DXB; repeat on more routes as provider data varies.
 - CTA wording now uses the configured booking partner where available; continue validating click-through tracking after deployment.
-- Do not show Kiwi.com as a live booking option until the account approval, tracking rules, and approved redirect/deep-link template are confirmed.
+- Do not show Kiwi.com as a live booking option until the account approval, tracking rules, and approved redirect/deep-link template are confirmed. The backend can now resolve provider-aware redirect requests, but disabled/unconfigured provider requests should continue falling back to the primary Aviasales path.
 - The booking-option row was live-verified after deployment on an exact-date result card; continue checking it on more routes and Flexible dates selected-day results.
 - The top booking strip was live-verified on desktop and 390px mobile on 2026-07-12; continue checking it across more routes as traffic grows.
 - Flexible dates availability copy was tightened and live-verified on 2026-07-11 so clean successful results do not show a broad reliability warning.
@@ -59,7 +59,7 @@ Last updated: 2026-07-16
 - Milestones now require three states: `Implemented`, `Deployed`, and `Verified`; only live verification counts as complete.
 - Contact details must only show verified receiving addresses.
 - Affiliate redirect and click tracking are core business infrastructure and need live validation.
-- Kiwi.com can be prepared as a second-provider candidate, but visible multi-provider comparison remains blocked until approved live redirect data exists.
+- Kiwi.com can be prepared as a second-provider candidate, and the hidden provider-aware redirect foundation is now in place, but visible multi-provider comparison remains blocked until approved live redirect data exists.
 - Secrets must stay out of repo commits.
 - Deployment state should be confirmed against GitHub/Render after meaningful changes.
 - GitHub `main` now has classic branch protection enabled so force pushes and branch deletion are blocked.

@@ -27,6 +27,8 @@ Expedia Group is strong for hotels, packages, and larger travel-platform expansi
 
 Do not add a visible Kiwi.com comparison row yet.
 
+Codex has added a hidden provider-aware redirect foundation in `server.js` at implementation commit `06c0d53`. This does not make Kiwi.com live. The current default remains Aviasales/Travelpayouts, and disabled or unconfigured provider requests fall back to the primary path.
+
 The next safe implementation should only happen after the founder confirms:
 
 - Kiwi.com affiliate approval is active.
@@ -36,7 +38,7 @@ The next safe implementation should only happen after the founder confirms:
 
 ## Safe Engineering Next Step
 
-After approval, build a server-controlled second-provider redirect config behind a feature flag, then show a disabled/internal-only comparison row until live click tracking and redirect behavior are verified.
+After approval, add the approved Kiwi.com redirect/deep-link template to the existing server-controlled provider config, verify tracking internally, then show a disabled/internal-only comparison row until live click tracking and redirect behavior are verified.
 
 ## Sources Checked
 

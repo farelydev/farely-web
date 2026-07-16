@@ -4,6 +4,8 @@ Last updated: 2026-07-16
 
 ## Latest Copy-Paste Summary For ChatGPT
 
+Codex added the hidden Milestone 6 provider-aware redirect foundation on 2026-07-16. The visible booking path still says and uses Aviasales/Travelpayouts; no Kiwi.com row was shown. `/api/deals/flight` can now accept a requested provider behind server config, record both the resolved provider and requested provider in click metadata, and fall back safely to the primary Aviasales path when a provider is disabled or unconfigured. Implementation commit: `06c0d53`. Checks passed: `npm run build`, `npm run lint` with the existing `LegalPage.jsx` warning, `npm run audit:hourly`, and local redirect smokes for explicit Travelpayouts and disabled Kiwi requests. GitHub push and live deployment verification are pending from this handoff update.
+
 Farely baseline QA automation was added on 2026-07-16. Codex added a Playwright live audit suite with `npm run audit:hourly` and `npm run audit:full`, saved the first report at `audits/2026-07-16-live-farely-baseline-audit.md`, and verified the live site with desktop/mobile Chromium flows. Final checks passed: hourly audit passed, full audit passed with 8 passed and 2 intentionally skipped duplicate mobile API checks, `npm run build` passed, and `npm run lint` passed with the known existing `LegalPage.jsx` warning. No confirmed customer-facing defect was found in the final passing audit. The main operational finding is that live audits must stay quota-aware because an earlier parallel full-audit attempt encountered Amadeus/provider 429 behavior. Direct posting into the MVP Factory ChatGPT project was unavailable from this Codex run, so this handoff should be pasted manually if product review is needed.
 
 Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05, but the newest founder direction has moved the active engineering focus back to Milestone 6 provider comparison and booking-path trust. Codex actioned the second-provider decision on 2026-07-16 without adding fake provider choices. Kiwi.com is now documented as the first realistic second-provider candidate after the current Aviasales/Travelpayouts path because it is flight-focused, fits Farely's cheap/flexible/complex-route positioning, and has a Travelpayouts-accessible affiliate offer. Codex added `docs/PROVIDER_SELECTION.md` and updated the roadmap/status/known-issues handoff. No visible Kiwi.com booking row was built because Farely still needs affiliate approval, tracking requirements, and the approved redirect/deep-link template before showing `Book via Kiwi.com`. The next engineering step after approval is a server-controlled second-provider redirect config behind a feature flag, then internal verification before exposing a comparison row.
@@ -24,6 +26,10 @@ Temporary Render retry note, 2026-07-03 05:50 BST:
 - Request for ChatGPT: please give Codex the single next plan/task to tick off next, so Codex knows exactly what to work on after this verification.
 
 What was completed:
+- Hidden provider-aware redirect foundation implemented on 2026-07-16.
+- `/api/deals/flight` can now resolve server-configured providers while preserving the current Aviasales/Travelpayouts default.
+- Disabled or unconfigured provider requests, including Kiwi before approval/configuration, fall back to the primary Aviasales path.
+- Click metadata now records the resolved provider and requested provider for future second-provider validation.
 - Milestone 6 second-provider candidate decision actioned on 2026-07-16.
 - Kiwi.com is documented as the first realistic second-provider candidate after Aviasales/Travelpayouts.
 - `docs/PROVIDER_SELECTION.md` now records the rationale, guardrails, source links, and next engineering step.
@@ -98,6 +104,8 @@ What was not completed:
 - Milestone 7 still needs real model-backed reasoning, broader destination coverage, and stronger conversation memory.
 
 Files changed:
+- `server.js`
+- `tests/e2e/api-contract.spec.js`
 - `src/components/ResultsSection.jsx`
 - `src/App.jsx`
 - `docs/PROJECT_STATUS.md`
