@@ -1,10 +1,10 @@
 # ChatGPT Handoff
 
-Last updated: 2026-07-15
+Last updated: 2026-07-16
 
 ## Latest Copy-Paste Summary For ChatGPT
 
-Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05, but the newest founder direction has moved the active engineering focus back to Milestone 6 provider comparison and booking-path trust. Codex implemented, pushed, deployed, and live-verified a small Search Experience 2.0 reliability fix on 2026-07-15: result filters now reset when the traveller changes the underlying search context, including route, dates, selected Flexible date, trip type, cabin, or passenger count. This prevents an old airport, airline, price, or baggage filter from silently hiding valid fares after a new search. `npm run build` passed; `npm run lint` passed with the existing `LegalPage.jsx` warning. Live production served `assets/index-3otPvE22.js`; `/api/health` reported `demoFallbackEnabled:false`; `/api/flights` returned 25 Amadeus LON -> DXB offers with `Book via Aviasales`; live Browser QA confirmed a stale LON -> DOH `London Stansted (STN)` filter reset from `Filters (1)` to `Filters` after changing destination to Dubai, then rendered 12 LON -> DXB cards with 12 top booking strips and no page console warnings/errors. True multi-provider comparison is still not built because Farely needs approved providers and reliable partner price data before showing Kiwi, Trip.com, WayAway, Expedia, or other partner rows. Non-essential AI planner work should stay paused unless the founder changes direction again.
+Farely Milestone 6 is founder/Product-approved as complete through a fresh `MVP Factory` ChatGPT project chat created on 2026-07-05, but the newest founder direction has moved the active engineering focus back to Milestone 6 provider comparison and booking-path trust. Codex actioned the second-provider decision on 2026-07-16 without adding fake provider choices. Kiwi.com is now documented as the first realistic second-provider candidate after the current Aviasales/Travelpayouts path because it is flight-focused, fits Farely's cheap/flexible/complex-route positioning, and has a Travelpayouts-accessible affiliate offer. Codex added `docs/PROVIDER_SELECTION.md` and updated the roadmap/status/known-issues handoff. No visible Kiwi.com booking row was built because Farely still needs affiliate approval, tracking requirements, and the approved redirect/deep-link template before showing `Book via Kiwi.com`. The next engineering step after approval is a server-controlled second-provider redirect config behind a feature flag, then internal verification before exposing a comparison row.
 
 New ChatGPT decision, 2026-07-05:
 - Avoid the slow old `Farely Product Strategy` thread.
@@ -22,6 +22,10 @@ Temporary Render retry note, 2026-07-03 05:50 BST:
 - Request for ChatGPT: please give Codex the single next plan/task to tick off next, so Codex knows exactly what to work on after this verification.
 
 What was completed:
+- Milestone 6 second-provider candidate decision actioned on 2026-07-16.
+- Kiwi.com is documented as the first realistic second-provider candidate after Aviasales/Travelpayouts.
+- `docs/PROVIDER_SELECTION.md` now records the rationale, guardrails, source links, and next engineering step.
+- No visible Kiwi.com provider row was added because approval and redirect/deep-link details are still required.
 - Milestone 6 stale filter reset implemented, pushed, deployed, and live-verified on 2026-07-15.
 - Result filters now reset when route, dates, selected Flexible date, trip type, cabin, or passengers change, so old filters do not silently hide valid fares after a new search.
 - Local and live checks passed on 2026-07-15: `npm run build`, `npm run lint` with the existing `LegalPage.jsx` warning, local API smoke for LON -> DXB, live `/api/health`, live `/api/flights`, and live in-app Browser QA for the stale airport-filter reset.
@@ -84,7 +88,7 @@ What was completed:
 - AI planner recommendations now detect requested destinations such as Bosnia/Sarajevo, include the requested destination first where possible, show a 2.8s analysing state, use visual recommendation cards with match scores and trip details, explain why alternatives were suggested, and populate the search form for user review before live search.
 
 What was not completed:
-- True Skyscanner-style multi-provider price comparison is not built yet because Farely still needs approved providers and reliable partner price data.
+- True Skyscanner-style multi-provider price comparison is not built yet because Farely still needs Kiwi.com approval, approved redirect/deep-link data, and reliable partner price/click tracking before showing a second provider row.
 - Route pages, destination pages, Umrah SEO pages, and the first cheap flexible flights explainer are not built yet; SEO content should stay small and product-led.
 - Cloudflare dashboard settings still need manual verification: Full (strict), WAF/security level, TLS settings, and relevant security modes.
 - Founder/admin analytics has not yet moved to a separate authenticated dashboard.

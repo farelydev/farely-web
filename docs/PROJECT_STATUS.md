@@ -1,6 +1,6 @@
 # Farely Project Status
 
-Last updated: 2026-07-15
+Last updated: 2026-07-16
 
 ## Current Milestone
 
@@ -8,13 +8,14 @@ Milestone 6: Search Experience 2.0 provider-comparison polish.
 
 ## Current Production Readiness Status
 
-Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. The Milestone 6 final-sprint polish and the founder-requested Flexible dates/dark-mode adjustment have been pushed, deployed, live-verified on `https://tryfarely.com`, and founder/Product-approved through a fresh `MVP Factory` ChatGPT project chat on 2026-07-05. The current engineering focus has moved back to Milestone 6 provider comparison and booking-path trust, so non-essential AI planner work is paused unless the founder changes direction again. Recent Milestone 6 increments fixed multi-passenger price clarity, labelled the current redirect as `Book via Aviasales`, added final-fare/commission trust copy, aligned the Flexible dates workflow step with the configured booking partner, tightened Flexible dates availability copy so successful live travel-day results do not show a broad reliability warning, added a top-of-card booking strip so mobile users see the current tracked partner option before the long itinerary details, improved airline display/filtering for multi-carrier offers, and added a verified filter reset so stale filters do not hide valid fares after route/search changes. The price clarity, booking-option row, partner-step wording update, 2026-07-11 availability-copy update, 2026-07-12 top booking strip, 2026-07-14 multi-carrier airline filter update, and 2026-07-15 filter-reset update are pushed, deployed, and live-verified on `https://tryfarely.com`. Milestone 7 has already started with a guided AI Travel Consultant pass, conversation-memory increment, and first ski-planner increment pushed, deployed, and live-verified on `https://tryfarely.com`. The first SEO foundations patch has been pushed, deployed, and live-verified with proper page metadata, a real `robots.txt`, and a real `sitemap.xml`. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, affiliate approval/configuration, private founder analytics architecture, and continued search reliability work.
+Farely is live and in MVP hardening. Core flight search flows are present, the first small security-hardening pass has been pushed, deployed, and verified on the live site, and demo fallback is now disabled on Render. The Milestone 6 final-sprint polish and the founder-requested Flexible dates/dark-mode adjustment have been pushed, deployed, live-verified on `https://tryfarely.com`, and founder/Product-approved through a fresh `MVP Factory` ChatGPT project chat on 2026-07-05. The current engineering focus has moved back to Milestone 6 provider comparison and booking-path trust, so non-essential AI planner work is paused unless the founder changes direction again. Recent Milestone 6 increments fixed multi-passenger price clarity, labelled the current redirect as `Book via Aviasales`, added final-fare/commission trust copy, aligned the Flexible dates workflow step with the configured booking partner, tightened Flexible dates availability copy so successful live travel-day results do not show a broad reliability warning, added a top-of-card booking strip so mobile users see the current tracked partner option before the long itinerary details, improved airline display/filtering for multi-carrier offers, added a verified filter reset so stale filters do not hide valid fares after route/search changes, and documented Kiwi.com as the first realistic second-provider candidate. The price clarity, booking-option row, partner-step wording update, 2026-07-11 availability-copy update, 2026-07-12 top booking strip, 2026-07-14 multi-carrier airline filter update, and 2026-07-15 filter-reset update are pushed, deployed, and live-verified on `https://tryfarely.com`. Milestone 7 has already started with a guided AI Travel Consultant pass, conversation-memory increment, and first ski-planner increment pushed, deployed, and live-verified on `https://tryfarely.com`. The first SEO foundations patch has been pushed, deployed, and live-verified with proper page metadata, a real `robots.txt`, and a real `sitemap.xml`. Production readiness still depends on Cloudflare dashboard checks, stronger provider monitoring, Kiwi.com/affiliate approval and redirect-template confirmation, private founder analytics architecture, and continued search reliability work.
 
 Delivery state rule: work is only complete when it is `Implemented`, `Deployed`, and `Verified` on the live production site. The multi-passenger price clarity and Aviasales labelling fix is `Verified` on `https://tryfarely.com`. The previous Milestone 6 booking-option row is `Verified` on `https://tryfarely.com`. The 2026-07-10 Flexible dates partner-step wording update is `Verified` on `https://tryfarely.com`. The 2026-07-11 Flexible dates availability-copy update is `Verified` on `https://tryfarely.com`. The 2026-07-12 top booking strip is `Verified` on `https://tryfarely.com`. The 2026-07-14 multi-carrier airline filter update is `Verified` on `https://tryfarely.com`. The 2026-07-15 route/search filter reset is `Verified` on `https://tryfarely.com`. The first Milestone 7 guided AI planner pass has reached `Verified` on `https://tryfarely.com`; the conversation-memory increment is also `Verified` on `https://tryfarely.com`; the ski-planner increment is also `Verified` on `https://tryfarely.com`; the first SEO foundations patch is also `Verified` on `https://tryfarely.com`.
 
 ## Latest Deployment / Commit
 
 - Branch: `main`
+- Latest provider-selection decision record: pending commit.
 - Latest implemented Milestone 6 filter-reset update: `f6fecd2`.
 - Latest implemented Milestone 6 multi-carrier airline filter update: `49fb620`.
 - Latest implemented Milestone 6 top booking strip: `a6a7bff`.
@@ -76,6 +77,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 - The AI planner can now merge natural follow-up corrections after recommendations appear, such as changing origin, timing, budget, or requested destination, then re-rank the destination cards without starting a live search.
 - The AI planner now has a first-pass ski planner path: ski prompts can recommend Sofia, Geneva, and Innsbruck, then fill the existing Flexible dates search form for review before live search.
 - Farely uses a server-controlled affiliate redirect architecture.
+- Kiwi.com is documented as the first realistic second-provider candidate after Aviasales/Travelpayouts, but no visible Kiwi.com booking row should appear until approval and the redirect/deep-link template are confirmed.
 - Basic SEO foundations are live-verified: descriptive homepage metadata, canonical/social tags, dynamic legal/support page metadata, `robots.txt`, and `sitemap.xml`.
 - Production security hardening now disables the public Amadeus debug endpoint, restricts production CORS to the Farely domains, removes URL/localStorage analytics-token handling, adds Helmet security headers, and removes `X-Powered-By`.
 - Legal/affiliate disclosure pages and notices exist.
@@ -86,7 +88,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 ## What Is Incomplete
 
 - Milestone 6 Search Experience 2.0 is founder/Product-approved as complete, but broader accessibility review remains useful during production readiness.
-- Production affiliate partner approval/configuration is not yet fully confirmed in this repo.
+- Production affiliate partner approval/configuration is not yet fully confirmed in this repo. Kiwi.com is now the first documented second-provider candidate, pending approval and an approved redirect/deep-link template.
 - Click tracking needs ongoing validation against live traffic and analytics requirements.
 - Founder analytics should move out of the public app into a private dashboard with proper authentication.
 - AI trip-planning experience is now the active Milestone 7 focus; the first guided pass, follow-up correction memory pass, and first ski-planner increment are live-verified, but it still needs real model-backed reasoning and broader destination coverage.
@@ -100,10 +102,10 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 - Live provider behavior is now easier to verify because `USE_DEMO_FALLBACK=false` is active on Render.
 - Cloudflare SSL/TLS mode and WAF/security settings still need live dashboard verification.
 - `support@tryfarely.com`, `privacy@tryfarely.com`, `security@tryfarely.com`, and `noreply@tryfarely.com` should not be advertised until Cloudflare Email Routing or a real mailbox provider is configured for each alias.
-- Real affiliate monetisation depends on partner approval, configured redirect templates, and reliable click metadata.
+- Real affiliate monetisation depends on partner approval, configured redirect templates, and reliable click metadata. The immediate action is to confirm Kiwi.com approval and link-template details before any visible provider-comparison row is built.
 - The founder-to-ChatGPT handoff was previously manual; this docs system now reduces that risk but needs discipline after each milestone.
 - GitHub SSH was repaired on this Mac with a dedicated Farely Codex SSH key, and `main` is now protected against force pushes and deletion.
 
 ## Recommended Next Engineering Priority
 
-Next engineering priority: choose the first realistic second provider/affiliate source for true side-by-side booking choice, then implement only where Farely has honest provider data.
+Next engineering priority: after Kiwi.com approval and its redirect/deep-link template are confirmed, build a server-controlled second-provider redirect config behind a feature flag before exposing any visible comparison row.

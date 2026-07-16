@@ -1,6 +1,6 @@
 # Farely Roadmap
 
-Last updated: 2026-07-15
+Last updated: 2026-07-16
 
 ## Current Phase
 
@@ -52,6 +52,7 @@ Current API robustness action:
 - Top booking strip: implemented, pushed, deployed, and live-verified so the current tracked partner option appears before long itinerary details, helping mobile users reach `Book via Aviasales` faster without inventing extra providers.
 - Multi-carrier airline display/filtering: implemented, pushed, deployed, and live-verified so visible offers can show combined carrier labels such as `AZ / Lufthansa`, stacked logo badges, and airline filter options for secondary carriers.
 - Search filter reset on route/search changes: implemented, pushed, deployed, and live-verified so stale airport, airline, price, or baggage filters do not silently hide valid fares after a traveller changes route, date, trip type, cabin, passengers, or selected Flexible date.
+- Second-provider candidate: Kiwi.com selected as the first realistic candidate after the current Aviasales/Travelpayouts path; documented in `docs/PROVIDER_SELECTION.md`. Do not show Kiwi.com as a live provider until approval, tracking requirements, and the approved redirect/deep-link template are confirmed.
 - Flexible partner-step wording: implemented and locally verified so Flexible dates shows the configured partner name after offers load, without claiming extra live providers.
 - Flexible availability copy: implemented, pushed, deployed, and live-verified so successful live travel-day results do not show the broad `limited on the live site` warning; fallback and partial-day failures still show a provider-availability note.
 - Flexible dates UX: product naming has been reverted from `Cheapest Month` to `Flexible dates`; the flow now explains that users choose a month and Farely compares the cheapest travel dates within that period.
@@ -146,6 +147,7 @@ Farely should answer "Where should I go?" The AI should become the product, not 
 - Keep affiliate links server-controlled.
 - Keep click tracking inside the backend redirect flow.
 - Confirm the first approved affiliate partner and required URL template.
+- First second-provider candidate: Kiwi.com, pending founder/account confirmation and approved redirect/deep-link template.
 - Pass useful metadata such as route, dates, cabin, currency, price, trip type, sort, and result rank.
 - Avoid Travelpayouts Drive scripts or automatic link-rewriting unless required for approval or usage.
 - Add reporting that helps the founder see clicks, conversion signals, and broken redirects.

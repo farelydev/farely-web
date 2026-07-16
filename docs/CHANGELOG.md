@@ -2,6 +2,21 @@
 
 This changelog tracks completed Farely milestones and whether they were pushed to GitHub.
 
+## 2026-07-16
+
+- Commit hash: pending.
+- What changed:
+  - Actioned the Milestone 6 second-provider decision without adding fake provider choices.
+  - Documented Kiwi.com as the first realistic second-provider candidate after the current Aviasales/Travelpayouts path.
+  - Added `docs/PROVIDER_SELECTION.md` with the decision, rationale, implementation guardrails, and current source links.
+  - Kept the visible product unchanged until affiliate approval, tracking requirements, and the approved redirect/deep-link template are confirmed.
+- Checks run:
+  - Docs-only change; no production build required.
+- Pushed to GitHub:
+  - Pending.
+- Deployment/live verification:
+  - Not applicable. No runtime product behavior changed.
+
 ## 2026-07-15
 
 - Implementation commit hash: `f6fecd2`.
