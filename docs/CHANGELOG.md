@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-16
 
-- Commit hash: `106f70e`.
+- Commit hash: `0610d45` for the audit-suite implementation commit.
 - What changed:
   - Added the first automated live Farely QA audit suite using Playwright.
   - Added production hourly and full audit scripts for API health, autocomplete, exact-date search, flexible-date search, one-way/mobile search, sorting, filters, booking CTA, console/network monitoring, and failure traces/screenshots.
