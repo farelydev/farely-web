@@ -17,9 +17,9 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - `npm run audit:hourly` passed on 2026-07-16.
   - Local `/api/deals/flight` smoke checks passed: explicit `provider=travelpayouts` and disabled `provider=kiwi` requests both returned tracked `302` Aviasales redirects.
 - Pushed to GitHub:
-  - Pending docs commit and push.
+  - Yes, pushed to GitHub `main` on 2026-07-16.
 - Deployment/live verification:
-  - Pending GitHub push and live deployment verification.
+  - Verified on `https://tryfarely.com` on 2026-07-16. Live `/api/health` reported `demoFallbackEnabled:false` with Travelpayouts configured; live `/api/deals/flight?provider=travelpayouts` returned a tracked `302` to Aviasales; post-push `npm run audit:hourly` passed.
 
 - Commit hash: `0610d45` for the audit-suite implementation commit.
 - What changed:
