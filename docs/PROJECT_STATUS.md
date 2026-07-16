@@ -15,7 +15,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 ## Latest Deployment / Commit
 
 - Branch: `main`
-- Latest provider-selection decision record: pending commit.
+- Latest provider-selection decision record: `50c2db8`.
 - Latest implemented Milestone 6 filter-reset update: `f6fecd2`.
 - Latest implemented Milestone 6 multi-carrier airline filter update: `49fb620`.
 - Latest implemented Milestone 6 top booking strip: `a6a7bff`.
