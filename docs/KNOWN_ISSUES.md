@@ -5,6 +5,8 @@ Last updated: 2026-07-16
 | Priority | Area | Issue | Status |
 | --- | --- | --- | --- |
 | Medium | API/provider | Demo fallback is now disabled in production, but Amadeus test/sandbox behavior can still limit result quality until production credentials are approved and verified. | In progress |
+| Medium | QA/monitoring | Live browser audits must stay rate-limit aware. A first parallel full-audit attempt encountered Amadeus/provider 429 behavior, so production audits now run serially and API checks run only once per full audit. | In progress |
+| Low | UX/autocomplete | When users type exact airport codes such as `LHR` or `JFK`, city/all-airports rows can appear because their tags include those codes. Consider ranking exact IATA airport rows first if traveller testing shows confusion. | Open |
 | High | Support/contact | Unverified email aliases must not be published. `info@tryfarely.com` is the only public business email until each alias has a verified receiving route or mailbox. | In progress |
 | High | Affiliate | Kiwi.com is the first documented second-provider candidate, but approval status and the final redirect/deep-link template still need confirmation before any visible provider row is built. | Open |
 | High | Affiliate | `View Deal` click tracking should be validated end to end after each redirect change. | Open |
@@ -28,6 +30,7 @@ Last updated: 2026-07-16
 
 ## UX Issues
 
+- Automated Playwright QA is now available through `npm run audit:hourly` and `npm run audit:full`; continue adding regression tests for every confirmed live bug.
 - Continue validating result cards and the guided Flexible dates flow for quick comparison with real provider data as traffic grows.
 - Continue checking multi-passenger result cards across more routes so `per person` and total-price copy stays clear with varied fare amounts.
 - QA Milestone 6 search filters and airport-selection behavior on more live routes with multiple offers.

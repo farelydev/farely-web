@@ -52,6 +52,10 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 
 ## What Is Working
 
+- Automated live QA now exists through Playwright:
+  - `npm run audit:hourly` checks critical production health and exact-date browser search.
+  - `npm run audit:full` checks production API contracts plus desktop/mobile exact, flexible, and one-way browser flows serially.
+  - The first baseline report is saved at `audits/2026-07-16-live-farely-baseline-audit.md`.
 - React/Vite frontend exists.
 - Node/Express backend exists.
 - Exact-date flight search is implemented.
@@ -87,6 +91,8 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 
 ## What Is Incomplete
 
+- Recurring hourly/twice-daily scheduling is specified but not fully installed from this run because the Codex automation update handler was not available in the current toolset.
+- Direct posting into the MVP Factory ChatGPT project was unavailable in this run; the audit report includes a copy-paste handoff instead.
 - Milestone 6 Search Experience 2.0 is founder/Product-approved as complete, but broader accessibility review remains useful during production readiness.
 - Production affiliate partner approval/configuration is not yet fully confirmed in this repo. Kiwi.com is now the first documented second-provider candidate, pending approval and an approved redirect/deep-link template.
 - Click tracking needs ongoing validation against live traffic and analytics requirements.
@@ -99,6 +105,7 @@ Delivery state rule: work is only complete when it is `Implemented`, `Deployed`,
 
 ## Current Blockers
 
+- Live QA should stay quota-aware. The first parallel full-audit attempt encountered Amadeus/provider 429 behavior, so full audits now run serially and should not be expanded aggressively without mocked/local tests.
 - Live provider behavior is now easier to verify because `USE_DEMO_FALLBACK=false` is active on Render.
 - Cloudflare SSL/TLS mode and WAF/security settings still need live dashboard verification.
 - `support@tryfarely.com`, `privacy@tryfarely.com`, `security@tryfarely.com`, and `noreply@tryfarely.com` should not be advertised until Cloudflare Email Routing or a real mailbox provider is configured for each alias.

@@ -4,6 +4,23 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-16
 
+- Commit hash: `106f70e`.
+- What changed:
+  - Added the first automated live Farely QA audit suite using Playwright.
+  - Added production hourly and full audit scripts for API health, autocomplete, exact-date search, flexible-date search, one-way/mobile search, sorting, filters, booking CTA, console/network monitoring, and failure traces/screenshots.
+  - Added rotating/future-date test data so audit dates do not expire.
+  - Saved the first baseline audit report at `audits/2026-07-16-live-farely-baseline-audit.md`.
+  - Kept live audit traffic deliberately limited after an earlier parallel run showed Amadeus/provider 429 sensitivity.
+- Checks run:
+  - `npm run audit:hourly` passed on 2026-07-16.
+  - `npm run audit:full` passed on 2026-07-16: 8 passed, 2 duplicate mobile API checks intentionally skipped.
+  - `npm run build` passed on 2026-07-16.
+  - `npm run lint` passed on 2026-07-16 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
+- Pushed to GitHub:
+  - Yes, pushed to GitHub `main` on 2026-07-16.
+- Deployment/live verification:
+  - Not a production product change. The suite tested live `https://tryfarely.com` successfully.
+
 - Commit hash: `50c2db8`.
 - What changed:
   - Actioned the Milestone 6 second-provider decision without adding fake provider choices.

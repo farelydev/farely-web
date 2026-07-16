@@ -100,7 +100,7 @@ Turn the current analytics page into Farely Control Centre.
 - Performance.
 - Accessibility.
 - Browser compatibility.
-- Production monitoring.
+- Production monitoring: first Playwright live audit suite added on 2026-07-16 with hourly and full-audit scripts. Next step is to wire the scripts into a scheduler/automation where supported without overusing live Amadeus quota.
 
 ## Milestone 10: Travel Platform Expansion
 
