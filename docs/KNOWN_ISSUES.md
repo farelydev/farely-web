@@ -5,6 +5,7 @@ Last updated: 2026-07-17
 | Priority | Area | Issue | Status |
 | --- | --- | --- | --- |
 | Medium | API/provider | Demo fallback is now disabled in production, but Amadeus test/sandbox behavior can still limit result quality until production credentials are approved and verified. | In progress |
+| High | API/provider | On 2026-07-17, live exact-date `/api/flights` returned Amadeus test-environment `500` responses across checked routes, blocking full live exact-date UI verification. | Open |
 | Medium | QA/monitoring | Live browser audits must stay rate-limit aware. A first parallel full-audit attempt encountered Amadeus/provider 429 behavior, so production audits now run serially and API checks run only once per full audit. | In progress |
 | Low | UX/autocomplete | When users type exact airport codes such as `LHR` or `JFK`, city/all-airports rows can appear because their tags include those codes. Consider ranking exact IATA airport rows first if traveller testing shows confusion. | Open |
 | High | Support/contact | Unverified email aliases must not be published. `info@tryfarely.com` is the only public business email until each alias has a verified receiving route or mailbox. | In progress |
@@ -33,7 +34,7 @@ Last updated: 2026-07-17
 - Automated Playwright QA is now available through `npm run audit:hourly` and `npm run audit:full`; continue adding regression tests for every confirmed live bug.
 - Continue validating result cards and the guided Flexible dates flow for quick comparison with real provider data as traffic grows.
 - Continue checking multi-passenger result cards across more routes so `per person` and total-price copy stays clear with varied fare amounts.
-- QA Milestone 6 search filters and airport-selection behavior on more live routes with multiple offers. The 2026-07-17 filter empty-state recovery adds `Show all offers` for no-match filter states and still needs live verification after deployment.
+- QA Milestone 6 search filters and airport-selection behavior on more live routes with multiple offers. The 2026-07-17 filter empty-state recovery adds `Show all offers` for no-match filter states and was verified on the live production bundle with a controlled flight response; repeat with real provider data after Amadeus exact-date responses recover.
 - The 2026-07-15 filter-reset update is live-verified: stale airport filters clear after a route/search-context change instead of hiding valid new fares.
 - Multi-carrier airline labels and filters were live-verified on LHR -> DXB; repeat on more routes as provider data varies.
 - CTA wording now uses the configured booking partner where available; continue validating click-through tracking after deployment.

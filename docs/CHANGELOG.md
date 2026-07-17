@@ -4,7 +4,7 @@ This changelog tracks completed Farely milestones and whether they were pushed t
 
 ## 2026-07-17
 
-- Commit hash: pending.
+- Commit hash: `eb6f1a2`.
 - What changed:
   - Added a clear `Show all offers` action when active result filters remove every fare.
   - Kept the existing result-filter logic, flight search APIs, and server-controlled booking redirects unchanged.
@@ -13,11 +13,12 @@ This changelog tracks completed Farely milestones and whether they were pushed t
   - `npm run build` passed on 2026-07-17.
   - `npm run lint` passed on 2026-07-17 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
   - Local hourly browser audit passed for the exact-date result flow and filter recovery path on `http://127.0.0.1:4017/`.
+  - Targeted live production-bundle UI check passed on `https://tryfarely.com` using a controlled `/api/flights` response: the no-match filter state rendered `Show all offers`, reset filters, restored result cards, produced no console warnings/errors, and had no horizontal overflow.
   - Full local `npm run audit:hourly` also ran the production API contract and failed locally only because this laptop server reports `demoFallbackEnabled:true`; live production audit still needs to run after push.
 - Pushed to GitHub:
-  - Pending.
+  - Yes, pushed to GitHub `main` on 2026-07-17.
 - Deployment/live verification:
-  - Pending.
+  - Partially verified on `https://tryfarely.com` on 2026-07-17. The live page served `assets/index-CLsCnw_Z.js`, the production API contract passed, and the deployed filter recovery UI passed with a controlled flight response. Full live exact-date provider verification was blocked because `/api/flights` returned Amadeus test-environment `500` responses across checked routes.
 
 ## 2026-07-16
 
