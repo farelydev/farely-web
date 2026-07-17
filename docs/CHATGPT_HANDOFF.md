@@ -1,8 +1,10 @@
 # ChatGPT Handoff
 
-Last updated: 2026-07-16
+Last updated: 2026-07-17
 
 ## Latest Copy-Paste Summary For ChatGPT
+
+Codex added a small Milestone 6 filter empty-state recovery on 2026-07-17. When filters remove every result, Farely now shows `No fares match these filters` with a clear `Show all offers` button, so travellers can recover without reopening the drawer. This does not change flight search APIs, sorting, booking redirects, or partner copy. Checks passed locally: `npm run build`, `npm run lint` with the existing `LegalPage.jsx` warning, and the exact-date browser audit path showing the no-match filter state and successful reset. GitHub push and live production verification are pending.
 
 Codex added the hidden Milestone 6 provider-aware redirect foundation on 2026-07-16. The visible booking path still says and uses Aviasales/Travelpayouts; no Kiwi.com row was shown. `/api/deals/flight` can now accept a requested provider behind server config, record both the resolved provider and requested provider in click metadata, and fall back safely to the primary Aviasales path when a provider is disabled or unconfigured. Implementation commit: `06c0d53`; verification docs commit: `84e196c`. Checks passed: `npm run build`, `npm run lint` with the existing `LegalPage.jsx` warning, local redirect smokes for explicit Travelpayouts and disabled Kiwi requests, live `/api/health`, live `/api/deals/flight?provider=travelpayouts`, and post-push `npm run audit:hourly`. GitHub push succeeded to `main`, and the change is behavior-verified on `https://tryfarely.com`.
 
@@ -26,6 +28,9 @@ Temporary Render retry note, 2026-07-03 05:50 BST:
 - Request for ChatGPT: please give Codex the single next plan/task to tick off next, so Codex knows exactly what to work on after this verification.
 
 What was completed:
+- Milestone 6 filter empty-state recovery implemented locally on 2026-07-17.
+- Filtered result empty states now include `Show all offers`, which clears active filters and restores visible result cards.
+- Local checks passed: `npm run build`, `npm run lint` with the existing `LegalPage.jsx` warning, and exact-date browser QA for the no-match filter recovery path.
 - Hidden provider-aware redirect foundation implemented on 2026-07-16.
 - `/api/deals/flight` can now resolve server-configured providers while preserving the current Aviasales/Travelpayouts default.
 - Disabled or unconfigured provider requests, including Kiwi before approval/configuration, fall back to the primary Aviasales path.

@@ -2,6 +2,23 @@
 
 This changelog tracks completed Farely milestones and whether they were pushed to GitHub.
 
+## 2026-07-17
+
+- Commit hash: pending.
+- What changed:
+  - Added a clear `Show all offers` action when active result filters remove every fare.
+  - Kept the existing result-filter logic, flight search APIs, and server-controlled booking redirects unchanged.
+  - Extended the hourly browser audit to prove travellers can recover from a no-match filter state.
+- Checks run:
+  - `npm run build` passed on 2026-07-17.
+  - `npm run lint` passed on 2026-07-17 with 1 pre-existing warning in `src/components/LegalPage.jsx`.
+  - Local hourly browser audit passed for the exact-date result flow and filter recovery path on `http://127.0.0.1:4017/`.
+  - Full local `npm run audit:hourly` also ran the production API contract and failed locally only because this laptop server reports `demoFallbackEnabled:true`; live production audit still needs to run after push.
+- Pushed to GitHub:
+  - Pending.
+- Deployment/live verification:
+  - Pending.
+
 ## 2026-07-16
 
 - Commit hash: `06c0d53`.

@@ -1741,6 +1741,18 @@ const styles = `
   }
   .fa-emptyTitle{ font-size:18px; line-height:1.15; color:rgba(8,16,35,.90); font-weight:1000; letter-spacing:0; }
   .fa-emptyText{ margin-top:6px; max-width:520px; font-size:13px; line-height:1.45; color:rgba(8,16,35,.58); font-weight:850; }
+  .fa-emptyReset{
+    margin-top:12px;
+    min-height:40px;
+    border:0;
+    border-radius:12px;
+    padding:0 14px;
+    cursor:pointer;
+    background:linear-gradient(135deg, rgba(35,95,255,1), rgba(74,60,255,1));
+    color:#fff;
+    font-size:12px;
+    font-weight:1000;
+  }
   @media (max-width:520px){
     .fa-pillGrid{ gap:8px; padding:10px; }
     .fa-legMain{ grid-template-columns:1fr; align-items:start; }
@@ -2395,6 +2407,7 @@ const styles = `
     .fa-emptyIcon{ background:rgba(120,160,255,.14); border-color:rgba(120,160,255,.18); fill:rgba(140,175,255,1); box-shadow:none; }
     .fa-emptyTitle{ color:rgba(235,240,255,.94); }
     .fa-emptyText{ color:rgba(235,240,255,.62); }
+    .fa-emptyReset{ background:linear-gradient(135deg, rgba(90,130,255,1), rgba(125,100,255,1)); }
     .fa-infoCard{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.08); box-shadow:none; }
     .fa-infoCard.isMuted{ background: rgba(255,255,255,.04); }
     .fa-infoCard.isWarning{ background: rgba(110,75,0,.22); border-color: rgba(255,210,120,.18); }

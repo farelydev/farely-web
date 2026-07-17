@@ -1,6 +1,6 @@
 # Farely Known Issues
 
-Last updated: 2026-07-16
+Last updated: 2026-07-17
 
 | Priority | Area | Issue | Status |
 | --- | --- | --- | --- |
@@ -33,7 +33,7 @@ Last updated: 2026-07-16
 - Automated Playwright QA is now available through `npm run audit:hourly` and `npm run audit:full`; continue adding regression tests for every confirmed live bug.
 - Continue validating result cards and the guided Flexible dates flow for quick comparison with real provider data as traffic grows.
 - Continue checking multi-passenger result cards across more routes so `per person` and total-price copy stays clear with varied fare amounts.
-- QA Milestone 6 search filters and airport-selection behavior on more live routes with multiple offers.
+- QA Milestone 6 search filters and airport-selection behavior on more live routes with multiple offers. The 2026-07-17 filter empty-state recovery adds `Show all offers` for no-match filter states and still needs live verification after deployment.
 - The 2026-07-15 filter-reset update is live-verified: stale airport filters clear after a route/search-context change instead of hiding valid new fares.
 - Multi-carrier airline labels and filters were live-verified on LHR -> DXB; repeat on more routes as provider data varies.
 - CTA wording now uses the configured booking partner where available; continue validating click-through tracking after deployment.

@@ -27,8 +27,12 @@ test.describe("Farely live browser audit", () => {
     await page.getByRole("button", { name: /^Filters/ }).click();
     await expect(page.getByRole("dialog", { name: "Flight filters" })).toBeVisible();
     await page.getByRole("button", { name: "Direct only" }).click();
+    await page.getByLabel("Max flight duration").fill("1");
     await page.getByRole("button", { name: "Show results" }).click();
-    await expect(page.getByRole("button", { name: /^Filters/ })).toContainText(/Filters/);
+    await expect(page.getByText("No fares match these filters")).toBeVisible();
+    await page.getByRole("button", { name: "Show all offers" }).click();
+    await expect(page.locator(".fa-airlineRow").first()).toBeVisible();
+    await expect(page.getByRole("button", { name: /^Filters/ })).toHaveText("Filters");
 
     await expectNoHorizontalOverflow(page);
     await expectNoCapturedErrors(capture);

@@ -781,6 +781,11 @@ export default function ResultsSection({
                         ? "Try exact dates, adjust the route, or search again to compare the best available options."
                         : "Press Search flights to compare live prices from our travel partners."}
                   </div>
+                  {shownOffers.length > 0 ? (
+                    <button type="button" className="fa-emptyReset" onClick={resetFilters}>
+                      Show all offers
+                    </button>
+                  ) : null}
                 </div>
               </div>
             ) : (

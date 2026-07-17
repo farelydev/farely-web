@@ -1,6 +1,6 @@
 # Farely Roadmap
 
-Last updated: 2026-07-16
+Last updated: 2026-07-17
 
 ## Current Phase
 
@@ -52,6 +52,7 @@ Current API robustness action:
 - Top booking strip: implemented, pushed, deployed, and live-verified so the current tracked partner option appears before long itinerary details, helping mobile users reach `Book via Aviasales` faster without inventing extra providers.
 - Multi-carrier airline display/filtering: implemented, pushed, deployed, and live-verified so visible offers can show combined carrier labels such as `AZ / Lufthansa`, stacked logo badges, and airline filter options for secondary carriers.
 - Search filter reset on route/search changes: implemented, pushed, deployed, and live-verified so stale airport, airline, price, or baggage filters do not silently hide valid fares after a traveller changes route, date, trip type, cabin, passengers, or selected Flexible date.
+- Filter empty-state recovery: implemented locally on 2026-07-17 so no-match filtered results show a clear `Show all offers` reset action; push/live verification pending.
 - Second-provider candidate: Kiwi.com selected as the first realistic candidate after the current Aviasales/Travelpayouts path; documented in `docs/PROVIDER_SELECTION.md`. Do not show Kiwi.com as a live provider until approval, tracking requirements, and the approved redirect/deep-link template are confirmed.
 - Provider-aware redirect foundation: implemented, pushed, deployed, and live-verified at `06c0d53` so `/api/deals/flight` can resolve a requested provider behind server config while keeping Aviasales/Travelpayouts as the default. Disabled or unconfigured provider requests fall back to the primary path.
 - Flexible partner-step wording: implemented and locally verified so Flexible dates shows the configured partner name after offers load, without claiming extra live providers.
